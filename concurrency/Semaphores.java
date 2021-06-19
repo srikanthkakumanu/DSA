@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 /**
  * 1. Semaphore introduced in Java 5. A semaphore maintains/contains set of permits.
  *      We can use semaphores to limit the number of concurrent threads accessing 
- *      a specific resource.
+ *      a specific resource. Semaphore is signaling mechanism.
  * 
  * 2. Semaphore is used for blocking thread level access to some part of physical or 
  *      logical resource.
@@ -34,7 +34,19 @@ import java.util.stream.IntStream;
  * 8. We can implement a 'Mutex' like data structure using Semaphore. Mutex acts similarly
  *      to a binary semaphore. We can use it to implement mutual exclusion.      
  *  
- *       
+ * Mutex Vs. Semaphore
+ * -------------------
+ * Mutex:
+ * 1. It is a mutual exclusion object that synchronizes access to a resource.
+ * 2. The Mutex is a locking mechanism that makes sure only one thread can acquire the Mutex at
+ *      a time and enter the critical section. This thread only releases the Mutex when it exits the critical section.
+ * 3. A Mutex is different than a semaphore as it is a locking mechanism while a semaphore is a signalling mechanism.
+ * 4. A binary semaphore can be used as a Mutex but a Mutex can never be used as a semaphore. 
+ * 
+ * Semaphore:
+ * 1. A semaphore is a signalling mechanism and a thread that is waiting on a semaphore can be signaled by another thread.
+ * 2. This is different than a mutex as the mutex can be signaled only by the thread that called the wait function.
+ * 3. A semaphore uses two atomic operations, wait and signal for process synchronization.       
  */
 public class Semaphores {
     public static void main(String[] args) {

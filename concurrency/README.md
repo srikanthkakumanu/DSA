@@ -27,6 +27,7 @@ Table of Contents:
    5.2 [ThreadLocal](#thread-local) </br>
    5.3 [CountdownLatch](#countdownlatch) </br>
    5.4 [CyclicBarrier](#cyclicbarrier) </br>
+   5.5 [Semaphore and Mutex](#semaphore-and-mutex) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
    6.1 [Solutions](#solutions)</br>
@@ -138,6 +139,7 @@ Thread pooling represents group of threads that are waiting for the job and re-u
 #### ||| **Thread pool tuning**
 
 </br>
+
 The optimum size of the thread pool depends on the number of processors available and the nature of the tasks. On a N processor system for a queue of only computation type processes, **N*(1+W/S)** for maximum efficiency.</br>
 N or N+1: maximum thread pool size.</br>
 W: ratio of waiting time.</br>
@@ -147,11 +149,12 @@ S: service time for a request.</br>
 #### ||| **Thread Pooling - Executor Framework**
 
 </br>
+
 Executor framework gives the developer the ability to control the number of generated threads and the granularity of tasks that should be run by separate threads. The best use case for ExecutorService is the processing of independent tasks, such as transactions or requests according to the scheme “one thread for one task.” But fork/join framework, despite the simplicity and frequent performance gains associated with fork/join, it reduces developer control over concurrent execution.
 
 The shutdown() method doesn't cause immediate destruction of the ExecutorService. It will make the ExecutorService stop accepting new tasks and shut down after all running threads finish their current work. But shutdownNow() tries to destroy the ExecutorService immediately, but it doesn't guarantee that all the running threads will be stopped at the same time.
 
-**Executor:** interface for executing/launching new tasks(thread - which implements Runnable). Using Executor interface, we can decouple the task execution flow from the actual task execution mechanism. Executor does not 'strictly' require the task execution to be asynchronous. 
+**Executor:** interface for executing/launching new tasks(thread - which implements Runnable). Using Executor interface, we can decouple the task execution flow from the actual task execution mechanism. Executor does not 'strictly' require the task execution to be asynchronous.
 
 **ExecutorService:** sub-interface for Executor, that simplifies running tasks in asynchronous mode. It is a complete solution for asynchronous processing. It manages an 'In-Memory' queue and schedules submitted tasks based on thread availability. It automatically provides a pool of threads and an API for assigning tasks to it. It contains features that help manage life cycle, both of the individual tasks and executor itself.
 
@@ -204,6 +207,7 @@ There are different thread safety approaches are used to avoid the data inconsis
 #### ||| **Thread Synchronization**
 
 </br>
+
 Synchronized block/method/static method is the simplest way to create a **mutex** in Java.
 Synchronization is a capability to control the access of multiple threads to any shared resource. We use synchronization to prevent thread interference and consistancy problem. Synchronization is built around an internal entity called **lock** or **monitor**. A thread that needs access to object's fields has to acquire object's lock before accessing them and then release the lock when it's done. Java 5 introduced **java.util.concurrent.locks** contains several lock implementations.
 
@@ -260,6 +264,69 @@ A CyclicBarrier is a synchronizer or synchronization construct that allows a set
 *The **barrier** is called cyclic because it can be re-used after the waiting threads are released.*
 
 CyclicBarrier works almost same as CountDownLatch except that we can reuse it. Unlike CountDownLatch, it allows multiple threads to wait for each other using await() method (known as barrier condition) before invoking final task.
+
+</br>
+
+### ||| **Semaphore and Mutex**
+
+</br>
+
+**Semaphore:**
+
+Semaphore introduced in Java 5. A semaphore maintains/contains set of permits. We can use semaphores to limit the number of concurrent threads accessing a specific resource. Semaphore is used for blocking thread level access to some part of physical or logical resource. Semaphore is **signaling mechanism**.
+
+Whenever a thread tries to enter a critical section, it needs to check semaphore, if a permit is available or not. If permit is not available (via tryAcquire()), the thread is not allowed to jump into the critical section. However, if the permit is available the access is granted, and the permit counter decreases. Once the executing thread releases critical section, again the permit counter increases (done by release() method).
+
+We can specify a timeout for acquiring access by using the *tryAcquire(long timeout, TimeUnit unit)* method. We can also check the number of available permits or the number of threads waiting to acquire the semaphore.
+
+Apache commons *TimedSemaphore*: TimeSemaphore allows number of permits as a simple Semaphore but in a given period of time. After this period, the time reset and and all permits are released.
+
+There are mainly two types of semaphores i.e.**counting semaphores** and **binary semaphores**.
+
+Counting Semaphores are integer value semaphores and have an unrestricted value domain. These semaphores are used to coordinate the resource access, where the semaphore count is the number of available resources.
+
+The binary semaphores are like counting semaphores but their value is restricted to 0 and 1. The wait operation only works when the semaphore is 1 and the signal operation succeeds when semaphore is 0.
+
+
+**Mutex:**
+
+A mutex (mutual exclusion) is the simplest type of synchronizer. It ensures that only one thread can execute the critical section of a computer program at a time. A mutex is a **locking mechanism** used to synchronize access to a resource.
+
+It is used when: </br>
+
+- Multiple threads accessing shared memory with write and read access.
+- Multiple processes accessing a common resource (such as printer and camera etc.)
+
+To access a critical section, a thread acquires the mutex, then accesses the critical section and finally releases the mutex. In the mean time, all other threads block till the mutex releases. As soon as a thread exits the critical section, another thread can enter the critical section.
+
+There are various ways, we can implement a **mutex** in Java.
+
+- **Using synchronized keyword**: </br>
+  It is the simplest way to implement a mutex in Java. Every object in Java has an **intrinsic lock** associated with it. The synchronized method and the synchronized block use this intrinsic lock to restrict the access of the critical section to only one thread at a time. Therefore, when a thread invokes a synchronized method or enters a synchronized block, it automatically acquires the lock. The lock releases when the method or block completes or an exception is thrown from them.
+- **Using ReentrantLock** </br>
+  The ReentrantLock introduced in Java 5. It provides more flexibility and control than synchronized keyword approach to achieve *mutual exclusion*. </br>
+  
+  Note: *Alternatively, the Monitor class of Google's Guava library is a better alternative to the ReentrantLock class. As per its documentation, code using Monitor is more readable and less error-prone than the code using ReentrantLock.*
+
+- **Using Semaphore** </br>
+  While in case of a mutex only one thread can access a critical section, Semaphore allows a fixed number of threads to access a critical section. Therefore, we can also implement a mutex by *setting the number of allowed threads in a Semaphore to one*. Here mutex acts similarly to a binary semaphore.
+
+
+**Mutex Vs. Semaphore** </br>
+
+Mutex: </br>
+
+1. It is a mutual exclusion object that synchronizes access to a resource.
+2. The Mutex is a **locking mechanism** that makes sure only one thread can acquire the Mutex at a time and enter the critical section. This thread only releases the Mutex when it exits the critical section.
+3. A Mutex is different than a semaphore as it is a locking mechanism while a semaphore is a signalling mechanism.
+4. A binary semaphore can be used as a Mutex but a Mutex can never be used as a semaphore.
+
+Semaphore: </br>
+
+1. A semaphore is a **signalling mechanism** and a thread that is waiting on a semaphore can be signaled by another thread.
+2. This is different than a mutex as the mutex can be signaled only by the thread that called the wait function.
+3. A semaphore uses two atomic operations, wait and signal for process synchronization.
+
 </br>
 
 ### **Dead Lock**
