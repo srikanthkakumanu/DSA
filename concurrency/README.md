@@ -5,29 +5,29 @@
 Table of Contents:
 
 1. [**Multi-Tasking**](#multi-tasking) </br>
-    1.1 [Multi-Processing](#multi-processing) </br>
+    1.1 [Multi-Processing](#-multi-processing) </br>
     1.2 [Multi-Threading](#multi-threading)
 
 2. [**Thread Scheduling**](#thread-scheduling) </br>
-    2.1 [Pre-emptive Thread Scheduling](#pre-emptive-scheduling) </br>
-    2.2 [Time Slicing (Round-robine) Scheduling](#time-slicing-scheduling) </br>
-    2.3 [Scheduling Utlity: java.util.TimerTask](#timertask) </br>
+    2.1 [Pre-emptive Thread Scheduling](#-pre-emptive-scheduling) </br>
+    2.2 [Time Slicing (Round-robin) Scheduling](#-time-slicing-scheduling) </br>
+    2.3 [Scheduling Utlity: java.util.TimerTask](#-timertask) </br>
 
 3. [**Thread Pooling**](#thread-pooling) </br>
-    3.1 [Advantages](#thread-pooling---advantages) </br>
-    3.2 [Risks](#thread-pooling---risks) </br>
-    3.3 [Thread Pool Tuning](#thread-pool-tuning) </br>
-    3.4 [Executor Framework](#thread-pooling---executor-framework) </br>
-    3.5 [Fork & Join Pool Framework](#fork--join-pool-framework) TODO: </br>
+    3.1 [Advantages](#-thread-pooling---advantages) </br>
+    3.2 [Risks](#-thread-pooling---risks) </br>
+    3.3 [Thread Pool Tuning](#-thread-pool-tuning) </br>
+    3.4 [Executor Framework](#-thread-pooling---executor-framework) </br>
+    3.5 [Fork & Join Pool Framework](#-fork--join-pool-framework) TODO: </br>
 
 4. [**Thread Grouping**](#thread-groups) </br>
 
 5. [**Thread Safety**](#thread-safety)</br>
-   5.1 [Thread Synchronization](#thread-synchronization)</br>
-   5.2 [ThreadLocal](#thread-local) </br>
-   5.3 [CountdownLatch](#countdownlatch) </br>
-   5.4 [CyclicBarrier](#cyclicbarrier) </br>
-   5.5 [Semaphore and Mutex](#semaphore-and-mutex) </br>
+   5.1 [Thread Synchronization](#-thread-synchronization)</br>
+   5.2 [ThreadLocal](#-thread-local) </br>
+   5.3 [CountdownLatch](#-countdownlatch) </br>
+   5.4 [CyclicBarrier](#-cyclicbarrier) </br>
+   5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
    6.1 [Solutions](#solutions)</br>
@@ -56,13 +56,13 @@ Multi tasking can achieved in two ways:
 * Multi-processing
 * Multi-threading
 
-### ||| **Multi-processing**
+### ||| **Multi processing**
 
 A process is heavy weight and each process has an address in memory, each process allocates a separate memory area and cost of inter-process communication (IPC) is high. Switching (i.e. context-switching) from one process to another requires some time for saving and loading registers, memory maps, updating lists, etc.
 </br>
 </br>
 
-## **Multi-threading**
+## **Multi threading**
 
 <HR>
 
@@ -404,12 +404,6 @@ BlockingQueue doesn't accept NULL values and throws NullPointerException if trie
 BlockingQueue is thread-safe and all queuing methods are atomic in nature, it uses internal locks or other forms of concurrency control.
 
 We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue because it’s handled by implementation classes of BlockingQueue. BlockingQueue implementations are *ArrayBlockingQueue,  LinkedBlockingQueue, PriorityBlockingQueue, SynchronousQueue* etc.
-
-### **Semaphores**
-
-<HR>
-
-#### **mutex vs. semaphores**
 
 </br>
 
