@@ -9,7 +9,7 @@ Table of Contents:
     1.2 [Multi-Threading](#multi-threading)
 
 2. [**Thread Scheduling**](#thread-scheduling) </br>
-    2.1 [Pre-emptive Thread Scheduling](#pre-emptive-scheduling) </br>
+    2.1 [Pre-emptive Thread Scheduling](#-pre-emptive-scheduling) </br>
     2.2 [Time Slicing (Round-robine) Scheduling](#time-slicing-scheduling) </br>
     2.3 [Scheduling Utlity: java.util.TimerTask](#timertask) </br>
 
