@@ -18,7 +18,8 @@ Table of Contents:
     3.2 [Risks](#-thread-pooling---risks) </br>
     3.3 [Thread Pool Tuning](#-thread-pool-tuning) </br>
     3.4 [Executor Framework](#-thread-pooling---executor-framework) </br>
-    3.5 [Fork & Join Pool Framework](#-fork--join-pool-framework) TODO: </br>
+    3.5 [Thread Factory](#-thread-factory) </br>
+    3.6 [Fork & Join Pool Framework](#-fork--join-pool-framework) TODO: </br>
 
 4. [**Thread Grouping**](#thread-groups) </br>
 
@@ -168,6 +169,12 @@ The shutdown() method doesn't cause immediate destruction of the ExecutorService
 
 **FutureTask:** FutureTask is base concrete implementation of Future interface and provides asynchronous processing. It contains the methods to start and cancel a task and also methods that can return the state of the FutureTask as whether it’s completed or cancelled. We need a callable object to create a future task and then we can use Java Thread Pool Executor to process these asynchronously. i.e. FutureTask requires a Callable object. FutureTask comes handy when we want to override some of Future interface methods and don’t want to implement every method of Future interface.
 </br>
+</br>
+
+#### ||| **Thread Factory**
+
+</br>
+ThreadFactory acts as a thread(non-existing) pool which creates a new thread on demand. It eliminates the need of lot of boilerplate code for implementing efficient thread creation mechanisms.
 </br>
 
 #### ||| **Fork & Join Pool Framework**
