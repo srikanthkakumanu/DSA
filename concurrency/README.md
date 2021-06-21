@@ -30,7 +30,7 @@ Table of Contents:
    5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
-   6.1 [Solutions](#solutions)</br>
+   6.1 [Solutions](#-solutions)</br>
 
 7. [**Fairness - Starvation - Deadlock**](#fairness---starvation---deadlock) </br>
 
@@ -404,6 +404,12 @@ BlockingQueue doesn't accept NULL values and throws NullPointerException if trie
 BlockingQueue is thread-safe and all queuing methods are atomic in nature, it uses internal locks or other forms of concurrency control.
 
 We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue because it’s handled by implementation classes of BlockingQueue. BlockingQueue implementations are *ArrayBlockingQueue,  LinkedBlockingQueue, PriorityBlockingQueue, SynchronousQueue* etc.
+
+### **Semaphores**
+
+<HR>
+
+#### **mutex vs. semaphores**
 
 </br>
 
