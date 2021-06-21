@@ -10,7 +10,7 @@ Table of Contents:
 
 2. [**Thread Scheduling**](#thread-scheduling) </br>
     2.1 [Pre-emptive Thread Scheduling](#-pre-emptive-scheduling) </br>
-    2.2 [Time Slicing (Round-robin) Scheduling](#time-slicing-scheduling) </br>
+    2.2 [Time Slicing (Round-robin) Scheduling](#-time-slicing-scheduling) </br>
     2.3 [Scheduling Utlity: java.util.TimerTask](#-timertask) </br>
 
 3. [**Thread Pooling**](#thread-pooling) </br>
