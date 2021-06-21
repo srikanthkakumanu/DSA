@@ -14,11 +14,11 @@ Table of Contents:
     2.3 [Scheduling Utlity: java.util.TimerTask](#-timertask) </br>
 
 3. [**Thread Pooling**](#thread-pooling) </br>
-    3.1 [Advantages](#thread-pooling---advantages) </br>
-    3.2 [Risks](#thread-pooling---risks) </br>
-    3.3 [Thread Pool Tuning](#thread-pool-tuning) </br>
-    3.4 [Executor Framework](#thread-pooling---executor-framework) </br>
-    3.5 [Fork & Join Pool Framework](#fork--join-pool-framework) TODO: </br>
+    3.1 [Advantages](#-thread-pooling---advantages) </br>
+    3.2 [Risks](#-thread-pooling---risks) </br>
+    3.3 [Thread Pool Tuning](#-thread-pool-tuning) </br>
+    3.4 [Executor Framework](#-thread-pooling---executor-framework) </br>
+    3.5 [Fork & Join Pool Framework](#-fork--join-pool-framework) TODO: </br>
 
 4. [**Thread Grouping**](#thread-groups) </br>
 
