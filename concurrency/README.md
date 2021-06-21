@@ -405,12 +405,6 @@ BlockingQueue is thread-safe and all queuing methods are atomic in nature, it us
 
 We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue because it’s handled by implementation classes of BlockingQueue. BlockingQueue implementations are *ArrayBlockingQueue,  LinkedBlockingQueue, PriorityBlockingQueue, SynchronousQueue* etc.
 
-### **Semaphores**
-
-<HR>
-
-#### **mutex vs. semaphores**
-
 </br>
 
 ### **Thread dump analysis**
