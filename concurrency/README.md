@@ -23,14 +23,14 @@ Table of Contents:
 4. [**Thread Grouping**](#thread-groups) </br>
 
 5. [**Thread Safety**](#thread-safety)</br>
-   5.1 [Thread Synchronization](#thread-synchronization)</br>
-   5.2 [ThreadLocal](#thread-local) </br>
-   5.3 [CountdownLatch](#countdownlatch) </br>
-   5.4 [CyclicBarrier](#cyclicbarrier) </br>
-   5.5 [Semaphore and Mutex](#semaphore-and-mutex) </br>
+   5.1 [Thread Synchronization](#-thread-synchronization)</br>
+   5.2 [ThreadLocal](#-thread-local) </br>
+   5.3 [CountdownLatch](#-countdownlatch) </br>
+   5.4 [CyclicBarrier](#-cyclicbarrier) </br>
+   5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
-   6.1 [Solutions](#solutions)</br>
+   6.1 [Solutions](#-solutions)</br>
 
 7. [**Fairness - Starvation - Deadlock**](#fairness---starvation---deadlock) </br>
 
