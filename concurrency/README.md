@@ -5,7 +5,7 @@
 Table of Contents:
 
 1. [**Multi-Tasking**](#multi-tasking) </br>
-    1.1 [Multi-Processing](#multi-processing) </br>
+    1.1 [Multi-Processing](#-multi-processing) </br>
     1.2 [Multi-Threading](#multi-threading)
 
 2. [**Thread Scheduling**](#thread-scheduling) </br>
