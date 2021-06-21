@@ -37,7 +37,8 @@ Table of Contents:
 
 8. [**wait() + notify() + notifyAll** (Inter-thread Communication)](#inter-thread-communication-waitnofifynotifyall)</br>
 
-9. [Bounded-Buffer (producer-consumer) problem solution using BlockingQueue](#bounded-buffer-producer-consumer-problem) <br>
+9. [Bounded-Buffer (producer-consumer) problem](#bounded-buffer-producer-consumer-problem) </br>
+   9.1 [Blocking Queue (Bounded + Unbounded)](#-blockingqueue) </br>
 
 10. [Semaphore]() TODO </br> 
     10.1 [mutex vs. semaphore]() TODO </br>
@@ -225,7 +226,9 @@ Mutual exclusive helps keep threads from interfering with one another while shar
 **static synchronization**: If we make static method as synchronized, then lock will be on class but not on object.
 
 **Scenario:**
+
  </br>
+
  Suppose there are two objects o1 and o2 of a class. </br>
  There are t1, t2 threads refers o1. t3, t4 threads refers o2.</br>
  In case of synchronized method and synchronized block, there cannot be any interference between (t1, t2) and (t3, t4).</br>
@@ -404,13 +407,30 @@ In computing, **bounded-buffer** or **producer-consumer** problem is a classic e
 
 - Before Java 5, producer-consumer problem can be solved using wait() and notify() methods but introduction of BlockingQueue has made it very easy.
 
-BlockingQueue that supports operations that wait for the Queue to become non-empty when retrieving and removing an element and wait for space to become available in the Queue when adding an element.
+**BlockingQueue** can be used to provide solution for this *bounded-buffer* problem.
+
+#### ||| **BlockingQueue**
+
+**BlockingQueue** that supports operations that wait for the Queue to become non-empty when retrieving and removing an element and wait for space to become available in the Queue when adding an element.
 
 BlockingQueue doesn't accept NULL values and throws NullPointerException if tried.
 
 BlockingQueue is thread-safe and all queuing methods are atomic in nature, it uses internal locks or other forms of concurrency control.
 
-We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue because it’s handled by implementation classes of BlockingQueue. BlockingQueue implementations are *ArrayBlockingQueue,  LinkedBlockingQueue, PriorityBlockingQueue, SynchronousQueue* etc.
+We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue because it’s handled by implementation classes of BlockingQueue. BlockingQueue implementations are *ArrayBlockingQueue,  LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue* etc.
+
+There are two types of **BlockingQueue**:
+
+**unbounded Queue**: </br>
+Unbounded blocking queues can grow almost indefinitely. The capacity of blocking queue will be set to MAX_VALUE and all operations that add an element to the unbounded queue will never block, thus it could grow to a very large size.
+
+*The most important thing when designing a producer-consumer program using unbounded BlockingQueue is that consumers should be able to consume messages as quickly as producers are adding messages to the queue. Otherwise, the memory could fill up and we would get an OutOfMemory exception.*
+
+**bounded Queue**: </br>
+
+We can create such queues with maximum capacity defined. If we have a blockingQueue that has a capacity equal to 10, It means that when a producer tries to add an element to an already full queue, depending on a method that was used to add it (offer(), add() or put()), it will block until space for inserting object becomes available. Otherwise, the operations will fail.
+
+*Using bounded queue is a good way to design concurrent programs because when we insert an element to an already full queue, that operations need to wait until consumers catch up and make some space available in the queue. It gives us throttling without any effort on our part.*
 
 </br>
 

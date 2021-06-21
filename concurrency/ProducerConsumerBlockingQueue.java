@@ -2,6 +2,7 @@ package concurrency;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,12 +30,56 @@ import java.util.concurrent.TimeUnit;
  * 8. We don’t need to worry about waiting for the space to be available for producer or
  *      object to be available for consumer in BlockingQueue because it’s handled by 
  *      implementation classes of BlockingQueue. BlockingQueue implementations are
- *      ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, SynchronousQueue etc.
+ *      ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, 
+ *      SynchronousQueue etc.
+ * 
+ * 9. There are two types of BlockingQueue: unbounded and bounded.
+ *      unbounded: can grow almost indefinitely
+ *      bounded: with maximum capacity defined
+ * 
+ * unbounded blocking queue:
+ * ------------------------- 
+ * Unbounded blocking queues can grow almost indefinitely. The capacity of blocking queue 
+ *  will be set to MAX_VALUE and all operations that add an element to the unbounded queue
+ *  will never block, thus it could grow to a very large size. The most important thing when
+ *  designing a producer-consumer program using unbounded BlockingQueue is that consumers 
+ *  should be able to consume messages as quickly as producers are adding messages to the queue.
+ *  Otherwise, the memory could fill up and we would get an OutOfMemory exception.
+ * 
+ * bounded blocking queue:
+ * -----------------------
+ * We can create such queues with maximum capacity defined. If we have a blockingQueue that has 
+ *  a capacity equal to 10, It means that when a producer tries to add an element to an already
+ *  full queue, depending on a method that was used to add it (offer(), add() or put()), it will
+ *  block until space for inserting object becomes available. Otherwise, the operations will fail.
+ *  Using bounded queue is a good way to design concurrent programs because when we insert an 
+ *  element to an already full queue, that operations need to wait until consumers catch up and 
+ *  make some space available in the queue. It gives us throttling without any effort on our part.
  * 
  */
-public class ProducerConsumerBlockingQueue {
+public class ProducerConsumerBlockingQueue { 
     public static void main(String[] args) {
-        BlockingQueue<TheMessage> queue = new ArrayBlockingQueue<>(10);
+        //unbounded(); // Using unbounded BlockingQueue approach.
+        bounded(); // Using bounded BlockingQueue approach.
+    }
+
+    static void unbounded() {
+        // unbounded queue i.e. can grow almost indefinitely
+        BlockingQueue<TheMessage> queue = new LinkedBlockingQueue<>(); 
+        Producer producer = new Producer(queue);
+        Consumer consumer = new Consumer(queue);
+
+        Thread producerThread = new Thread(producer);
+        Thread consumerThread = new Thread(consumer);
+        producerThread.start();
+        consumerThread.start();
+        System.out.println("Producer and Consumer has been started");
+
+    }
+
+    static void bounded() {
+        // bounded queue i.e. with maximum capacity defined
+        BlockingQueue<TheMessage> queue = new ArrayBlockingQueue<>(10); 
         Producer producer = new Producer(queue);
         Consumer consumer = new Consumer(queue);
 
