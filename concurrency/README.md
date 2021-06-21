@@ -56,13 +56,13 @@ Multi tasking can achieved in two ways:
 * Multi-processing
 * Multi-threading
 
-### ||| **Multi-processing**
+### ||| **Multi processing**
 
 A process is heavy weight and each process has an address in memory, each process allocates a separate memory area and cost of inter-process communication (IPC) is high. Switching (i.e. context-switching) from one process to another requires some time for saving and loading registers, memory maps, updating lists, etc.
 </br>
 </br>
 
-## **Multi-threading**
+## **Multi threading**
 
 <HR>
 
