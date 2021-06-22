@@ -30,6 +30,7 @@ Table of Contents:
    5.4 [CyclicBarrier](#-cyclicbarrier) </br>
    5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
    5.6 [Locks](#locks) </br>
+   5.7 [Phaser](#phaser) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
    6.1 [Solutions](#-solutions)</br>
@@ -265,6 +266,8 @@ Important: *CyclicBarrier, Phaser, CountDownLatch, Exchanger, Semaphore and Sync
 
 CountDownLatch is introduced in Java 5. It is a utility class and a type of synchronizer which blocks set of threads until some operation completes. Essentially, by using a CountDownLatch we can cause a thread to block until other threads have completed a given task. A CountDownLatch has a **counter** field, which you can decrement as we require. We can then use it to block a calling thread until it's been counted down to zero.
 
+Note: *Phaser is a more flexible solution than CyclicBarrier and CountDownLatch – used to act as a reusable barrier on which the dynamic number of threads need to wait before continuing execution. We can coordinate multiple phases of execution, reusing a Phaser instance for each program phase.*
+
 </br>
 
 #### ||| **CyclicBarrier**
@@ -276,6 +279,8 @@ A CyclicBarrier is a synchronizer or synchronization construct that allows a set
 *The **barrier** is called cyclic because it can be re-used after the waiting threads are released.*
 
 CyclicBarrier works almost same as CountDownLatch except that we can reuse it. Unlike CountDownLatch, it allows multiple threads to wait for each other using await() method (known as barrier condition) before invoking final task.
+
+Note: *Phaser is a more flexible solution than CyclicBarrier and CountDownLatch – used to act as a reusable barrier on which the dynamic number of threads need to wait before continuing execution. We can coordinate multiple phases of execution, reusing a Phaser instance for each program phase.*
 
 </br>
 
@@ -379,6 +384,19 @@ The Condition class provides the ability for a thread to wait for some condition
 
 Traditionally Java provides wait(), notify() and notifyAll() methods for thread intercommunication. Conditions have similar mechanisms, but in addition, we can specify multiple conditions.
 
+</br>
+
+#### **Phaser**
+
+</br>
+
+Phaser is very similar to CountDownLatch that allows us to co-ordinate execution of threads. In comparison to CountDownLatch, Phaser has some additional functionality. The Phaser is a barrier on which the dynamic number of threads need to wait before continuing execution. In the CountDownLatch that number cannot be configured dynamically and needs to be supplied when we're creating the instance.
+
+The Phaser allows us to build logic in which threads need to wait on the barrier before going to the next step of execution. We can coordinate multiple phases of execution, reusing a Phaser instance for each program phase. Each phase can have a different number of threads waiting for advancing to another phase.
+
+To participate in the coordination, the thread needs to register() itself with the Phaser instance. The thread signals that it arrived at the barrier by calling the arriveAndAwaitAdvance(), which is a blocking method. When the number of arrived parties is equal to the number of registered parties, the execution of the program will continue, and the phase number will increase. When the thread finishes its job, we should call the arriveAndDeregister() method to signal that the current thread should no longer be accounted for in this particular phase.
+
+Note: *Phaser is a more flexible solution than CyclicBarrier and CountDownLatch – used to act as a reusable barrier on which the dynamic number of threads need to wait before continuing execution. We can coordinate multiple phases of execution, reusing a Phaser instance for each program phase.*
 </br>
 
 ### **Dead Lock**
