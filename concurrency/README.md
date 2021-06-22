@@ -29,7 +29,7 @@ Table of Contents:
    5.3 [CountdownLatch](#-countdownlatch) </br>
    5.4 [CyclicBarrier](#-cyclicbarrier) </br>
    5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
-   5.6 [Locks](#locks-br) </br>
+   5.6 [Locks](#locks) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
    6.1 [Solutions](#-solutions)</br>
@@ -341,7 +341,7 @@ Semaphore: </br>
 
 </br>
 
-#### **Locks** </br>
+#### **Locks**
 
 </br>
 Locks are introduced in Java 5. Lock is a utility for blocking other threads from accessing a certain segment of code, apart from the thread that's executing it currently. A Lock is more flexible and sophisticated thread synchronization mechanism than the standard synchronized block.
