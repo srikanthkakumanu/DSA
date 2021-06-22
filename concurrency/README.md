@@ -29,6 +29,7 @@ Table of Contents:
    5.3 [CountdownLatch](#-countdownlatch) </br>
    5.4 [CyclicBarrier](#-cyclicbarrier) </br>
    5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
+   5.6 [Locks](#locks-br) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
    6.1 [Solutions](#-solutions)</br>
@@ -337,6 +338,45 @@ Semaphore: </br>
 1. A semaphore is a **signalling mechanism** and a thread that is waiting on a semaphore can be signaled by another thread.
 2. This is different than a mutex as the mutex can be signaled only by the thread that called the wait function.
 3. A semaphore uses two atomic operations, wait and signal for process synchronization.
+
+</br>
+
+#### **Locks** </br>
+
+</br>
+Locks are introduced in Java 5. Lock is a utility for blocking other threads from accessing a certain segment of code, apart from the thread that's executing it currently. A Lock is more flexible and sophisticated thread synchronization mechanism than the standard synchronized block.
+
+**Lock Vs. Synchronized block:**
+
+- A synchronized block is fully contained within a method – we can have Lock API's lock() and unlock() operation in separate methods.
+
+- A synchronized block doesn't support the fairness. In Locks, any thread can acquire the lock once released, no preference can be specified. We can achieve fairness within the Lock APIs by specifying the fairness property. It makes sure that longest waiting thread is given access to the lock.
+
+- A thread gets blocked if it can't get an access to the synchronized block. The Lock API provides tryLock() method. The thread acquires lock only if it's available and not held by any other thread. This reduces blocking time of thread waiting for the lock.
+
+- A thread which is in “waiting” state to acquire the access to synchronized block, can't be interrupted. The Lock API provides a method *lockInterruptibly()* which can be used to interrupt the thread when it's waiting for the lock.
+
+A locked instance should always be unlocked to avoid deadlock condition. A recommended approach to use the lock that it should contain a *try/catch* and *finally* block.
+
+**Lock interface methods**: *lock(), lockInterruptibly(), tryLock(), tryLock(long timeout, TimeUnit timeUnit), unlock()*
+
+**ReadWriteLock interface**: It maintains a pair of locks, one for read-only operations and one for the write operation.  The read lock may be simultaneously held by multiple threads as long as there is no write. It has the following methods i.e. *Lock readLock()*, *Lock writeLock()*
+
+**Lock Implementations:**
+
+- **ReentrantLock:** ReentrantLock offers the same concurrency and memory semantics, as the implicit monitor lock accessed using synchronized methods and statements, with extended capabilities.
+  
+- **ReentrantReadWriteLock:** ReentrantReadWriteLock implements ReadWriteLock interface and it can provides two different locks such as readLock() and writeLock(). If no thread acquired the write lock or requested for it then multiple threads can acquire the read lock. If no threads are reading or writing then only one thread can acquire the write lock.
+
+- **StampedLock:** StampedLock is introduced in Java 8. It also supports both read and write locks. However, lock acquisition methods return a stamp that is used to release a lock or to check if the lock is still valid. Another feature provided by StampedLock is optimistic locking. Most of the time read operations don't need to wait for write operation completion and as a result of this, the full-fledged read lock isn't required. Instead, we can upgrade to read lock.
+
+</br>
+
+**Locks with Conditions:**
+
+The Condition class provides the ability for a thread to wait for some condition to occur while executing the critical section. This can occur when a thread acquires the access to the critical section but doesn't have the necessary condition to perform its operation. 
+
+Traditionally Java provides wait(), notify() and notifyAll() methods for thread intercommunication. Conditions have similar mechanisms, but in addition, we can specify multiple conditions.
 
 </br>
 
