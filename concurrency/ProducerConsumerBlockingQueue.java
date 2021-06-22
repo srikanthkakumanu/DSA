@@ -56,6 +56,8 @@ import java.util.concurrent.TimeUnit;
  *  element to an already full queue, that operations need to wait until consumers catch up and 
  *  make some space available in the queue. It gives us throttling without any effort on our part.
  * 
+ * Note: DelayQueue is unbounded blocking queue of delayed elements.
+ * 
  */
 public class ProducerConsumerBlockingQueue { 
     public static void main(String[] args) {

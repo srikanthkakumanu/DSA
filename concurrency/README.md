@@ -39,6 +39,7 @@ Table of Contents:
 
 9. [Bounded-Buffer (producer-consumer) problem](#bounded-buffer-producer-consumer-problem) </br>
    9.1 [Blocking Queue (Bounded + Unbounded)](#-blockingqueue) </br>
+   9.2 [Delay Queue](#-delayqueue) </br>
 
 10. [Semaphore]() TODO </br> 
     10.1 [mutex vs. semaphore]() TODO </br>
@@ -419,6 +420,8 @@ BlockingQueue is thread-safe and all queuing methods are atomic in nature, it us
 
 We don’t need to worry about waiting for the space to be available for producer or object to be available for consumer in BlockingQueue because it’s handled by implementation classes of BlockingQueue. BlockingQueue implementations are *ArrayBlockingQueue,  LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue* etc.
 
+Note: ***DelayQueue** is unbounded blocking queue of delayed elements.*
+
 There are two types of **BlockingQueue**:
 
 **unbounded Queue**: </br>
@@ -431,6 +434,20 @@ Unbounded blocking queues can grow almost indefinitely. The capacity of blocking
 We can create such queues with maximum capacity defined. If we have a blockingQueue that has a capacity equal to 10, It means that when a producer tries to add an element to an already full queue, depending on a method that was used to add it (offer(), add() or put()), it will block until space for inserting object becomes available. Otherwise, the operations will fail.
 
 *Using bounded queue is a good way to design concurrent programs because when we insert an element to an already full queue, that operations need to wait until consumers catch up and make some space available in the queue. It gives us throttling without any effort on our part.*
+
+</br>
+
+#### ||| **DelayQueue**
+
+</br>
+
+DelayQueue is infinite size (unbounded) blocking queue of delayed elements. With DelayQueue, an element can only be pulled if it's expiration time (known as user defined delay) is completed. Hence, the topmost element (head) will have most amount of delay and it will be pulled last.
+
+When a consumer wants to take an element from the queue, it can take only when the delay for that particular element has expired.
+
+it’s getDelay() method return a zero or negative value which indicate that the delay has already elapsed.
+
+DelayQueue is a specialized *PriorityQueue* that orders elements based on their delay time and internally it uses ReentrantLock mechanism.
 
 </br>
 
