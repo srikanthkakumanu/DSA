@@ -344,6 +344,7 @@ Semaphore: </br>
 #### **Locks**
 
 </br>
+
 Locks are introduced in Java 5. Lock is a utility for blocking other threads from accessing a certain segment of code, apart from the thread that's executing it currently. A Lock is more flexible and sophisticated thread synchronization mechanism than the standard synchronized block.
 
 **Lock Vs. Synchronized block:**
@@ -374,7 +375,7 @@ A locked instance should always be unlocked to avoid deadlock condition. A recom
 
 **Locks with Conditions:**
 
-The Condition class provides the ability for a thread to wait for some condition to occur while executing the critical section. This can occur when a thread acquires the access to the critical section but doesn't have the necessary condition to perform its operation. 
+The Condition class provides the ability for a thread to wait for some condition to occur while executing the critical section. This can occur when a thread acquires the access to the critical section but doesn't have the necessary condition to perform its operation.
 
 Traditionally Java provides wait(), notify() and notifyAll() methods for thread intercommunication. Conditions have similar mechanisms, but in addition, we can specify multiple conditions.
 
