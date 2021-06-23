@@ -31,6 +31,7 @@ Table of Contents:
    5.5 [Semaphore and Mutex](#-semaphore-and-mutex) </br>
    5.6 [Locks](#locks) </br>
    5.7 [Phaser](#phaser) </br>
+   5.8 [volatile](#volatile) </br>
 
 6. [**Dead Lock**](#dead-lock) </br>
    6.1 [Solutions](#-solutions)</br>
@@ -397,6 +398,23 @@ The Phaser allows us to build logic in which threads need to wait on the barrier
 To participate in the coordination, the thread needs to register() itself with the Phaser instance. The thread signals that it arrived at the barrier by calling the arriveAndAwaitAdvance(), which is a blocking method. When the number of arrived parties is equal to the number of registered parties, the execution of the program will continue, and the phase number will increase. When the thread finishes its job, we should call the arriveAndDeregister() method to signal that the current thread should no longer be accounted for in this particular phase.
 
 Note: *Phaser is a more flexible solution than CyclicBarrier and CountDownLatch – used to act as a reusable barrier on which the dynamic number of threads need to wait before continuing execution. We can coordinate multiple phases of execution, reusing a Phaser instance for each program phase.*
+
+</br>
+
+#### **volatile**
+
+</br>
+
+The Java volatile keyword guarantees visibility of changes to variables across threads.
+
+In absence of necessary synchronizations, the compiler, runtime or processors may apply several optimizations such as *Caching, re-ordering* in concurrent contexts. JVM provides many ways to provide **memory-order** and **volatile** keyword is one among them.
+
+The Java volatile keyword is used to mark a Java variable as "*being stored in main memory*". More precisely that means, that every read of a volatile variable will be read from the computer's main memory (such as RAM and ROM), and not from the CPU cache (e.g: L1 and L2 Cache), and that every write to a volatile variable will be written to main memory, and not just to the CPU cache.
+
+Declaring a *volatile* variable guarantees the visibility for other threads of writes to that variable. Visibility means that changes made by one thread to the shared data are visible to other threads to maintain **data consistency**. It follows **Happens-Before** ordering meaning, the values that were visible to A before writing the volatile variable will be visible to B after reading the volatile variable. *Any write to volatile field happens before every subsequent read of the same field. This is the volatile variable rule of the Java Memory Model.*
+
+Multi threaded applications require *mutual exclusion, visibility* to ensure consistent behaviour. Synchronized methods and blocks provide both properties but at the cost of application performance. volatile provides visibility but not mutual exclusion. volatile is useful where multiple threads executing a block of code in parallel(no mutual exclusion) and we need to ensure visibility property.
+
 </br>
 
 ### **Dead Lock**
