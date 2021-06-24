@@ -26,6 +26,4 @@ public class ThreadLocalRandomzier {
         Double distributedValue = ThreadLocalRandom.current().nextGaussian();
         System.out.println("Distributed value: " + distributedValue);
     }
-    
-    
 }
