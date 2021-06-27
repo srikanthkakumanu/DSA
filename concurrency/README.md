@@ -19,7 +19,7 @@ Table of Contents:
     3.3 [Thread Pool Tuning](#-thread-pool-tuning) </br>
     3.4 [Executor Framework](#-thread-pooling---executor-framework) </br>
     3.5 [Thread Factory](#-thread-factory) </br>
-    3.6 [Fork & Join Pool Framework](#-fork--join-pool-framework) TODO: </br>
+    3.6 [Fork & Join Pool Framework](#-fork--join-pool-framework) </br>
 
 4. [**Thread Grouping**](#thread-groups) </br>
 
@@ -44,8 +44,8 @@ Table of Contents:
    9.1 [Blocking Queue (Bounded + Unbounded)](#-blockingqueue) </br>
    9.2 [Delay Queue](#-delayqueue) </br>
 
-10. [Semaphore]() TODO </br> 
-    10.1 [mutex vs. semaphore]() TODO </br>
+10. [Dining Philospher's Problem & Solution]() TODO </br>
+    
 11. [Thread Dump Analysis](#thread-dump-analysis) </br>
 
 </br>
@@ -185,6 +185,26 @@ ThreadFactory acts as a thread(non-existing) pool which creates a new thread on 
 #### ||| **Fork & Join Pool Framework**
 
 </br>
+
+The fork/join framework was introduced in Java 7. It helps to speed up parallel processing by attempting to use all available processor cores and it uses **Divide and conqure approach** to accomplish this.
+
+1. This framework **forks** recursively breaking the tasks into smaller independant tasks (until they are simple enough to be executed asynchronously).
+
+2. After that, the **join** part begins by joining all results of sub tasks recursively into a single result.
+
+To support parallel execution, it uses a thread pool called **ForkJoinPool** which manages worker threads (ForkJoinWorkerThread threads).
+
+In Java 8, *ForkJoinPool.commonPool()* is used to create ForkJoinPool and it guarantees resource consumption since it discourages the creation of a separate thread pool per task.
+
+In Java 7, *ForkJoinPool pool = new ForkJoinPool(2)* is used to create ForkJoinPool. 2 means the pool has parallelism level of 2, meaning that the pool will use 2 processor cores.
+
+These worker threads can execute one task at a time. But ForkJoinPool does not create a separate thread for every single sub task. Instead each thread in the pool has it's own **double-ended queue** (which stores tasks) and balancing of thread's work loads happens with the help of *work stealing algorithm*.
+
+**work stealing algorithm**
+
+work stealing algorithm means free threads try to steal work from dequeues of busy threads. By default, a worker thread gets tasks from the head of it's own dequeue. When it is empty, that thread takes a task from a tail of another busy thread's dequeue or from global entry dequeue. It reduces possibility of threads complete for tasks. It also reduces number of times that thread goes and looking for work.
+
+**ForkJoinTask** is a task that is executed inside ForkJoinPool.
 </br>
 
 ### **Thread Groups**
