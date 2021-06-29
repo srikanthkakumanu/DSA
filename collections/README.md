@@ -25,19 +25,10 @@ A *collections framework* provides the following:
 
 **Interfaces:**
 
-Collection and Map are top-level interfaces of the framework: (-> means extends)
-
-- Iterable: Collection
-- Collection: Set, List, Queue, Deque.
-- Set: SortedSet
-- SortedSet: NavigableSet.
-- List: does not have sub interfaces.
-- Queue: Deque, BlockingQueue.
-- BlockingQueue: TransferQueue.
-- Map: SortedMap.
+Collection and Map are top-level interfaces of the framework:
 
 
-<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/collections_hierarchy.png" alt="Java Collections Framework Hierarchy"></img> </br>
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/collections_hierarchy.png" alt="Java Collections Framework Hierarchy" width="500" height="300"></img> </br>
 
 
 ### **Benefits**
