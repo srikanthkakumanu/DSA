@@ -36,7 +36,8 @@ Collection and Map are top-level interfaces of the framework: (-> means extends)
 - BlockingQueue: TransferQueue.
 - Map: SortedMap.
 
-![Java Collections Framework Hierarchy](#collections_hierarchy.png) </br>
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/collections_hierarchy.png" alt="Java Collections Framework Hierarchy"></img> </br>
 
 
 ### **Benefits**
