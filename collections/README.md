@@ -12,6 +12,7 @@
    2.1 [List](#list) </br>
    2.2 [Set](#set) </br>
    2.3 [Sorted Set](#sortedset) </br>
+   2.4 [Navigable Set](#navigableset) </br>
    2.4 [Queue](#queue) </br>
    2.5 [Deque](#deque) </br>
 
@@ -33,6 +34,8 @@ A *collections framework* provides the following:
 - Implementations: Reusable concrete types that implements interfaces.
 
 - Algorithms: They are reusable functionality to perform useful computations such as searching and sorting and they are ***polymorphic** (the same method can be used on many different implementations of the appropriate collection interface)*.
+
+**ORDERING:** ordered means, that you can access the elements in the order they occur in the list.
 
 ### **Benefits**
 
@@ -86,9 +89,12 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- It is an ordered collection (or sequence).
+- It is an ordered collection (or sequence). Simply an array of sequence with varying length.
 - It can contain duplicate elements.
 - Provides greater control over where each elements is inserted and retrieved by a position (index).
+- It consumes less memory.
+- It is faster than LinkedList. In fact, you should try not to use a LinkedList.
+- ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
 
 ### **Set**
 
@@ -96,7 +102,15 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- A set is a collection and cannot contain duplicate elements.
+- A set is a collection. It models mathematical set abstraction.
+- It is NOT a ordered collection.
+- It cannot have duplicate elements.
+- A set can have at most one NULL element.
+- ***HashSet*** - stores elements in a Hashtable which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
+- ***TreeSet*** - stores elements in a red-black tree and orders its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
+- ***LinkedHashSet*** - Implemented as a Hashtable with linked list,  and orders elements by insertion-order
+
+***Symmetric Set Difference:*** The set of elements contained in either of two sets but not in BOTH.
 
 ### **SortedSet**
 
@@ -104,7 +118,17 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- A set that maintains elements in ascending order. They are naturally ordered sets.
+- A set that maintains elements in sorted(ascending) order. They are naturally ordered sets.
+
+### **NavigableSet**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is a set that is sorted(ascending) order. It is extended from SortedSet.
+- It provides methods for easy navigation of the elements.
+
 
 ### **Queue**
 
