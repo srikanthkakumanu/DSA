@@ -66,6 +66,20 @@ These below given interfaces are abstract data types to represent collections. T
 
 java.util.Collection<E> is a generic interface and is the root of Collection hierarchy. A collection represents group of objects known as its elements. Java platform doesn't provide direct impelementations of this interface but provide implementations to its sub interfaces.
 
+**Aggregate-operations OR stream-operations:** Aggregate operations do process elements from a stream, not directly from collection. They support **behavior** as parameters i.e. we can specify *lambda expressions* as parameters for most aggregate operations. These operations introduced in Java 8. These operations are ***not mutative***, meaning they do not modify underlying collection.
+
+Ex:
+
+`
+list.stream().filter(e -> e.getColor() == Color.RED).forEach(e -> System.out.println(e.getName()));
+`
+
+`
+String joined = elements.stream().map(Object::toString).collect(Collectors.joining(", "));
+`
+
+**bulk-operations:** These operations operate on entire collections ex: `containsAll(), addAll(), removeAll(), retainAll(), clear()` etc. But key difference is that these old or legecy operations are all ***mutative*** meaning they all modify underlying collection.
+
 ### **List**
 
 <HR>
