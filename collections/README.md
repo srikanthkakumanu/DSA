@@ -91,7 +91,7 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 - It is an ordered collection (or sequence). Simply an array of sequence with varying length.
 - It can contain duplicate elements.
-- Provides greater control over where each elements is inserted and retrieved by a position (index).
+- Provides greater control over where each elements is inserted and retrieved by a position (index). In detail, it provides positional access, search for specified element, iteration and range view etc.
 - It consumes less memory.
 - It is faster than LinkedList. In fact, you should try not to use a LinkedList.
 - ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
@@ -118,7 +118,7 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- A set that maintains elements in sorted(ascending) order. They are naturally ordered sets.
+- A set that maintains elements in **sorted(ascending) order**. They are naturally ordered sets or we can sort according to *Comparator* provided at creation time.
 
 ### **NavigableSet**
 
@@ -137,8 +137,11 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 </br> [Table Of Contents](#table-of-contents) </br>
 
 - A collection used to hold multiple elements prior to processing.
-- It follows FIFO (First-In-FIrst-Out) to order elements (but not necessariliy). All elements are inserted at tail of the queue and they are removed at head of the queue. 
-- But priority queues, follows natural ordering (order elements according to supplied consumer or elements natural ordering).
+- It follows FIFO (First-In-FIrst-Out) to **order** elements (but not necessariliy). All elements are inserted at tail of the queue and they are removed at head of the queue.
+- In addition to basic Collection operations, queues provide additional insertion, removal, and inspection operations such as `element(), offer(), peek(), poll(), remove()` etc.
+- But **priority queues (PriorityQueue)**, follows natural ordering (order elements according to supplied consumer or elements natural ordering).
+- Some Queue implementations in *java.util.concurrent* are **bounded queues** (restrict the number of elements that it holds), but the implementations in *java.util* are not.
+- Queue implementations do not allow insertion of NULL elements unless Queue implementation using LinkedList.
 
 ### **Deque**
 
@@ -146,9 +149,11 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- It is doubled ended queue (just like queues).
-- It can be used both as FIFO (First-In-First-Out) and LIFO (Last-In-First-Out).
+- It is doubled ended ordered queue (just like queues).
+- It can be used both as FIFO (First-In-First-Out) and LIFO (Last-In-First-Out) for ordering.
 - In deque, all new elements can be inserted, removed, retrieved from both ends.
+- The Deque is a richer abstract data type (ADT) than both *Stack* and *Queue* because it implements both stacks and queues at the same time, that it can be used both as last-in-first-out (LIFO) stacks and first-in-first-out (FIFO) queues. It provides methods to support both.
+
 
 ### **Map**
 
@@ -156,8 +161,11 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- An object that maps keys to values. It is not a true collection.
-- A key at most maps to one value.
+- An object that maps keys to values. It is not a true collection. It models the mathematical function abstraction.
+- A key at most can map to one value.
+- It cannot contain duplicate keys.
+- Map implementations internally uses Hashtable for **HashMap**, Balanced Tree for **TreeMap** and Linked List + Hashtable for **LinkedHashMap**.
+
 
 ### **SortedMap**
 
@@ -165,6 +173,6 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- An ordered map that maps the keys in ascending order(natural order).
+- An **ordered** map that maps the **keys** in **ascending** order(natural order) or according to *Comparator* provided at creation time.
 
 </div>

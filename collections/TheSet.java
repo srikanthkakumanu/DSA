@@ -32,29 +32,44 @@ public class TheSet {
 
     private static void hashset() {
         // Java 8 approach
-        Collection<String> set = Stream.of("A", "B", "C", "D")
+        Collection<String> one = Stream.of("A", "B", "C", "D")
                                         .collect(Collectors.toCollection(HashSet::new));
         
-        Collection<String> dups = Stream.of("A", "B")
+        Collection<String> two = Stream.of("A", "B", "E", "F")
                                         .collect(Collectors.toCollection(HashSet::new));
-        
-        set.removeAll(dups);
 
-        System.out.println("Unique alphabets: " + set);
-        System.out.println("Duplicate alphabets: " + dups);
+        Set<String> union = new HashSet<>(one);
+        // addAll: union set has elements that are present in either sets i.e. one OR two
+        union.addAll(two); 
+        System.out.println("ONE: " + one + " TWO: " + two + " = addAll(UNION): " + union);  
 
-        symmetricSetDiff(set, dups);
+        Set<String> intersection = new HashSet<>(one);
+        // retainAll: intersection set has elements commonly present in both sets i.e. one AND two
+        intersection.retainAll(two); 
+        System.out.println("ONE: " + one + " TWO: " + two + " = retainAll(INTERSECTION): " + intersection);  
+
+        Set<String> asymmetricDiff = new HashSet<>(one);
+        // removeAll: asymmetricDiff set has difference elements that are present in one but not in two i.e. one - two
+        asymmetricDiff.removeAll(two); 
+        System.out.println("ONE: " + one + " TWO: " + two + " = removeAll(ASYMMETRIC-DIFF): " + asymmetricDiff);  
+
+        symmetricDiff(one, two);
+
     }
 
-    private static void symmetricSetDiff(Collection<String> one, Collection<String> two) {
+    /**
+     * the symmetric difference of two sets, also known as the disjunctive union, is the set of elements which are 
+     * in either of the sets, but not in their intersection.
+     * Ex. A{1,2,3} and B{3,4} is SYMMETRIC_DIFFERENCE{1,2,4}.
+     * @param one set
+     * @param two set
+     */
+    private static void symmetricDiff(Collection<String> one, Collection<String> two) {
         Set<String> symmetricDiff = new HashSet<>(one);
-        symmetricDiff.addAll(two);
-        System.out.println("SymmetricDiff-------------");
-        symmetricDiff.forEach(System.out::println);
-        Set<String> another_set = new HashSet<>(one);
-        another_set.retainAll(two);
-        symmetricDiff.removeAll(another_set);
-        System.out.println("Another Set-------------");
-        symmetricDiff.forEach(System.out::println);
+        symmetricDiff.addAll(two); // union: symmetricDiff(one) OR two
+        Set<String> three = new HashSet<>(one);
+        three.retainAll(two); // intersection: three(one) AND two
+        symmetricDiff.removeAll(three); // symmetricDiff - three
+        System.out.println("ONE: " + one + " TWO: " + two + " THREE: " + three + " = SYMMETRIC-DIFF: " + symmetricDiff);  
     }
 }
