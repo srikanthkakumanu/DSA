@@ -83,6 +83,8 @@ String joined = elements.stream().map(Object::toString).collect(Collectors.joini
 
 **bulk-operations:** These operations operate on entire collections ex: `containsAll(), addAll(), removeAll(), retainAll(), clear()` etc. But key difference is that these old or legecy operations are all ***mutative*** meaning they all modify underlying collection.
 
+Note: *Collections* class is utility class that provides static methods to operate on and return collections. *Properties* class (key/value is string/string) represents a persistant set of properties. The properties can be saved to stream or loaded from stream.
+
 ### **List**
 
 <HR>
