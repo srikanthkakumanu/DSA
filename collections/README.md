@@ -16,8 +16,11 @@
    2.4 [Queue](#queue) </br>
    2.5 [Deque](#deque) </br>
 
-3. [Map](#map) </br>
-   3.1. [Sorted Map](#sortedmap) </br>
+3. [Iterator + ListIterator + Spliterator + Iterable](#all-about-iterators) </br>
+   3.1 [Performance](#performance-of-iterators) </br>
+
+4. [Map](#map) </br>
+   4.1. [Sorted Map](#sortedmap) </br>
 
 ## **Overview**
 
@@ -157,6 +160,40 @@ Note: *Collections* class is utility class that provides static methods to opera
 - The Deque is a richer abstract data type (ADT) than both *Stack* and *Queue* because it implements both stacks and queues at the same time, that it can be used both as last-in-first-out (LIFO) stacks and first-in-first-out (FIFO) queues. It provides methods to support both.
 
 
+### **All about Iterators**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+**Iterable:** interface represents a collection of objects which is iterable. It provides forEach(), iterator(), spliterator() methods. It is the root interface for Collection interface.
+
+**Iterator interface:**
+
+- Iterator interface provides methods to iterate collection in forward direction.
+- It supports removing element from collection.
+- It improved method names compared to Enumeration (Enumeration predated to Iterator). Enumeration also can be converted to iterator using Enumeration.asIterator().
+- It can traverse elements individually.
+
+**ListIterator interface**
+
+- ListIterator interface provides methods to iterate collection in bi-directional fashion but individual elements (no bulk operations as supported in Spliterator).
+- ListIterator extends Iterator interface.
+
+**Spliterator interface**
+
+- Spliterator introduced in Java 8.
+- It can traverse elements individually and support bulk operations.
+- It can be obtained from source i.e. stream etc.
+- It can be used to partition some elements and support parallel operations.
+
+#### **Performance of Iterators**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+When iterating a collection **lots of times in a tight loop** (iterating a list **thousands of times per second**), Iterator's **forEach** loop is **slower than** standard for loop. Because each iteration will call the List iterator() method, which will create a new Iterator object. Creating a new object thousands perhaps even millions of times per second does have a small performance penalty compared to just iterating the List using a standard for-loop. For most standard business applications where collections are iterated occasionally, this performance difference is irrelevant. It only matters for very tight loops that are executed thousands of times per second.
 ### **Map**
 
 <HR>
