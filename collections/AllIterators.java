@@ -2,6 +2,7 @@ package collections;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Spliterator;
@@ -48,7 +49,8 @@ Because each iteration will call the List iterator() method, which will create a
 public class AllIterators {
     public static void main(String[] args) {
         List<String> alphabets = new ArrayList<>();
-        alphabets.add("A"); alphabets.add("C"); alphabets.add("B");
+        //alphabets.add("A"); alphabets.add("C"); alphabets.add("B");
+        Collections.addAll(alphabets, "A", "D", "C", "B", "G");
 
         // Iterator
         Iterator<String> iterator = alphabets.iterator();
@@ -64,9 +66,10 @@ public class AllIterators {
 
         // Spliterator
         List<Integer> numbers = new ArrayList<>();
-        numbers.add(101); numbers.add(201);
-        numbers.add(301); numbers.add(401);
-        numbers.add(501); numbers.add(601);
+        // numbers.add(101); numbers.add(201);
+        // numbers.add(301); numbers.add(401);
+        // numbers.add(501); numbers.add(601);
+        Collections.addAll(numbers, 101, 201, 301, 401, 501, 601);
 
         Stream<Integer> stream = numbers.stream();
         Spliterator<Integer> splitr = stream.spliterator();
