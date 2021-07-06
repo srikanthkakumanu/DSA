@@ -26,6 +26,7 @@
    5.1 [Lists](#concrete-lists) </br>
       5.1.1 [LinkedList](#linkedlist) </br>
       5.1.2 [ArrayList](#arraylist) </br>
+      5.1.3 [CopyOnWriteArrayList](#copyonwritearraylist) </br>
 
 ## **Overview**
 
@@ -106,6 +107,9 @@ Note: *Collections* class is utility class that provides static methods to opera
 - *ArrayList* consumes less memory.
 - *ArrayList* is faster than LinkedList. In fact, you should not try to use a LinkedList.
 - ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
+- **ArrayList, LinkedList, CopyOnWriteArrayList, Vector** are the concrete implementations of List interface.
+- **Vector** implements a growable array of objects. 
+- **Stack** represents a **Last-In-First-Out (LIFO) stack of objects**. It is a sub class of Vector.
 
 ### **Set**
 
@@ -227,9 +231,21 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-These below classes are concrete implementations of collection interfaces. They
+These below classes are concrete implementations of various collection interfaces.
 
 #### **Concrete Lists**
+
+List represents an **ordered sequence** of values where some value **may occur** more than one time.
+
+Concrete Implementations:
+
+- LinkedList
+- ArrayList
+- CopyOnWriteArrayList
+- Vector
+- Stack (sub class of Vector)
+
+Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
 
 #### **LinkedList**
 
@@ -257,8 +273,21 @@ These below classes are concrete implementations of collection interfaces. They
 - *ArrayList* is **index** based data structure backed by an array. It implements *List* interface.
 - Since it is index based, it provides **random access** to its elements when getting an element, hence the performance is equal to **O(1)**. But insertion, addition and removal operations are **slower** than LinkedList because of the need that resizing the array or update the index when an element is added.
 - It consumes **less memory** than *LinkedList* because it holds only data and it's index.
-- 
+- Adding an element takes ammortized constant time **O(1)**.
+- Inserting/deleting element takes **O(n)**.
+- Searching an element for unsorted array takes **O(n)** and **O(log n)** for sorted array.
 
+#### **CopyOnWriteArrayList**
 
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- **CopyOnWriteArrayList** introduced in Java 5.
+- **CopyOnWriteArrayList** useful in multithread programs when we want to iterate over a list in a **thread-safe** way without an explicit synchronization.
+- **thread-safe without synchronization** because when we use any modify methods (add or remove), whole content of the list is copied into **new internal copy**. Due to this fact, *we can iterate the list safely even when concurrent modification is happening*.
+- It is best choice when we iterating over it more often than we are modifying it.
+- If adding elements is common operation in a scenario, this is **not a best choice**. Because the **additional copies** will definitely lead to **sub-par performance**.
+- Removing an element while iterating is not allowed because of data (internal copy) copying mechanism, as it throws UnsupportedOperationException.
 
 </div>
