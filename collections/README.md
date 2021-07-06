@@ -243,9 +243,10 @@ These below classes are concrete implementations of collection interfaces. They
 - It is slower than *ArrayList* and consumes **more memory** than *ArrayList*. Infact, LinkedList is not a right choice to use in present times.
 - It is not **synchronized**. But we can retrieve a synchronized linked list using `Collections.synchronizedList(new LinkedList(..))`
 - It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if list is modified then it throws *ConcurrentModificationException*).
-- Every element is a node that keeps reference to next and previous nodes (It is NOT index based). The search operation for an item has execution time equal to **O(n)**, hence it is slower than *ArrayList*. But insertion, addition and removal operations are **faster** because there is no need of resizing an array or update the index when an element is added (because only next, previous elements change when element is added).
-- It consumes more memory because every node store two references (next and previous node references). Whereas ArrayList holds only data and its index.
-- **It is better fit for constant insertion/deletion time (e.g., frequent insertions/deletions/updates), over constant access time and effective memory usage**.
+- Every element is a node that keeps reference to next and previous nodes (It is NOT index based). The search operation for an item has execution time equal to **O(n)**, hence it is slower than *ArrayList*. 
+- But insertion, addition and removal operations are **faster** because there is no need of resizing an array or update the index when an element is added (because only next, previous elements change when element is added). **It is better fit for constant insertion/deletion time (e.g., frequent insertions/deletions/updates), over constant access time and effective memory usage**.
+- It consumes **more memory** because every node store two references (next and previous node references). Whereas ArrayList holds only data and its index.
+
 
 #### **ArrayList**
 
