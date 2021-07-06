@@ -22,6 +22,11 @@
 4. [Map](#map) </br>
    4.1. [Sorted Map](#sortedmap) </br>
 
+5. [Concrete Implementations](#concrete-implementations) </br>
+   5.1 [Lists](#concrete-lists) </br>
+      5.1.1 [LinkedList](#linkedlist) </br>
+      5.1.2 [ArrayList](#arraylist) </br>
+
 ## **Overview**
 
 <HR>
@@ -94,11 +99,12 @@ Note: *Collections* class is utility class that provides static methods to opera
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- It is an ordered collection (or sequence). Simply an array of sequence with varying length.
-- It can contain duplicate elements.
+- It is an ordered collection (or sequence). Simply an array of sequence with varying length. Internally it follows the insertion order (natural order which is the how the elements are inserted).
+- It can contain duplicate elements. We can also insert NULL values.
+- Each element in a list has an index and starts with 0. We can also insert an element at specific index. If there are existing elements at that index, those elements will be pushed further down.
 - Provides greater control over where each elements is inserted and retrieved by a position (index). In detail, it provides positional access, search for specified element, iteration and range view etc.
-- It consumes less memory.
-- It is faster than LinkedList. In fact, you should try not to use a LinkedList.
+- *ArrayList* consumes less memory.
+- *ArrayList* is faster than LinkedList. In fact, you should not try to use a LinkedList.
 - ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
 
 ### **Set**
@@ -108,12 +114,12 @@ Note: *Collections* class is utility class that provides static methods to opera
 </br> [Table Of Contents](#table-of-contents) </br>
 
 - A set is a collection. It models mathematical set abstraction.
-- It is NOT a ordered collection.
+- It is NOT a ordered collection meaning it has no guaranteed internal order.
 - It cannot have duplicate elements.
 - A set can have at most one NULL element.
-- ***HashSet*** - stores elements in a Hashtable which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
-- ***TreeSet*** - stores elements in a red-black tree and orders its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
-- ***LinkedHashSet*** - Implemented as a Hashtable with linked list,  and orders elements by insertion-order
+- ***HashSet*** - stores elements in a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
+- ***TreeSet*** - stores elements in a red-black tree (internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
+- ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with linked list,  and guarantees element ordering by insertion-order
 
 ***Symmetric Set Difference:*** The set of elements contained in either of two sets but not in BOTH.
 
@@ -131,9 +137,10 @@ Note: *Collections* class is utility class that provides static methods to opera
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- It is a sub interface of SortedSet.
 - It is a set that is sorted(ascending) order. It is extended from SortedSet.
-- It provides methods for easy navigation of the elements.
-
+- It provides additional methods for easy navigation of the elements.
+- *TreeSet (from Java 2), ConcurrentSkipListSet (from Java 6)* are concrete implementations of this NavigableSet interface.
 
 ### **Queue**
 
@@ -144,6 +151,7 @@ Note: *Collections* class is utility class that provides static methods to opera
 - A collection used to hold multiple elements prior to processing.
 - It follows FIFO (First-In-FIrst-Out) to **order** elements (but not necessariliy). All elements are inserted at tail of the queue and they are removed at head of the queue.
 - In addition to basic Collection operations, queues provide additional insertion, removal, and inspection operations such as `element(), offer(), peek(), poll(), remove()` etc.
+- *LinkedList*, *PriorityQueue* are concrete implementations of Queue interface.
 - But **priority queues (PriorityQueue)**, follows natural ordering (order elements according to supplied consumer or elements natural ordering).
 - Some Queue implementations in *java.util.concurrent* are **bounded queues** (restrict the number of elements that it holds), but the implementations in *java.util* are not.
 - Queue implementations do not allow insertion of NULL elements unless Queue implementation using LinkedList.
@@ -155,10 +163,10 @@ Note: *Collections* class is utility class that provides static methods to opera
 </br> [Table Of Contents](#table-of-contents) </br>
 
 - It is doubled ended ordered queue (just like queues).
-- It can be used both as FIFO (First-In-First-Out) and LIFO (Last-In-First-Out) for ordering.
+- It can be used both as FIFO (First-In-First-Out) and LIFO (Last-In-First-Out) for ordering i.e. we can use it as both a *queue* and a *stack*.
 - In deque, all new elements can be inserted, removed, retrieved from both ends.
 - The Deque is a richer abstract data type (ADT) than both *Stack* and *Queue* because it implements both stacks and queues at the same time, that it can be used both as last-in-first-out (LIFO) stacks and first-in-first-out (FIFO) queues. It provides methods to support both.
-
+- *LinkedList*, *ArrayDeque* are concrete implementations of this interface.
 
 ### **All about Iterators**
 
@@ -205,7 +213,6 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 - It cannot contain duplicate keys.
 - Map implementations internally uses Hashtable for **HashMap**, Balanced Tree for **TreeMap** and Linked List + Hashtable for **LinkedHashMap**.
 
-
 ### **SortedMap**
 
 <HR>
@@ -213,5 +220,36 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 </br> [Table Of Contents](#table-of-contents) </br>
 
 - An **ordered** map that maps the **keys** in **ascending** order(natural order) or according to *Comparator* provided at creation time.
+
+### **Concrete Implementations**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+These below classes are concrete implementations of collection interfaces. They
+
+#### **Concrete Lists**
+
+#### **LinkedList**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- LinkedList is a **doubly linked list** implementation of List and Deque interfaces.
+- It is **ordered**, follows insertion order.
+- It can have **duplicate** elements. (Because it is a *List* type).
+- It is slower than *ArrayList* and consumes more memory. Infact, LinkedList is not a right choice to use in present times.
+- It is not **synchronized**. But we can retrieve a synchronized linked list using `Collections.synchronizedList(new LinkedList(..))`
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if list is modified then it throws *ConcurrentModificationException*).
+- Every element is a node that keeps reference to next and previous nodes. It is NOT index based. Hence it is slower than *ArrayList*.
+
+#### **ArrayList**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
 
 </div>

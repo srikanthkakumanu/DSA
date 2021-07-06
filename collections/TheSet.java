@@ -1,8 +1,8 @@
 package collections;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 3. It cannot have duplicate elements.
 4. A set can have at most one NULL element.
 
-HashSet - stores elements in a Hashtable which is **best performing solution** but no ordering guaranteed. 
+HashSet - stores elements in a HashMap which is **best performing solution** but no ordering guaranteed. 
             It hashes the elements and distributes them into buckets by the hash value.
 
-TreeSet - stores elements in a red-black tree and orders its elements based on their values. It is ordered 
+TreeSet - stores elements in a red-black tree (internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered 
             and navigable. It is slower or worse complexity than HashSet.
 
-LinkedHashSet - Implemented as a Hashtable with linked list,  and orders elements by insertion-order
+LinkedHashSet - Implemented as a HashMap with linked list,  and guarantees element ordering by insertion-order
 
 Symmetric Set Difference: The set of elements contained in either of two sets but not in BOTH.
 
@@ -54,6 +54,11 @@ public class TheSet {
         System.out.println("ONE: " + one + " TWO: " + two + " = removeAll(ASYMMETRIC-DIFF): " + asymmetricDiff);  
 
         symmetricDiff(one, two);
+
+        // Java 9 approach
+        Set<String> first = Set.<String>of("A", "B", "C", "D");
+        Set<String> second = Set.<String>of("A", "B", "E", "F");
+        symmetricDiff(first, second);
 
     }
 
