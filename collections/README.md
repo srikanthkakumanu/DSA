@@ -286,7 +286,7 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - **CopyOnWriteArrayList** introduced in Java 5.
 - **CopyOnWriteArrayList** useful in multithread programs when we want to iterate over a list in a **thread-safe** way without an explicit synchronization.
 - **thread-safe without synchronization** because when we use any modify methods (add or remove), whole content of the list is copied into **new internal copy**. Due to this fact, *we can iterate the list safely even when concurrent modification is happening*.
-- It is best choice when we iterating over it more often than we are modifying it.
+- It is a **best choice** when we iterating over it more often than we are modifying it.
 - If adding elements is common operation in a scenario, this is **not a best choice**. Because the **additional copies** will definitely lead to **sub-par performance**.
 - Removing an element while iterating is not allowed because of data (internal copy) copying mechanism, as it throws UnsupportedOperationException.
 
