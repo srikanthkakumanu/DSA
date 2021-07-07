@@ -30,6 +30,21 @@ public class TheSet {
         hashset();
     }
 
+    /**
+     * - It stores 'unique' elements in an 'internal HashMap' (a hash table (NOT Hashtable) data structure using HashMap) instance.
+     * - It hashes the elements and distributes them into buckets by the hash value.
+     * - NO ordering guaranteed meaning it doesn't maintain insertion order.
+     * - It permits atmost 'one NULL element'.
+     * - It is 'not thread-safe i.e. NOT synchronized'. If multiple threads access it concurrently, it must be synchronized externally.
+     *      We can synchronize it during creation time 
+     *      Ex. Set s = Collections.synchronizedSet(new HashSet(...));
+     * - It's very important not to set the initial capacity too high (or the load factor too low) if iteration performance is important.
+     * - It's iterators (Iterator and ListIterator) are 'fail-fast' (After iterator creation, if hash set is modified then it throws 
+     *      ConcurrentModificationException).
+     * add() - O(1)
+     * remove() - O(1)
+     * contains() - O(1)
+     */
     private static void hashset() {
         // Java 8 approach
         Collection<String> one = Stream.of("A", "B", "C", "D")
@@ -59,6 +74,12 @@ public class TheSet {
         Set<String> first = Set.<String>of("A", "B", "C", "D");
         Set<String> second = Set.<String>of("A", "B", "E", "F");
         symmetricDiff(first, second);
+    }
+
+    /**
+     * 
+     */
+    private static void treeset() {
 
     }
 
