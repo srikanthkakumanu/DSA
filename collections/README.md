@@ -29,6 +29,9 @@
 
 6. [Set Implementations](#set-implementations) </br>
    6.1 [HashSet](#hashset) </br>
+   6.2 [TreeSet](#treeset) </br>
+   6.3 [LinkedHashSet](#linkedhashset) </br>
+   6.4 [ConcurrentSkipListSet](#concurrentskiplistset) </br>
 
 7. [Hashing & hashCode()](#hashing) </br>
 
@@ -312,7 +315,7 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - A set can have at most one NULL element.
 - ***HashSet*** - stores elements in a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
 - ***TreeSet*** - stores elements in a red-black tree(self-balancing binary search tree) (internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
-- ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with linked list,  and guarantees element ordering by insertion-order
+- ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with doubly-linked list,  and guarantees element ordering by insertion-order
 
 ***Symmetric Set Difference:*** The set of elements contained in either of two sets but not in BOTH.
 
@@ -361,6 +364,33 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
 - It is slower or worse complexity than HashSet.
 - add(), remove(), contains() guarantees O(log n) performance.
+
+#### **LinkedHashSet**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is a **ordered** version of HashSet that maintains **doubly-linked list** across all elements.
+- It hashes the elements and distributes them into buckets by the hash value.
+- It stores unique values, duplicates are not allowed.
+- It permits atmost **one NULL element**.
+- It is **not thread-safe i.e. NOT synchronized**. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Set s = Collections.synchronizedSet(new LinkedHashSet(...));`
+- It is slightly **slower than HashSet** as it spends additional CPU cycles and requires more memory.
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+
+#### **ConcurrentSkipListSet**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is a scalable, concurrent, sorted, **natural/insertion ordered** version of NavigableSet.
+- It stores unique values, duplicates are not allowed.
+- It does NOT permit **NULL elements**.
+- It is **thread-safe**.
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+
 ### **Hashing**
 
 <HR>
