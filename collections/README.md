@@ -68,7 +68,6 @@ A *collections framework* provides the following:
 
 These below given interfaces are abstract data types to represent collections. The distinct trees i.e. Collection and Map are top-level interfaces of the framework. Please note that **Map is not a true Collection**.
 
-
 <img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/collections_hierarchy.png" alt="Java Collections Framework Hierarchy" width="500" height="300"></img> </br>
 
 ## **Collection**
@@ -243,6 +242,8 @@ Concrete Implementations of List interface:
 - Stack (sub class of Vector)
 
 Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/list_implementations.png" alt="Java List Implementations Hierarchy" width="500" height="300"></img> </br>
 
 #### **LinkedList**
 
