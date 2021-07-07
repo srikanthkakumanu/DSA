@@ -22,12 +22,12 @@
 4. [Map](#map) </br>
    4.1. [Sorted Map](#sortedmap) </br>
 
-5. [Concrete Implementations](#concrete-implementations) </br>
-   5.1 [Lists](#concrete-lists) </br>
-         5.1.1 [LinkedList](#linkedlist) </br>
-         5.1.2 [ArrayList](#arraylist) </br>
-         5.1.3 [CopyOnWriteArrayList](#copyonwritearraylist) </br>
-   5.2 [Sets](#concrete-sets) </br>
+5. [List Implementations](#list-implementations) </br>
+   5.1 [LinkedList](#linkedlist) </br>
+   5.2 [ArrayList](#arraylist) </br>
+   5.3 [CopyOnWriteArrayList](#copyonwritearraylist) </br>
+
+6. [Set Implementations](#set-implementations) </br>
 
 ## **Overview**
 
@@ -226,19 +226,15 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 
 - An **ordered** map that maps the **keys** in **ascending** order(natural order) or according to *Comparator* provided at creation time.
 
-### **Concrete Implementations**
+### **List Implementations**
 
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-These below classes are concrete implementations of various collection interfaces.
-
-#### **Concrete Lists**
-
 List represents an **ordered sequence** of values where some value **may occur** more than one time.
 
-Concrete Implementations:
+Concrete Implementations of List interface:
 
 - LinkedList
 - ArrayList
@@ -263,7 +259,6 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - Every element is a node that keeps reference to next and previous nodes (It is NOT index based). The search operation for an item has execution time equal to **O(n)**, hence it is slower than *ArrayList*. 
 - But insertion, addition and removal operations are **faster** because there is no need of resizing an array or update the index when an element is added (because only next, previous elements change when element is added). **It is better fit for constant insertion/deletion time (e.g., frequent insertions/deletions/updates), over constant access time and effective memory usage**.
 - It consumes **more memory** because every node store two references (next and previous node references). Whereas ArrayList holds only data and its index.
-
 
 #### **ArrayList**
 
@@ -291,5 +286,10 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - If adding elements is common operation in a scenario, this is **not a best choice**. Because the **additional copies** will definitely lead to **sub-par performance**.
 - Removing an element while iterating is not allowed because of data (internal copy) copying mechanism, as it throws UnsupportedOperationException.
 
-#### **Concrete Sets**
+#### **Set Implementations**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
 </div>
