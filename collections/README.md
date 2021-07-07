@@ -28,6 +28,9 @@
    5.3 [CopyOnWriteArrayList](#copyonwritearraylist) </br>
 
 6. [Set Implementations](#set-implementations) </br>
+   6.1 [HashSet](#hashset) </br>
+
+7. [Hashing & hashCode()](#hashing) </br>
 
 ## **Overview**
 
@@ -108,7 +111,7 @@ Note: *Collections* class is utility class that provides static methods to opera
 - *ArrayList* is faster than LinkedList. In fact, you should not try to use a LinkedList.
 - ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
 - **ArrayList, LinkedList, CopyOnWriteArrayList, Vector** are the concrete implementations of List interface.
-- **Vector** implements a growable array of objects. 
+- **Vector** implements a growable array of objects.
 - **Stack** represents a **Last-In-First-Out (LIFO) stack of objects**. It is a sub class of Vector.
 
 ### **Set**
@@ -121,8 +124,8 @@ Note: *Collections* class is utility class that provides static methods to opera
 - It is NOT a ordered collection meaning it has no guaranteed internal order.
 - It cannot have duplicate elements.
 - A set can have at most one NULL element.
-- ***HashSet*** - stores elements in a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
-- ***TreeSet*** - stores elements in a red-black tree (internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
+- ***HashSet*** - stores elements in an internal HashMap (a hash table (NOT Hashtable) data structure using HashMap) instance which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
+- ***TreeSet*** - stores elements in a red-black tree (self-balancing binary search tree internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
 - ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with linked list,  and guarantees element ordering by insertion-order
 
 ***Symmetric Set Difference:*** The set of elements contained in either of two sets but not in BOTH.
@@ -231,9 +234,19 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-List represents an **ordered sequence** of values where some value **may occur** more than one time.
+List represents an **ordered sequence** of values where some value **may occur** more than one time. It is an ordered collection (or sequence). Simply an array of sequence with varying length. Internally it follows the insertion order (natural order which is the how the elements are inserted).
 
-Concrete Implementations of List interface:
+- It can contain duplicate elements. We can also insert NULL values.
+- Each element in a list has an index and starts with 0. We can also insert an element at specific index. If there are existing elements at that index, those elements will be pushed further down.
+- Provides greater control over where each elements is inserted and retrieved by a position (index). In detail, it provides positional access, search for specified element, iteration and range view etc.
+- *ArrayList* consumes less memory.
+- *ArrayList* is faster than LinkedList. In fact, you should not try to use a LinkedList.
+- ***CopyOnWriteArrayList*** is thread-safe and immutable is the best solution for lists.
+- **ArrayList, LinkedList, CopyOnWriteArrayList, Vector** are the concrete implementations of List interface.
+- **Vector** implements a growable array of objects.
+- **Stack** represents a **Last-In-First-Out (LIFO) stack of objects**. It is a sub class of Vector.
+
+**Concrete Implementations of List interface:**
 
 - LinkedList
 - ArrayList
@@ -257,7 +270,7 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - It is slower than *ArrayList* and consumes **more memory** than *ArrayList*. Infact, LinkedList is not a right choice to use in present times.
 - It is not **synchronized**. But we can retrieve a synchronized linked list using `Collections.synchronizedList(new LinkedList(..))`
 - It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if list is modified then it throws *ConcurrentModificationException*).
-- Every element is a node that keeps reference to next and previous nodes (It is NOT index based). The search operation for an item has execution time equal to **O(n)**, hence it is slower than *ArrayList*. 
+- Every element is a node that keeps reference to next and previous nodes (It is NOT index based). The search operation for an item has execution time equal to **O(n)**, hence it is slower than *ArrayList*.
 - But insertion, addition and removal operations are **faster** because there is no need of resizing an array or update the index when an element is added (because only next, previous elements change when element is added). **It is better fit for constant insertion/deletion time (e.g., frequent insertions/deletions/updates), over constant access time and effective memory usage**.
 - It consumes **more memory** because every node store two references (next and previous node references). Whereas ArrayList holds only data and its index.
 
@@ -292,5 +305,80 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+- A set is a collection. It models mathematical set abstraction.
+- It is NOT a ordered collection meaning it has no guaranteed internal order.
+- It cannot have duplicate elements.
+- A set can have at most one NULL element.
+- ***HashSet*** - stores elements in a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
+- ***TreeSet*** - stores elements in a red-black tree(self-balancing binary search tree) (internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
+- ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with linked list,  and guarantees element ordering by insertion-order
+
+***Symmetric Set Difference:*** The set of elements contained in either of two sets but not in BOTH.
+
+**Concrete implementations of Set interface**
+
+- HashSet
+- LinkedHashSet (sub class of HashSet)
+
+**Concrete implementations of SortedSet interface**
+
+- TreeSet
+
+**Concrete implementations of NavigableSet interface**
+
+- TreeSet
+- ConcurrentSkipListSet
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/set_implementations.png" alt="Java Set Implementations Hierarchy" width="500" height="300"></img> </br>
+
+
+#### **HashSet**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It stores **unique** elements in an **internal HashMap** (a hash table (NOT Hashtable) data structure using HashMap) instance.
+- It hashes the elements and distributes them into buckets by the hash value.
+- NO ordering guaranteed meaning it doesn't maintain insertion order.
+- It permits atmost **one NULL element**.
+- It is **not thread-safe i.e. NOT synchronized**. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Set s = Collections.synchronizedSet(new HashSet(...));`
+- It's very important not to set the initial capacity too high (or the load factor too low) if iteration performance is important.
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+
+#### **TreeSet**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It stores unique elements. TreeSet concrete implementation of NavigableSet (NavigableSet extends SortedSet).
+- It stores elements in a **red-black tree** (self-balancing binary search tree internally uses **TreeMap**) and orders (sorted) its elements based on their values.
+- It is ordered and navigable and it follows natural ordering in ascending order.
+- Since Java 7, It does not support NULL elements.
+- It is **not thread-safe i.e. NOT synchronized**. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Set s = Collections.synchronizedSortedSet(new TreeSet(...));`
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+- It is slower or worse complexity than HashSet.
+- add(), remove(), contains() guarantees O(log n) performance.
+### **Hashing**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+Hashing is fundamental concept in computer science. Hashing algorithms are one-way functions used to verify integrity of data. Hashes are like a fingerprint for the original data. If the data changes, the fingerprint will no longer match. Common hashing algorithms are Common hashing algorithms are **MD5, SHA-1, SHA-256, SHA-384, SHA-512**.
+
+A hash function takes input of any length and produces a fixed-length string (sometimes called **digest**). A hash function that transforms data in such a way that, given a hash result (digest), it is computatinally infeasible to produce original message.
+
+In Java, efficient hashing algorithms used in HashMap and HashSet. The *hashCode()* returns an integer value (digest) generated by a hashing algorithm.Objects that are equal (their equals() implementation) must return the same hash code.
+
+Various IDE platforms generate hashCode() automatically and all these implementations utilize **prime number 31** in some form for multiplication. This is because 31 has a nice property. Its multiplication can be replaced by a **bitwise shift**, which is faster than the **standard multiplication**.
+Ex. `31 * i == (i << 5) - i`
+IntelliJ, Eclipse also uses 31 in their hashcode generation code snippets.
+
+java.util.Objects.hash() can also be used to generate hash code. Objects class introduced in Java 7. Lombok, Apache-commons HashcodeBuilder are also used to generate hashcode implementation. If we don't override hashCode(), HashMap and HashSet uses *system generated hash code*.
+
+**Hash collision:** Hash collision happens when two or more objects might have the same hash code even if they're unequal. Hash collision strategies are separate chaining, open addressing (linear probing, quadratic probing), double hashing.
 
 </div>
