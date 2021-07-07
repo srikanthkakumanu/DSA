@@ -330,7 +330,7 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - TreeSet
 - ConcurrentSkipListSet
 
-<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/set_implementations.png" alt="Java Set Implementations Hierarchy" width="500" height="300"></img> </br>
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/set_hierarchy.png" alt="Java Set Implementations Hierarchy" width="500" height="300"></img> </br>
 
 
 #### **HashSet**
