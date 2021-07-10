@@ -33,7 +33,10 @@
    6.3 [LinkedHashSet](#linkedhashset) </br>
    6.4 [ConcurrentSkipListSet](#concurrentskiplistset) </br>
 
-7. [Hashing & hashCode()](#hashing) </br>
+7. [Map Implementations]() </br>
+   7.1 []
+
+8. [Hashing & hashCode()](#hashing) </br>
 
 ## **Overview**
 
@@ -303,7 +306,7 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - If adding elements is common operation in a scenario, this is **not a best choice**. Because the **additional copies** will definitely lead to **sub-par performance**.
 - Removing an element while iterating is not allowed because of data (internal copy) copying mechanism, as it throws UnsupportedOperationException.
 
-#### **Set Implementations**
+### **Set Implementations**
 
 <HR>
 
@@ -390,6 +393,40 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - It does NOT permit **NULL elements**.
 - It is **thread-safe**.
 - It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+
+### **Map Implementations**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- Map is not a true collection. It is an object that maps keys to values. It models the mathematical function abstraction.
+- A key at most can map to one value.
+- It cannot contain duplicate keys.
+- Map implementations internally uses Hashtable for **HashMap**, Balanced Tree for **TreeMap** and (Linked List + Hashtable) for **LinkedHashMap**.
+- An **ordered** map that maps the **keys** in **ascending** order(natural order) or according to *Comparator* provided at creation time.
+
+**Concrete implementations of Map interface**
+
+- HashMap
+- LinkedHashMap (sub class of HashMap)
+- Hashtable
+- Properties (sub class of Hashtable)
+- WeakHashMap
+
+**Concrete implementations of NavigableMap (extends SortedMap) interface**
+
+- TreeMap
+
+**Concrete implementations of ConcurrentMap interface**
+
+- ConcurrentHashMap
+
+**Concrete implementations of ConcurrentNavigableMap (extends NavigableMap + ConcurrentMap) interface**
+
+- ConcurrentSkipListMap
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/Map_Implementations.png" alt="Java Map Implementations Hierarchy" width="500" height="300"></img> </br>
 
 ### **Hashing**
 
