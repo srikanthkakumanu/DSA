@@ -33,8 +33,15 @@
    6.3 [LinkedHashSet](#linkedhashset) </br>
    6.4 [ConcurrentSkipListSet](#concurrentskiplistset) </br>
 
-7. [Map Implementations]() </br>
-   7.1 []
+7. [Map Implementations](#map-implementations) </br>
+   7.1 [HashMap](#hashmap) </br>
+   7.2 [LinkedHashMap](#linkedhashmap) </br>
+   7.3 [Hashtable](#hashtable) </br>
+   7.4 [Properties](#properties) </br>
+   7.5 [WeakHashMap](#weakhashmap) </br>
+   7.6 [TreeMap](#treemap) </br>
+   7.7 [ConcurrentHashMap](#concurrenthashmap) </br>
+   7.8 [ConcurrentSkipListMap](#concurrentskiplistmap) </br>
 
 8. [Hashing & hashCode()](#hashing) </br>
 
@@ -427,6 +434,55 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - ConcurrentSkipListMap
 
 <img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/Map_Implementations.png" alt="Java Map Implementations Hierarchy" width="500" height="300"></img> </br>
+
+#### **HashMap**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **LinkedHashMap**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **Hashtable**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **Properties**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **WeakHashMap**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **TreeMap**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **ConcurrentHashMap**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+#### **ConcurrentSkipListMap**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
 
 ### **Hashing**
 
