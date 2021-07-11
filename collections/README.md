@@ -43,7 +43,8 @@
    7.7 [ConcurrentHashMap](#concurrenthashmap) </br>
    7.8 [ConcurrentSkipListMap](#concurrentskiplistmap) </br>
 
-8. [Hashing & hashCode()](#hashing) </br>
+8. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
+9. [Hashing & hashCode()](#hashing) </br>
 
 ## **Overview**
 
@@ -228,10 +229,12 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- An object that maps keys to values. It is not a true collection. It models the mathematical function abstraction.
-- A key at most can map to one value.
-- It cannot contain duplicate keys.
-- Map implementations internally uses Hashtable for **HashMap**, Balanced Tree for **TreeMap** and Linked List + Hashtable for **LinkedHashMap**.
+- An object that maps keys to values. It is **not a true collection**. It models the mathematical function abstraction.
+- A key **at most** can map to **one value**.
+- It **cannot** contain **duplicate** keys.
+- It is not advised/permissible for a map to contain itself as a key but can be a value with extreme caution (because equals(), hashCode() methods are not well defined on such map).
+- Unmodifiable maps can be created using `Map.of(), Map.ofEntries(), Map.copyOf()` static factory methods. **Unmodifiable maps do not allow NULL keys and values**, if do, it throws NullPointerException.
+- Map implementations internally uses Hash table data structure for **HashMap**, Balanced Tree for **TreeMap** and (Linked List + Hash table) for **LinkedHashMap**.
 
 ### **SortedMap**
 
@@ -407,11 +410,13 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- Map is not a true collection. It is an object that maps keys to values. It models the mathematical function abstraction.
-- A key at most can map to one value.
-- It cannot contain duplicate keys.
-- Map implementations internally uses Hashtable for **HashMap**, Balanced Tree for **TreeMap** and (Linked List + Hashtable) for **LinkedHashMap**.
-- An **ordered** map that maps the **keys** in **ascending** order(natural order) or according to *Comparator* provided at creation time.
+- Map is **not a true collection**. It is an object that maps keys to values. It models the mathematical function abstraction. It uses the internal concept of *associative arrays*.
+- A key **at most** can map to **one value**.
+- It **cannot** contain **duplicate** keys.
+- It is not advised/permissible for a map to contain itself as a key but can be a value with extreme caution (because equals(), hashCode() methods are not well defined on such map).
+- **Unmodifiable** maps can be created using `Map.of(), Map.ofEntries(), Map.copyOf()` static factory methods. Unmodifiable maps **do not allow NULL keys and values**, if do, it throws NullPointerException.
+- Map implementations internally uses Hash table data structure for **HashMap**, Balanced Tree for **TreeMap** and (Linked List + Hash table) for **LinkedHashMap**.
+- An **ordered** map that maps the **keys** in **ascending** order (natural order) or according to *Comparator* provided at creation time.
 
 **Concrete implementations of Map interface**
 
@@ -441,11 +446,24 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- HashMap uses an internal hash table (not Hashtable) data structure to store elements. It acts as a **binned (bucketed) hash table**. But when bin gets too large, they are transformed into bins of TreeNodes. These tree bins are ordered by **hash code**.
+- The advantage of using HashMap is **run time performance**. HashMap stores elements in so-called **buckets** and the number of **buckets** is called **capacity**. As of Java 8, the data structure in which the values inside one bucket are stored is changed from a **list** to a **balanced tree** if a **bucket contains 8 or more values**, and **it's changed back to a list if, at some point, only 6 values are left in the bucket**. **This improves the performance to be O(log n)**.
+- It allows **NULL** keys and values.
+- It is not **ordered** i.e. does not maintain insertion order.
+- It is not **thread-safe** i.e. not synchronized. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Map m = Collections.synchronizedMap(new HashMap(...));`
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+- It's space complexity is O(n).
+- `put(), get(), remove(), containsKey()` - O(1)
+- search for a specific element - O(n). If it is sorted, O(log n)
+- next element - O(h/n) i.e. h is capacity
+
 #### **LinkedHashMap**
 
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+- LinkedHashMap uses an internal (linked list + hash table) data structure to store elements.
 
 #### **Hashtable**
 
@@ -453,6 +471,13 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- It uses the concept of hashing using buckets (bins) for storing data.
+- It is **deprecated** since **Java 8**. However, **ConcurrentHashMap is a great Hashtable replacement**. We should consider ConcurrentHashMap to use in applications with multiple threads.
+- It is **thread-safe**.
+- It is slower than HashMap and takes more memory because it is thread-safe.
+- It is not **ordered** i.e. does not maintain insertion order.
+- It does not allow **NULL** at all if tried, it throws *NullPointerException*.
+- Hashtable uses **Enumerator** to iterate values. But we can create an iterator from **Enumeration**. If did, that iterator is **fail-fast**.
 #### **Properties**
 
 <HR>
@@ -471,6 +496,8 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- TreeMap uses an internal self balanced tree to store elements.
+- It sorts the keys in natural order.
 #### **ConcurrentHashMap**
 
 <HR>
@@ -483,6 +510,32 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+### **Unmodifiable vs Immutable**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+An Unmodifiable component (collection or map) is just a wrapper over a modifiable component (collection or map). It does not allow modifications to it directly. But underlying modifiable component (collection or map) can still be changed and the modifications are reflected in the unmodifiable component (collection or map) as well.
+
+Ex.
+
+```java
+Map<String, String> mutable = new HashMap<>();
+mutable.put("USA", "North America");
+
+Map<String, String> unmodifiable = Collections.unmodifiableMap(mutable);
+assertThrows(UnsupportedOperationException.class, 
+() -> unmodifiableMap.put("Canada", "North America"));
+
+mutable.remove("USA");
+assertFalse(unmodifiable.containsKey("USA"));
+		
+mutable.put("Mexico", "North America");
+assertTrue(unmodifiable.containsKey("Mexico"));
+```
+
+An Immutable component (collection or map) on the other hand contains its own private data and it does not allow modifications to it. Therefore, the data cannot change in any way (directly or indirectly) once an instance of immutable component (collection or map) is created.
 
 ### **Hashing**
 
