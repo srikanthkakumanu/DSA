@@ -526,7 +526,7 @@ mutable.put("USA", "North America");
 
 Map<String, String> unmodifiable = Collections.unmodifiableMap(mutable);
 assertThrows(UnsupportedOperationException.class, 
-() -> unmodifiableMap.put("Canada", "North America"));
+() -> unmodifiable.put("Canada", "North America"));
 
 mutable.remove("USA");
 assertFalse(unmodifiable.containsKey("USA"));
