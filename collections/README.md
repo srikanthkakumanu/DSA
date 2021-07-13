@@ -542,11 +542,26 @@ Refer [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- ConcurrentMap guarantees memory consistency on key/value operations in a multi-threading environment. It should yield much better performance in most concurrent cases for data retrieval and update.
+- It is **not sorted**.
+- It consists of an **array of nodes as table buckets** (used to **table segments prior to Java 8**) and uses **compare-and-swap** (CAS) operations during updates. It provides **better performance**. The table buckets are initialized lazily upon first insertion. Each bucket can be independently locked by locking the very first node in the bucket. Read operations do not block, and update contentions are minimized.
+- The number of segments (table buckets) required is relative to the number of threads accessing the table so that the update in progress per segment would be no more than one most of time.
+- It does not allow **NULL** keys but allows multiple NULL values.
+- It's iterators (*Iterator* and *ListIterator*) are *not fail-fast*.
+- It is **thread-safe**.
+
 #### **ConcurrentSkipListMap**
 
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+- It is concurrent version of a TreeMap.
+- It allows us to create **thread-safe logic** in a **lock-free way**. It's ideal for problems when we want to make an immutable snapshot of the data while other threads are still inserting data into the map.
+- It is **ordered**, supports total ordering of its keys (in **ascending order by default**) and is concurrently navigable.
+- There's no concurrent implementation of the red-black tree in Java. A **concurrent variant** of **SkipLists** is implemented in ConcurrentSkipListMap.
+- It is **thread-safe**.
+- `get(), put(), remove(), containsKey()` - O(log n)
 
 
 ### **Strong vs Soft vs Weak References**

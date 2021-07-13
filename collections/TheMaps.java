@@ -1,8 +1,14 @@
 package collections;
 
+import java.util.List;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.LinkedHashMap;
@@ -47,9 +53,37 @@ ConcurrentNavigableMap (extends NavigableMap + ConcurrentMap) interface implemen
 
  */
 public class TheMaps {
-    public static void main(String[] args) {
-        hashmaps();
-        linkedHashMaps();
+    public static void main(String[] args) throws Exception {
+        // hashmaps();
+        // linkedHashMaps();
+        concurrentHashMaps();
+    }
+
+    private static void concurrentHashMaps() throws InterruptedException {
+        // calculate parallel sums of 100
+        Map<String, Integer> chmap = new ConcurrentHashMap<>();
+        int execution_times = 1000;
+
+        List<Integer> sumList = new ArrayList<>(1000);
+
+        for(int outer = 0; outer < execution_times; outer++) {
+            chmap.put("test", 0);
+            ExecutorService service = Executors.newFixedThreadPool(4);
+
+            for(int inner = 0; inner < 10; inner++) {
+                service.execute(() -> { 
+                    for(int linner = 0; linner < 10; linner++) {
+                        chmap.computeIfPresent("test", (key, value) -> value + 1);
+                    }
+                });
+            }
+            service.shutdown();
+            service.awaitTermination(5, TimeUnit.SECONDS);
+            sumList.add(chmap.get("test"));
+        }
+        System.out.print(sumList.stream().distinct().count());
+        System.out.print(sumList.stream().filter(num -> num != 100).count());
+        System.out.println();
     }
 
     private static void linkedHashMaps() {
