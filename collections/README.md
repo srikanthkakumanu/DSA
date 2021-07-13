@@ -43,8 +43,9 @@
    7.7 [ConcurrentHashMap](#concurrenthashmap) </br>
    7.8 [ConcurrentSkipListMap](#concurrentskiplistmap) </br>
 
-8. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
-9. [Hashing & hashCode()](#hashing) </br>
+8. [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) </br>
+9. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
+10. [Hashing & hashCode()](#hashing) </br>
 
 ## **Overview**
 
@@ -453,9 +454,9 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - It is not **thread-safe** i.e. not synchronized. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Map m = Collections.synchronizedMap(new HashMap(...));`
 - It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
 - It's space complexity is O(n).
-- `put(), get(), remove(), containsKey()` - O(1)
-- search for a specific element - O(n). If it is sorted, O(log n)
-- next element - O(h/n) i.e. h is capacity
+- `put(), get(), remove(), containsKey()` - O(1).
+- search for a specific element - O(n). If it is sorted, O(log n).
+- Iteration (next element) - O(h/n) i.e. h is capacity and n is size.
 
 #### **LinkedHashMap**
 
@@ -463,7 +464,16 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- LinkedHashMap uses an internal (linked list + hash table) data structure to store elements.
+- LinkedHashMap uses an internal (hash table + doubly linked list) data structure to store elements.
+- It is **ordered** and maintains predictable iteration order (**insertion-order**). It maintains a doubly linked list running through all of its entries.
+- It is **slower than HashMap** due to additional **maintainance of linked list**.
+- This linked list defines iteration ordering.
+- It allows **NULL** keys and values.
+- It is not **thread-safe** i.e. not synchronized. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Map m = Collections.synchronizedMap(new LinkedHashMap(...));`.
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+- `put(), get(), remove(), containsKey()` - O(1).
+- search for specific element - O(n).
+- Iteration (next element) - O(n). i.e. n is size
 
 #### **Hashtable**
 
@@ -471,24 +481,46 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- Hashtable is **deprecated**.
 - It uses the concept of hashing using buckets (bins) for storing data.
 - It is **deprecated** since **Java 8**. However, **ConcurrentHashMap is a great Hashtable replacement**. We should consider ConcurrentHashMap to use in applications with multiple threads.
-- It is **thread-safe**.
+- It is **thread-safe** i.e. synchronized.
 - It is slower than HashMap and takes more memory because it is thread-safe.
 - It is not **ordered** i.e. does not maintain insertion order.
-- It does not allow **NULL** at all if tried, it throws *NullPointerException*.
+- It **does not allow NULL** at all if tried, it throws *NullPointerException*.
 - Hashtable uses **Enumerator** to iterate values. But we can create an iterator from **Enumeration**. If did, that iterator is **fail-fast**.
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*). But, the Enumerations returned by Hashtable's keys and elements methods are not fail-fast.
+- If a **thread-safe** implementation is not needed, it is **recommended** to use **HashMap** in place of Hashtable. If a **thread-safe highly-concurrent implementation** is desired, then it is **recommended** to use **ConcurrentHashMap** in place of Hashtable.
+- **The only difference between the HashTable and HashMap is that Hashtable is synchronized whereas HashMap is not**.
+
 #### **Properties**
 
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+- It represents persistant set of properties. It can be saved to a stream or loaded from a stream.
+- It's **put*() methods usage is highly discouraged** as they allow the caller to insert entries whose keys or values are not Strings. The *setProperty()* method should be used instead.
+- It's iterators (*Iterator* and *ListIterator*) are *not fail-fast*.
+- It is **thread-safe**.
+
 #### **WeakHashMap**
 
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+- WeakHashMap is a hashtable-based implementation of the Map interface with keys that are **weak reference** type i.e. java.lang.refs.WeakReference.
+- An entry in a WeakHashMap will automatically be removed when its key is no longer in ordinary use, meaning that there is no single Reference that point to that key. When the garbage collection (GC) process discards a key, its entry is effectively removed from the map. So this class behaves somewhat differently from other Map implementations.
+- It has an **efficient memory cache**.
+- It allows **NULL** keys and values.
+- It is not **thread-safe** i.e. not synchronized. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Map m = Collections.synchronizedMap(new WeakHashMap(...));`
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+- It has performance characteristics similar to those of the HashMap class.
+- It allows GC to automatically delete ununsed objects from memory.
+- Ideally used when we want to build a cache of big images.
+
+Refer [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) section for details.
 
 #### **TreeMap**
 
@@ -497,7 +529,10 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 </br> [Table Of Contents](#table-of-contents) </br>
 
 - TreeMap uses an internal self balanced tree to store elements.
-- It sorts the keys in natural order.
+- It sorts the keys in natural order, it is sorted in ascending order.
+- It does not allow NULL keys but allows multiple NULL values.
+- `put(), remove(), containsKey()` - O(log n)
+- 
 #### **ConcurrentHashMap**
 
 <HR>
@@ -509,6 +544,45 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+
+### **Strong vs Soft vs Weak References**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+**Strong Reference** </br>
+
+Ex. `Integer prime = 1`
+
+The variable prime has a strong reference to an Integer object with value 1. Any object has a strong reference pointing to it is **not eligible for GC**.
+
+**Soft Reference** </br>
+
+Ex.
+
+```java
+Integer prime = 1;
+SoftReference<Integer> soft = new SoftReference<>(prime);
+prime = null;
+```
+
+An object that has a soft reference point to it won't be garbage collected until JVM absolutely needs memory. In the above example, variable prime has a strong reference to it (Integer object 1) and we are wrapping it into a soft reference. After making that strong reference null, a prime object is eligible for GC but will be collected only when JVM absolutely needs memory. Java 2 provides *java.lang.refs.SoftReference* class to support soft references.
+
+**Weak Reference** </br>
+
+Ex.
+
+```java
+Integer prime = 1;
+WeakReference<Integer> weak = new WeakReference<>(prime);
+prime = null;
+```
+
+The objects that are referenced only by weak references are garbage collected eagerly; the GC won't wait until it needs memory in that case. When we made a prime reference null, the prime object will be garbage collected in the next GC cycle, as there is no other strong reference pointing to it.
+
+**References of a WeakReference type are used as keys in WeakHashMap.**
 
 ### **Unmodifiable vs Immutable**
 

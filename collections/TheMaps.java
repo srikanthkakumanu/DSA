@@ -49,6 +49,34 @@ ConcurrentNavigableMap (extends NavigableMap + ConcurrentMap) interface implemen
 public class TheMaps {
     public static void main(String[] args) {
         hashmaps();
+        linkedHashMaps();
+    }
+
+    private static void linkedHashMaps() {
+        // initial capacity: 16, load factor: .75f, access factor: true
+        // initial capacity is initial (default) bucket size i.e. 16
+        // initial load factor is default load factor 0.75f
+        // access factor is ordering mode/mechanism/strategy. If true, it follows 'access order' otherwise default is 'insertion order'.
+        // 16 * 0.75 = 12. It represents that 12th key-value pair of hashmap will keep its size to 16. As soon as 13th element 
+        // (key-value pair) will come into the Hashmap, it will increase its size from default 24 = 16 buckets to 25 = 32 buckets.
+        
+        // Map<String, String> lhmap = new LinkedHashMap<>(16, .75f, true);
+        
+        // Java 9 alternative approach
+        LinkedHashMap<String, String> lhmap = new LinkedHashMap<>(
+                                        Map.ofEntries(
+                                            new AbstractMap.SimpleEntry<>("08644", "TENALI"),
+                                            new AbstractMap.SimpleEntry<>("0866", "VIJAYAWADA"),
+                                            new AbstractMap.SimpleEntry<>("0863", "GUNTUR"),
+                                            new AbstractMap.SimpleEntry<>("353", "IRELAND"),
+                                            new AbstractMap.SimpleEntry<>("040", "HYDERABAD")
+                                        )
+                                    );
+        
+        lhmap.put("044", "CHENNAI");
+        lhmap.put("080", "BENGALURU");
+
+
     }
 
     /**
