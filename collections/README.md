@@ -481,8 +481,8 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- Hashtable is **deprecated**.
-- It uses the concept of hashing using buckets (bins) for storing data.
+- It is the **oldest implementation of hash table data structure** in Java. An Hashtable key must not violate the *hashCode()* contract i.e. equal object must return same code.
+- It uses the concept of hashing using buckets (bins) for storing data. Internally it uses an array. Each position in that array is a **bucket** which can be NULL or contain one or more key-value pairs. The index of each pair is calculated, because finding an element by index is much quicker than iterating through the elements with the comparison sequentially. Hence it maps keys to indexes.
 - It is **deprecated** since **Java 8**. However, **ConcurrentHashMap is a great Hashtable replacement**. We should consider ConcurrentHashMap to use in applications with multiple threads.
 - It is **thread-safe** i.e. synchronized.
 - It is slower than HashMap and takes more memory because it is thread-safe.
@@ -528,11 +528,14 @@ Refer [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- TreeMap uses an internal self balanced tree to store elements.
+- TreeMap uses an internal self balanced binary search tree (red-black tree) to store elements.
 - It sorts the keys in natural order, it is sorted in ascending order.
-- It does not allow NULL keys but allows multiple NULL values.
-- `put(), remove(), containsKey()` - O(log n)
-- 
+- It does not allow **NULL** keys but allows multiple NULL values.
+- It is not **thread-safe** i.e. not synchronized. *If multiple threads access it concurrently, it must be synchronized externally.* We can synchronize it during creation time i.e. `Map m = Collections.synchronizedSortedMap(new TreeMap(...));`
+- It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
+- It is **slower** than HashMap, LinkedHashMap. But TreeMap saves memory compared to HashMap.
+- `get(), put(), remove(), containsKey()` - O(log n)
+
 #### **ConcurrentHashMap**
 
 <HR>
