@@ -43,9 +43,16 @@
    7.7 [ConcurrentHashMap](#concurrenthashmap) </br>
    7.8 [ConcurrentSkipListMap](#concurrentskiplistmap) </br>
 
-8. [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) </br>
-9. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
-10. [Hashing & hashCode()](#hashing) </br>
+8. [Queue Implementations](#queue-implementations) </br>
+   8.1 []() </br>
+   8.2 []() </br>
+   8.3 []() </br>
+   8.4 []() </br>
+   8.5 []() </br>
+
+9. [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) </br>
+10. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
+11. [Hashing & hashCode()](#hashing) </br>
 
 ## **Overview**
 
@@ -563,6 +570,36 @@ Refer [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) 
 - It is **thread-safe**.
 - `get(), put(), remove(), containsKey()` - O(log n)
 
+### **Queue Implementations**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- Queue is introduced in Java 5. It is designed for holding elements prior to processing.
+- Adding items to queues are particularly **useful in multi-threaded environments**. A Queue can be shared amongst threads and be used to block progress until space is available i.e. help in overcoming some common multi-threaded problems.
+- Queues is **ordered**. typically (not necessarily) it order elements in **First-In-First-Out (FIFO)** manner. However **exceptions** are **priority queues** (*orders according to comparator or natural order*), Last-In-First-Out (**LIFO**) **queues** (or **stacks**).
+- It does not allow **NULL** elements.
+- insert new element : `offer()`, remove an element : `poll()`, inspect the element at front of queue (without removing it) : `peek()`.
+- Queue is implemented by three sub-interfaces BlockingQueue, TransferQueue, Deque.
+- **Blocking queues** support additional operations that force threads wait for the queue depending on current state. A thread may wait on the Queue to be non-empty when attempting a retrieval, or for it to become empty when adding a new element.
+- **Transfer queues** designed toward producer-consumer pattern. It controls the flow of information from producer to consumer, creating **backpressure** in the system.
+- **Deque** is **Double-Ended-Queue**, its elements may be taken from both the start and end of the queue. Deque provides methods (such as offer(), poll(), peek()) to operate at both **the top and bottom**.
+- thread-safe queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
+
+**Concrete implementations of BlockinQueue interface**
+
+- LinkedBlockingQueue
+- SynchronousQueue
+- ArrayBlockingQueue
+
+**Concrete implementations of TransferQueue interface**
+
+- LinkedTransferQueue
+
+**Concrete implementations of Deque**
+
+- ArrayDeque
 
 ### **Strong vs Soft vs Weak References**
 
