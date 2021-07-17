@@ -34,11 +34,14 @@
    6.4 [ConcurrentSkipListSet](#concurrentskiplistset) </br>
 
 7. [Queue Implementations](#queue-implementations) </br>
-   7.1 []() </br>
-   7.2 []() </br>
-   7.3 []() </br>
-   7.4 []() </br>
-   7.5 []() </br>
+   7.1 [PriorityQueue](#priorityqueue) </br>
+   7.2 [ConcurrentLinkedQueue](#concurrentlinkedqueue) </br>
+   7.3 [ArrayBlockingQueue](#arrayblockingqueue) </br>
+   7.4 [LinkedBlockingQueue](#linkedblockingqueue) </br>
+   7.5 [DelayQueue](#delayqueue) </br>
+   7.6 [PriorityBlockingQueue](#priorityblockingqueue) </br>
+   7.7 [LinkedTransferQueue](#linkedtransferqueue) </br>
+   7.8 [ArrayDeque](#arraydeque) </br>
 
 8. [Map Implementations](#map-implementations) </br>
    8.1 [HashMap](#hashmap) </br>
@@ -53,6 +56,7 @@
 9. [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) </br>
 10. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
 11. [Hashing & hashCode()](#hashing) </br>
+12. [Unbounded and bounded queues](#unbounded-and-bounded-blocking-queues) </br>
 
 ## **Overview**
 
@@ -423,13 +427,16 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - Queues is **ordered**. typically (not necessarily) it order elements in **First-In-First-Out (FIFO)** manner. However **exceptions** are **priority queues** (*orders according to comparator or natural order*), Last-In-First-Out (**LIFO**) **queues** (or **stacks**).
 - It does not allow **NULL** elements. But LinkedList allows though it is a duque.
 - insert new element : `offer()`, remove an element : `poll()`, inspect the element at front of queue (without removing it) : `peek()`.
-- Queue is implemented by four sub-interfaces BlockingQueue, TransferQueue, Deque, BlockingDeque.
-- thread-safe queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
+- Queue is implemented by four sub-interfaces *BlockingQueue, TransferQueue, Deque, BlockingDeque*.
+- **thread-safe** queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
 - Some Queue implementations in java.util.concurrent are **bounded queues** (restrict the number of elements that it holds), but the implementations in java.util are not.
-- **Blocking queues** support additional operations that force threads wait for the queue depending on current state. A thread may wait on the Queue to be non-empty when attempting a retrieval, or for it to become empty when adding a new element.
+- **Blocking queues** support additional operations that force threads wait for the queue depending on current state. A thread may wait on the Queue to be non-empty when attempting a retrieval, or for it to become empty when adding a new element. It offers a simple thread-safe mechanism. In this queue, threads need to wait for the queue's availability. The producers will wait for available capacity before adding elements, while consumers will wait until the queue is empty. In those cases, the non-blocking queue will either throw an exception or return a special value, like null or false. To achieve this blocking mechanism, the BlockingQueue interface exposes two functions on top of the normal Queue functions: put and take. Those functions are the equivalent of add and remove in a standard Queue.
 - **Transfer queues** designed toward producer-consumer pattern. It controls the flow of information from producer to consumer, creating **backpressure** in the system.
 - **Deque** is **Double-Ended-Queue**, its elements may be taken from both the start and end of the queue. Deque provides methods (such as offer(), poll(), peek()) to operate at both **the top and bottom**.
 - The **Deque** is a richer abstract data type (ADT) than both Stack and Queue because it implements both stacks and queues at the same time, that it can be used both as last-in-first-out (LIFO) stacks and first-in-first-out (FIFO) queues. It provides methods to support both.
+- **Priority queues** are ordered based on their natural ordering, or by a defined Comparator provided when we construct the PriorityQueue.
+
+BlockingQueue 
 
 **Concrete implementations of Queue interface**
 
@@ -459,6 +466,111 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - LinkedBlockingDeque
 
 <img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/queue_implementations.png" alt="Java Queue Implementations Hierarchy" width="500" height="300"></img> </br>
+
+#### **PriorityQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is used when the objects are supposed to be processed based on priority unlike standard Queue which follows FIFO algorithm. It is based on the **priority heap**. The elements of the priority queue are ordered according to the **natural ordering**, or by a Comparator provided at queue construction time, depending on which constructor is used.
+- Priority queues are **unbounded** queues.
+- It stores unique values, duplicates are not allowed. We can’t create PriorityQueue of Objects that are *non-comparable*.
+- It does not allow **NULL element**.
+- It is **not thread-safe i.e. NOT synchronized**. Hence Java provides *PriorityBlockingQueue* to use in multi-threaded environment.
+
+#### **ConcurrentLinkedQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It was added in Java 5 along with other concurrent utilities like CyclicBarrier, CountDownLatch, Semaphore, ConcurrentHashMap etc. It is an **unbounded, thread-safe and non-blocking queue**.
+- It is a **lock-free** queue. It's locking based on **Michael & Scott algorithm for non-blocking, lock-free nodes**. It uses CAS (Compare-And-Swap) for its operations.
+- It is an appropriate choice when many threads will share access to a common collection. Note that it **doesn't block operations** (*It does not block the accessing thread when the queue is empty and returns null*) as it is done in blocking queues (ArrayBlockingQueue, LinkedBlockingQueue etc). So there are no put(), take() methods which will wait if required.
+- It stores elements as **linked nodes**. It **orders** elements in **FIFO** order.
+- Concurrent linked queue is **unbounded**.
+- It stores unique values, duplicates are not allowed. We can’t create PriorityQueue of Objects that are *non-comparable*.
+- It does not allow **NULL element**.
+- It is **thread-safe i.e. synchronized**.
+- It's iterators (*Iterator* and *ListIterator*) are not *fail-fast*.
+
+#### **ArrayBlockingQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is a **bounded blocking queue backed by an array**. Once created, the **capacity cannot be changed**. Attempts to put an element into a full queue will result in the operation blocking. Similarly attempts to take an element from an empty queue will also be blocked.
+- It is generally used in a thread-safe environment where you want to block two or more operating on a single resource, allowing only one thread. Also, we can block a thread using the capacity bounding factor.
+- It's ordering **not guaranteed**.
+- It does not allow **NULL element**.
+- It is **thread-safe i.e. synchronized**.
+- It's iterators (*Iterator* and *ListIterator*) are not *fail-fast*.
+
+#### **LinkedBlockingQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is **optionally-bounded blocking queue based on linked nodes**. Optionally-bounded meaning that the queue size can be specified if needed.
+- Linked queues typically have **higher throughput** than array-based queues but **less predictable performance** in most concurrent applications.
+- It is a **lock-based** queue. It's locking based on **two-lock queue algorithm**. It uses two different locks – the putLock and the takeLock. The put/take operations uses the first lock type, and the take/poll operations use the other lock type.
+- It is **FIFO ordered**.
+- It does not allow **NULL element**.
+- It is **thread-safe i.e. synchronized**. Since it is blocking queue, it blocks the accessing threads when queue is empty.
+- The blocking feature of the LinkedBlockingQueue is associated with some cost. This cost is because every put or the take operation is lock contended between the producer or the consumer threads. Therefore, in scenarios with many producers and consumers, put and take actions could be slower.
+- **LinkedBlockingQueue needs to allocate and deallocate nodes every time an item is added or removed from the queue**. For this reason, **an ArrayBlockingQueue can be a better alternative if the queue grows fast and shrinks fast**.
+
+#### **DelayQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is a **blocking queue** that could be used in **bounded-buffer/producer-consumer** programs. When the consumer wants to take an element from the queue, they can take it only when the delay for that particular element has expired. We use a DelayQueue when a **consumer can only take an expired item**.
+- It is an **unbounded blocking queue** of *Delayed* elements.
+- Each element we want to put in DelayQueue needs to implement the *Delayed* interface.
+- It does not allow **NULL elements**.
+- It is **thread-safe i.e. synchronized**.
+
+#### **PriorityBlockingQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is an **unbounded blocking queue** that uses the same ordering rules as class PriorityQueue and supplies blocking retrieval operations. **Its elements are ordered by priority.**
+- Elements that are needed to add must implement either *Comparable* or provide a *Comparator* instead.
+- Higher priority element is always ordered first and when we remove an element from our queue, it will always be the one with the highest priority.
+- It does not allow **NULL elements**.
+- It is **thread-safe i.e. synchronized**.
+  
+#### **LinkedTransferQueue**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It allows us to create programs according to the producer-consumer pattern, and coordinate messages passing from producers to consumers.
+- It gives us the new ability to implement a form of backpressure. This means that, when the producer sends a message to the consumer using the transfer() method, the producer will stay blocked until the message is consumed.
+- It can be very useful when we do not want an over-producing producer that will flood the queue with messages, resulting in the OutOfMemory errors. In such design, the consumer will be dictating the speed at which the producer will produce messages.
+- It **allows a producer to wait for the consumption of an item**. By implementing a simple backpressure algorithm using this queue. Indeed, by blocking producers until consumption, **consumers can drive the flow of messages produced**.
+
+#### **ArrayDeque**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- It is known as **Array double ended queue or Array Deck**. It is a special kind of a growable array that allows us to add or remove an element from both sides. It automatically doubles the size of an array when head and tail pointer meets each other while adding an element.
+- It is backed by an array which doubles its size when it gets filled.
+- It's implemented as a double-ended queue where it maintains two pointers namely a head and a tail.
+- It does not allow **NULL elements**.
+- It is **not thread-safe i.e. not synchronized**.
+- It is significantly faster than the synchronized Stack. It is faster queue than LinkedList due to the better locality of reference. Most operations have amortized constant time complexity.
+- It's iterators are *fail-fast*.
 
 ### **Map Implementations**
 
@@ -702,5 +814,21 @@ IntelliJ, Eclipse also uses 31 in their hashcode generation code snippets.
 java.util.Objects.hash() can also be used to generate hash code. Objects class introduced in Java 7. Lombok, Apache-commons HashcodeBuilder are also used to generate hashcode implementation. If we don't override hashCode(), HashMap and HashSet uses *system generated hash code*.
 
 **Hash collision:** Hash collision happens when two or more objects might have the same hash code even if they're unequal. Hash collision strategies are separate chaining, open addressing (linear probing, quadratic probing), double hashing.
+
+### **Unbounded and bounded Blocking Queues**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+We can distinguish two types of BlockingQueue:
+
+**unbounded queue**:
+
+It can grow almost indefinitely. The Capacity of blockingQueue will be set to Integer.MAX_VALUE. All operations that add an element to the unbounded queue will never block, thus it could grow to a very large size. The most important thing when designing a producer-consumer program using unbounded BlockingQueue is that consumers should be able to consume messages as quickly as producers are adding messages to the queue. Otherwise, the memory could fill up and we would get an OutOfMemory exception.
+
+**bounded queue**:
+
+It grows with maximal capacity defined. We can create such queues by passing the capacity as an argument to a constructor. Using bounded queue is a good way to design concurrent programs because when we insert an element to an already full queue, that operations need to wait until consumers catch up and make some space available in the queue. It gives us throttling without any effort on our part.
 
 </div>
