@@ -33,22 +33,22 @@
    6.3 [LinkedHashSet](#linkedhashset) </br>
    6.4 [ConcurrentSkipListSet](#concurrentskiplistset) </br>
 
-7. [Map Implementations](#map-implementations) </br>
-   7.1 [HashMap](#hashmap) </br>
-   7.2 [LinkedHashMap](#linkedhashmap) </br>
-   7.3 [Hashtable](#hashtable) </br>
-   7.4 [Properties](#properties) </br>
-   7.5 [WeakHashMap](#weakhashmap) </br>
-   7.6 [TreeMap](#treemap) </br>
-   7.7 [ConcurrentHashMap](#concurrenthashmap) </br>
-   7.8 [ConcurrentSkipListMap](#concurrentskiplistmap) </br>
+7. [Queue Implementations](#queue-implementations) </br>
+   7.1 []() </br>
+   7.2 []() </br>
+   7.3 []() </br>
+   7.4 []() </br>
+   7.5 []() </br>
 
-8. [Queue Implementations](#queue-implementations) </br>
-   8.1 []() </br>
-   8.2 []() </br>
-   8.3 []() </br>
-   8.4 []() </br>
-   8.5 []() </br>
+8. [Map Implementations](#map-implementations) </br>
+   8.1 [HashMap](#hashmap) </br>
+   8.2 [LinkedHashMap](#linkedhashmap) </br>
+   8.3 [Hashtable](#hashtable) </br>
+   8.4 [Properties](#properties) </br>
+   8.5 [WeakHashMap](#weakhashmap) </br>
+   8.6 [TreeMap](#treemap) </br>
+   8.7 [ConcurrentHashMap](#concurrenthashmap) </br>
+   8.8 [ConcurrentSkipListMap](#concurrentskiplistmap) </br>
 
 9. [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) </br>
 10. [Unmodifiable vs. Immutable](#unmodifiable-vs-immutable) </br>
@@ -412,6 +412,52 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - It is **thread-safe**.
 - It's iterators (*Iterator* and *ListIterator*) are *fail-fast* (After iterator creation, if hash set is modified then it throws *ConcurrentModificationException*).
 
+### **Queue Implementations**
+
+<HR>
+
+</br> [Table Of Contents](#table-of-contents) </br>
+
+- Queue is introduced in Java 5 and it is a type of Collection. It is designed for holding elements prior to processing.
+- Adding items to queues are particularly **useful in multi-threaded environments**. A Queue can be shared amongst threads and be used to block progress until space is available i.e. help in overcoming some common multi-threaded problems.
+- Queues is **ordered**. typically (not necessarily) it order elements in **First-In-First-Out (FIFO)** manner. However **exceptions** are **priority queues** (*orders according to comparator or natural order*), Last-In-First-Out (**LIFO**) **queues** (or **stacks**).
+- It does not allow **NULL** elements.
+- insert new element : `offer()`, remove an element : `poll()`, inspect the element at front of queue (without removing it) : `peek()`.
+- Queue is implemented by three sub-interfaces BlockingQueue, TransferQueue, Deque.
+- **Blocking queues** support additional operations that force threads wait for the queue depending on current state. A thread may wait on the Queue to be non-empty when attempting a retrieval, or for it to become empty when adding a new element.
+- **Transfer queues** designed toward producer-consumer pattern. It controls the flow of information from producer to consumer, creating **backpressure** in the system.
+- **Deque** is **Double-Ended-Queue**, its elements may be taken from both the start and end of the queue. Deque provides methods (such as offer(), poll(), peek()) to operate at both **the top and bottom**.
+- thread-safe queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
+
+**Concrete implementations of Queue interface**
+
+- ConcurrentLinkedQueue
+- PriorityQueue
+
+**Concrete implementations of BlockingQueue interface**
+
+- ArrayBlockingQueue
+- LinkedBlockingQueue
+- DelayQueue
+- PriorityBlockingQueue
+- SynchronousQueue
+
+**Concrete implementations of TransferQueue interface**
+
+- LinkedTransferQueue
+
+**Concrete implementations of Deque**
+
+- ArrayDeque
+- ConcurrentLinkedDeque
+- LinkedList (also implements List)
+
+**Concrete implementations of BlockingDeque**
+
+- LinkedBlockingDeque
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/collections/queue_implementations.png" alt="Java Queue Implementations Hierarchy" width="500" height="300"></img> </br>
+
 ### **Map Implementations**
 
 <HR>
@@ -569,37 +615,6 @@ Refer [Strong vs. Soft vs. Weak References](#strong-vs-soft-vs-weak-references) 
 - There's no concurrent implementation of the red-black tree in Java. A **concurrent variant** of **SkipLists** is implemented in ConcurrentSkipListMap.
 - It is **thread-safe**.
 - `get(), put(), remove(), containsKey()` - O(log n)
-
-### **Queue Implementations**
-
-<HR>
-
-</br> [Table Of Contents](#table-of-contents) </br>
-
-- Queue is introduced in Java 5. It is designed for holding elements prior to processing.
-- Adding items to queues are particularly **useful in multi-threaded environments**. A Queue can be shared amongst threads and be used to block progress until space is available i.e. help in overcoming some common multi-threaded problems.
-- Queues is **ordered**. typically (not necessarily) it order elements in **First-In-First-Out (FIFO)** manner. However **exceptions** are **priority queues** (*orders according to comparator or natural order*), Last-In-First-Out (**LIFO**) **queues** (or **stacks**).
-- It does not allow **NULL** elements.
-- insert new element : `offer()`, remove an element : `poll()`, inspect the element at front of queue (without removing it) : `peek()`.
-- Queue is implemented by three sub-interfaces BlockingQueue, TransferQueue, Deque.
-- **Blocking queues** support additional operations that force threads wait for the queue depending on current state. A thread may wait on the Queue to be non-empty when attempting a retrieval, or for it to become empty when adding a new element.
-- **Transfer queues** designed toward producer-consumer pattern. It controls the flow of information from producer to consumer, creating **backpressure** in the system.
-- **Deque** is **Double-Ended-Queue**, its elements may be taken from both the start and end of the queue. Deque provides methods (such as offer(), poll(), peek()) to operate at both **the top and bottom**.
-- thread-safe queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
-
-**Concrete implementations of BlockinQueue interface**
-
-- LinkedBlockingQueue
-- SynchronousQueue
-- ArrayBlockingQueue
-
-**Concrete implementations of TransferQueue interface**
-
-- LinkedTransferQueue
-
-**Concrete implementations of Deque**
-
-- ArrayDeque
 
 ### **Strong vs Soft vs Weak References**
 
