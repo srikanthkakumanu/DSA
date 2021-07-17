@@ -421,13 +421,15 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 - Queue is introduced in Java 5 and it is a type of Collection. It is designed for holding elements prior to processing.
 - Adding items to queues are particularly **useful in multi-threaded environments**. A Queue can be shared amongst threads and be used to block progress until space is available i.e. help in overcoming some common multi-threaded problems.
 - Queues is **ordered**. typically (not necessarily) it order elements in **First-In-First-Out (FIFO)** manner. However **exceptions** are **priority queues** (*orders according to comparator or natural order*), Last-In-First-Out (**LIFO**) **queues** (or **stacks**).
-- It does not allow **NULL** elements.
+- It does not allow **NULL** elements. But LinkedList allows though it is a duque.
 - insert new element : `offer()`, remove an element : `poll()`, inspect the element at front of queue (without removing it) : `peek()`.
-- Queue is implemented by three sub-interfaces BlockingQueue, TransferQueue, Deque.
+- Queue is implemented by four sub-interfaces BlockingQueue, TransferQueue, Deque, BlockingDeque.
+- thread-safe queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
+- Some Queue implementations in java.util.concurrent are **bounded queues** (restrict the number of elements that it holds), but the implementations in java.util are not.
 - **Blocking queues** support additional operations that force threads wait for the queue depending on current state. A thread may wait on the Queue to be non-empty when attempting a retrieval, or for it to become empty when adding a new element.
 - **Transfer queues** designed toward producer-consumer pattern. It controls the flow of information from producer to consumer, creating **backpressure** in the system.
 - **Deque** is **Double-Ended-Queue**, its elements may be taken from both the start and end of the queue. Deque provides methods (such as offer(), poll(), peek()) to operate at both **the top and bottom**.
-- thread-safe queues are **ConcurrentLinkedQueue, ArrayBlockingQueue and ConcurrentLinkedDeque**.
+- The **Deque** is a richer abstract data type (ADT) than both Stack and Queue because it implements both stacks and queues at the same time, that it can be used both as last-in-first-out (LIFO) stacks and first-in-first-out (FIFO) queues. It provides methods to support both.
 
 **Concrete implementations of Queue interface**
 
