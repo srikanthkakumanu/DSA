@@ -64,7 +64,9 @@
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-A collection is a contains that groups multiple elements into a single unit. Collections are used to store, retrieve, manipulate and communicate aggriate data.
+A collection is a contains that groups multiple elements into a single unit. Collections are used to store, retrieve, manipulate and communicate aggriate data. The Java collections define two fundamental types of data structures. A **Collection** is a *grouping of objects* and a **Map** is *a set of mappings or associations between objects*.
+
+Further to *Collection*, a *List* is a Collection that has ordered elements but may contain duplicates and a *Set* is a type of Collection with no duplicates.
 
 A *collections framework* provides the following:
 
@@ -105,7 +107,9 @@ These below given interfaces are abstract data types to represent collections. T
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-java.util.Collection<E> is a generic interface and is the root of Collection hierarchy. A collection represents group of objects known as its elements. Java platform doesn't provide direct impelementations of this interface but provide implementations to its sub interfaces.
+java.util.Collection<E> is a generic interface and is the root of Collection hierarchy. A collection represents group of objects known as its elements. Java platform doesn't provide direct implementations of this interface but provide implementations to its sub interfaces.
+
+To work properly with expectations of collections, we must take care when defining *hashCode()* and *equals()* methods.
 
 **Aggregate-operations OR stream-operations:** Aggregate operations do process elements from a stream, not directly from collection. They support **behavior** as parameters i.e. we can specify *lambda expressions* as parameters for most aggregate operations. These operations introduced in Java 8. These operations are ***not mutative***, meaning they do not modify underlying collection.
 
@@ -129,8 +133,8 @@ Note: *Collections* class is utility class that provides static methods to opera
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-- It is an ordered collection (or sequence). Simply an array of sequence with varying length. Internally it follows the insertion order (natural order which is the how the elements are inserted).
-- It can contain duplicate elements. We can also insert NULL values.
+- It is an ordered collection (or sequence) of objects. Simply an array of sequence with varying length. Internally it follows the insertion order (natural order which is the how the elements are inserted).
+- It can contain **duplicate** elements. We can also insert NULL values.
 - Each element in a list has an index and starts with 0. We can also insert an element at specific index. If there are existing elements at that index, those elements will be pushed further down.
 - Provides greater control over where each elements is inserted and retrieved by a position (index). In detail, it provides positional access, search for specified element, iteration and range view etc.
 - *ArrayList* consumes less memory.
@@ -146,10 +150,12 @@ Note: *Collections* class is utility class that provides static methods to opera
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+A *Set* is a collection of objects that does not allow duplicates.
+
 - A set is a collection. It models mathematical set abstraction.
 - It is NOT a ordered collection meaning it has no guaranteed internal order.
-- It cannot have duplicate elements.
-- A set can have at most one NULL element.
+- It cannot have duplicate elements i.e. It may not contain two references to same object or no references two objects *a* and *b* such that *a.equals(b)*.
+- A set can have at most one NULL element i.e. no two references to *null*.
 - ***HashSet*** - stores elements in an internal HashMap (a hash table (NOT Hashtable) data structure using HashMap) instance which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
 - ***TreeSet*** - stores elements in a red-black tree (self-balancing binary search tree internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
 - ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with linked list,  and guarantees element ordering by insertion-order
@@ -180,6 +186,8 @@ Note: *Collections* class is utility class that provides static methods to opera
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+A *Queue* is an **ordered** collection of elements with methods for extracting elements **in order** from the *head* of the queue. Queue implementations are commonly based on *insertion-order* as in **First-In-First-Out (FIFO) queues** or **Last-In-First-Out (LIFO) queues**. **LIFO queues are stacks** and Java provides **Stack class but its use strongly discouraged instead use implementations of Deque interface**.
 
 - A collection used to hold multiple elements prior to processing.
 - It follows FIFO (First-In-FIrst-Out) to **order** elements (but not necessariliy). All elements are inserted at tail of the queue and they are removed at head of the queue.
@@ -241,6 +249,8 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+A *Map* is a set of *key* objects and a mapping from each member of that set to a *value* object (**association**).
+
 - An object that maps keys to values. It is **not a true collection**. It models the mathematical function abstraction.
 - A key **at most** can map to **one value**.
 - It **cannot** contain **duplicate** keys.
@@ -262,7 +272,7 @@ When iterating a collection **lots of times in a tight loop** (iterating a list 
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
-List represents an **ordered sequence** of values where some value **may occur** more than one time. It is an ordered collection (or sequence). Simply an array of sequence with varying length. Internally it follows the insertion order (natural order which is the how the elements are inserted).
+List represents an **ordered sequence** of values (objects) where some value **may occur** more than one time. It is an ordered collection (or sequence). Simply an array of sequence with varying length. Internally it follows the insertion order (natural order which is the how the elements are inserted).
 
 - It can contain duplicate elements. We can also insert NULL values.
 - Each element in a list has an index and starts with 0. We can also insert an element at specific index. If there are existing elements at that index, those elements will be pushed further down.
@@ -334,10 +344,12 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 
 </br> [Table Of Contents](#table-of-contents) </br>
 
+A *Set* is a collection of objects that does not allow duplicates.
+
 - A set is a collection. It models mathematical set abstraction.
 - It is NOT a ordered collection meaning it has no guaranteed internal order.
-- It cannot have duplicate elements.
-- A set can have at most one NULL element.
+- It cannot have duplicate elements i.e. It may not contain two references to same object or no references two objects *a* and *b* such that *a.equals(b)*.
+- A set can have at most one NULL element i.e. no two references to *null*.
 - ***HashSet*** - stores elements in a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) which is **best performing solution** but no ordering guaranteed. It hashes the elements and distributes them into buckets by the hash value.
 - ***TreeSet*** - stores elements in a red-black tree(self-balancing binary search tree) (internally uses TreeMap) and orders (sorted) its elements based on their values. It is ordered and navigable. It is slower or worse complexity than HashSet.
 - ***LinkedHashSet*** - Implemented as a HashMap (a hashtable (NOT Hashtable) data structure using HashMap) with doubly-linked list,  and guarantees element ordering by insertion-order
@@ -421,6 +433,8 @@ Though **ArrayList** is faster than **LinkedList**, ***CopyOnWriteArrayList*** i
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+A *Queue* is an **ordered** collection of elements with methods for extracting elements **in order** from the *head* of the queue. Queue implementations are commonly based on *insertion-order* as in **First-In-First-Out (FIFO) queues** or **Last-In-First-Out (LIFO) queues**. **LIFO queues are stacks** and Java provides **Stack class but its use strongly discouraged instead use implementations of Deque interface**.
 
 - Queue is introduced in Java 5 and it is a type of Collection. It is designed for holding elements prior to processing.
 - Adding items to queues are particularly **useful in multi-threaded environments**. A Queue can be shared amongst threads and be used to block progress until space is available i.e. help in overcoming some common multi-threaded problems.
@@ -577,6 +591,8 @@ BlockingQueue
 <HR>
 
 </br> [Table Of Contents](#table-of-contents) </br>
+
+A *Map* is a set of *key* objects and a mapping from each member of that set to a *value* object (**association**).
 
 - Map is **not a true collection**. It is an object that maps keys to values. It models the mathematical function abstraction. It uses the internal concept of *associative arrays*.
 - A key **at most** can map to **one value**.

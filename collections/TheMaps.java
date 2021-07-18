@@ -1,5 +1,3 @@
-package collections;
-
 import java.util.List;
 import java.util.AbstractMap;
 import java.util.ArrayList;
