@@ -72,12 +72,73 @@ public class RegExp {
        print(eval("\\W", "hi!")); // Matching non-word character equilent to [a-zA-Z_0-9] i.e. 1
 
        // Quantifiers = specify no. of occurrences. ? is the operator.
-       print(eval("\\a?", "hi")); // match text 0 or 1 time
+       // even if the input is empty, it will return one zero-length match. 
+       // Thats why we get 3 matches despite having a String of length two.
+       // ? : match text 0 or 1 time (remember, it returns one zero-length match atleast)
+       // * : match text 0 or limitless times (remember, it returns one zero-length match atleast)
+       // + : it has a matching threshold of 1. If the required String does not occur at all, there will be no match, not even a zero-length String.
+       print(eval("\\a?", "hi")); // match text 0 or 1 time 
        print(eval("\\a{0,1}", "hi")); // alternative to above stmt approach
+       print(eval("\\a*", "hi")); // match text 0 or limitless times
+       print(eval("\\a{0,}", "hi")); // alternative to above stmt approach
+       print(eval("\\a+", "hi"));
+       print(eval("\\a{1,}", "hi")); // alternative to above stmt approach
+       print(eval("a{3}", "aaaaaa")); // given text no. of times i.e. 'aaa' appears 3 times in a row. That is 2.
+       print(eval("a{3}", "aa"));
+       print(eval("a{2,3}", "aaaa")); // at least 2 occurrences but not exceeding 3. It sees a single 'aaa' and 'a' can't be matched.
+       print(eval("a{2,3}?", "aaaa")); // matching 2 occurrences as 'aa' and 'aa'.
+
+       // Capturing Groups: It treats multiple characters as single unit.
+       print(eval("(\\d\\d)", "12")); // match input text contains two digits next to each other.
+       print(eval("(\\d\\d)", "1212"));
+       print(eval("((\\d\\d)\\1)", "1212")); // have one match but propagating the same regex match to span the entire length of the input using back referencing
+       print(eval("(\\d\\d)(\\d\\d)", "1212")); // without back referencing
+       print(eval("(\\d\\d)\\1\\1\\1", "12121212"));
+       print(eval("(\\d\\d)\\1", "1213")); // match fails even if we change one digit of the pattern. We changed last digit to 3.
+
+       // Boundary matching
+       // caret ^: to match only when the required regex is true at the beginning of the text.
+       // $ : To match only when the required regex is true at the end of the text, we use the dollar character $.
+       // \\b : If we want a match only when the required text is found at a word boundary, we use \\b regex at the beginning and end of the regex:
+       print(eval("^dog", "dogs are friendly")); 
+       print(eval("^dog", "are dogs are friendly?")); 
+       print(eval("dog$", "Man's best friend is a dog"));
+       print(eval("dog$", "is a dog man's best friend?"));
+       print(eval("\\bdog\\b", "a dog is friendly"));
+
+       // Flags
+       /*
+       CANON_EQ: enables canonical equivalence. When specified, two characters will be considered 
+                to match if, and only if, their full canonical decompositions match.
+       CASE_INSENSITIVE: matching regardless of case.
+       DOTALL: we are matching every character in the input String until we encounter a new line character.
+       */
+      print(eval("\u00E9", "\u0065\u0301")); // match fails
+      print(eval("\u00E9", "\u0065\u0301", Pattern.CANON_EQ)); // match successful
+      
     }
 
     private static void print(Integer output) {
         System.out.println(output);
+    }
+
+    /**
+     * Evaluates a regular expression on given text based on flag and returns no. of occurrences.
+     * @param regex regular expression
+     * @param text  input text
+     * @param flag  supported flags which effects how patterns are matched
+     * @return No. of occurrences of matched expression in given input text
+     */
+    private static int eval(String regex, String text, int flag) {
+        Pattern p = Pattern.compile(regex, flag);
+        Matcher m = p.matcher(text);
+        // m.find();
+
+        int matches = 0;
+        while (m.find())
+            matches++;
+
+        return matches;
     }
 
     /**
