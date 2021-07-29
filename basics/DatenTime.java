@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +35,8 @@ import java.util.TimeZone;
  * 
  * Hence Leap seconds are introduced in UTC to keep UTC within 0.9 seconds of UT1. But the time scale used by the satellite-based global 
  * positioning system (GPS) is synchronised to UTC but is not adjusted for leap seconds.
+ * 
+ * Java 8’s new date-time API is thread-safe and immutable
  * 
  * Java 8’s new date-time API is introduced to overcome the following drawbacks of old date-time API : 
  *                                                                    --------- 
@@ -129,7 +133,7 @@ public class DatenTime {
      */
     private static void java7() {
         System.out.println("\nJAVA 7 APPROACH");
-        System.out.println("---------------");
+        System.out.println("-----------------");
         // long value (timestamp) returns in milliseconds since Jan 1st, 1970.
         // Granualarity is larger than 1 and it is not the world's most precise or fine grained timer.
         long start = System.currentTimeMillis();
@@ -223,8 +227,6 @@ public class DatenTime {
             Date textToDate = sdf.parse(dateToText);
             System.out.println("DATE_TO_TEXT=" + dateToText + " and TEXT_TO_DATE=" + textToDate);
         } catch (ParseException e) { System.err.println("Exception caught while parsing text to date" + e.getMessage()); }
-
-
     }
 
     /**
@@ -232,8 +234,17 @@ public class DatenTime {
      */
     private static void java8() {
         System.out.println("\nJAVA 8 APPROACH");
-        System.out.println("---------------");
+        System.out.println("-----------------");
        
+        // Different ways to convert from old date time to new date time API
+        // from date
+        LocalDateTime new_ldt = LocalDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault());
+        // from calendar
+        new_ldt = LocalDateTime.ofInstant(new GregorianCalendar().toInstant(), ZoneId.systemDefault());
+        // from epoch seconds
+        new_ldt = LocalDateTime.ofEpochSecond(1465817690, 0, ZoneOffset.UTC); // 2016-06-13T11:34:50
+        System.out.println("Convert Old API to New Date & Time API : " + new_ldt);
+
         // Instant: represents an instant in time on the timeline
         // Internally it contains two fields: seconds since the epoch and nanoseconds
         Instant inst = Instant.now();
@@ -244,6 +255,7 @@ public class DatenTime {
         System.out.println("Subtract Seconds: " + inst.minusSeconds(2).toString());
 
         // Duration: represents period of time between two Instant objects
+        // or It represents quanity of time in terms of seconds and nanoseconds.
         Instant now = Instant.now();
         Instant later = now.plusSeconds(3*60);
         Duration duration = Duration.between(now, later);
@@ -253,10 +265,21 @@ public class DatenTime {
         System.out.println("Convert whole duration to Minutes: " + duration.toMinutes());
         System.out.println("Convert whole duration to Days: " + duration.toDays());
         System.out.println("Duration + Days : " + duration.plusDays(2));
+        LocalTime stime = LocalTime.of(4, 39, 02);
+        LocalTime etime = stime.plus(Duration.ofSeconds(39));
+        System.out.println("Duration (stime-etime): " + Duration.between(stime, etime).getSeconds());
+        System.out.println("Duration (stime-etime) using ChronoUnit: " + ChronoUnit.SECONDS.between(stime, etime));
+
+        // Period: represents quantity of time in terms of years, months and days.
+        LocalDate start = LocalDate.parse("2005-12-31");
+        LocalDate end = start.plus(Period.ofDays(5));
+        System.out.println("Period in INT result: " + Period.between(start, end).getDays());
+        System.out.println("Period in LONG result: " + ChronoUnit.DAYS.between(start, end));
 
         // local date: represents local date without time and zone info
         LocalDate ldate = LocalDate.now(); // current date. simple way
         ldate = LocalDate.of(2010, 12, 31); // custom date
+        ldate = LocalDate.parse("2005-12-31"); // custom date in ISO format (yyyy-MM-dd)
         StringJoiner ldateJoiner = new StringJoiner(",", "[", "]");
         ldateJoiner.add("YEAR=" + ldate.getYear()).add("MONTH=" + ldate.getMonth()).add("DAY_OF_MONTH=" + ldate.getDayOfMonth())
                     .add("DAY_OF_YEAR=" + ldate.getDayOfYear()).add("DAY_OF_WEEK=" + ldate.getDayOfWeek());
@@ -264,10 +287,14 @@ public class DatenTime {
         ldate = ldate.plusYears(3);
         ldate = ldate.minusYears(2); 
         System.out.println("LocalDate = " + ldate);
+        ldate = LocalDate.now().minus(1, ChronoUnit.MONTHS);
+        System.out.println("Previous Month and Same Day: " + ldate);
 
         // local time: represents specific time in a day without time zone info
         LocalTime ltime = LocalTime.now(); // current time. simple way
         ltime = LocalTime.of(21, 31, 58, 11001); // custom time
+        ltime = LocalTime.parse("06:30").plus(1, ChronoUnit.HOURS); // custom time alternative approach
+
         StringJoiner ltimeJoiner = new StringJoiner(",", "[", "]");
         ltimeJoiner.add("HOUR=" + ltime.getHour()).add("MINUTE=" + ltime.getMinute()).add("SECONDS=" + ltime.getSecond())
                     .add("NANOSECONDS=" + ltime.getNano());
@@ -281,6 +308,7 @@ public class DatenTime {
         // Local date and time: represents local date and time without time zone info
         LocalDateTime ldt = LocalDateTime.now(); // current date & time. simple way
         ldt = LocalDateTime.of(2015, 11, 24, 13, 55, 36, 123); // custom date & time
+        ldt = LocalDateTime.parse("2015-02-20T06:30:00"); // custom date & time alternative approach
         ldt = ldt.minusYears(2);
         System.out.println("LocalDateTime= " + ldt.toString());
 
@@ -290,6 +318,7 @@ public class DatenTime {
         ZoneId zid = ZoneId.of("UTC+1"); // time zone with ZoneId.
         zid = ZoneId.of("Europe/Paris"); // alternative way. time zone with ZoneId.
         zdt = ZonedDateTime.of(2005, 11, 20, 21, 45, 22, 1234, zid); // custom way using ZoneId
+        zdt = ZonedDateTime.parse("2015-05-03T10:15:30+01:00[Europe/Paris]"); // custom way alternative approach
         // Be aware: Calculations that span across the daylight savings changes (start or end) may not give the result 
         // we expect! Therefore an alternative is to use a Period instance.
         zdt = zdt.plus(Period.ofDays(3));
@@ -300,7 +329,5 @@ public class DatenTime {
         DateTimeFormatter dtf = DateTimeFormatter.BASIC_ISO_DATE;
         String dateToText = dtf.format(LocalDate.now());
         System.out.println("BASIC_ISO_DATE = " + dateToText);        
-
-
     }
 }
