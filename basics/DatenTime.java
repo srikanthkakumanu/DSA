@@ -8,12 +8,20 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.Period;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.IsoFields;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -123,6 +131,7 @@ import java.util.TimeZone;
 */
 
 public class DatenTime {
+
     public static void main(String[] args) { 
         // java7();
         java8();
@@ -328,6 +337,63 @@ public class DatenTime {
         // date time formatting
         DateTimeFormatter dtf = DateTimeFormatter.BASIC_ISO_DATE;
         String dateToText = dtf.format(LocalDate.now());
-        System.out.println("BASIC_ISO_DATE = " + dateToText);        
+        System.out.println("BASIC_ISO_DATE = " + dateToText);       
+        
+        // TemporalQuery and TemporalAdjusters
+        // TemporalQuery: It can be used directly or indirectly.
+        // Under most circumstances, it is better to use indirect approach where query object
+        // is passed as parameter to query(). Because it is lot clearer to read in code.
+        QuarterOfYearQuery q = new QuarterOfYearQuery();
+        // Direct
+        Quarter quarter = q.queryFrom(LocalDate.now());
+        System.out.println(quarter);
+        // Indirect
+        quarter = LocalDate.now().query(q);
+        System.out.println("TemporalQuery quarter Info : " + quarter);
+
+        // TemporalAdjuster
+        LocalDate cdate = LocalDate.now();
+        Temporal fdoq = cdate.with(new FirstDayOfQuarter());
+        System.out.println("TemporalAdjuster with adjusted date : " + fdoq);
+    }
+}
+
+enum Quarter { FIRST, SECOND, THIRD, FOURTH } 
+
+class QuarterOfYearQuery implements TemporalQuery<Quarter> {
+    @Override
+    public Quarter queryFrom(TemporalAccessor temporal) {
+        LocalDate now = LocalDate.from(temporal);
+        if (now.isBefore(now.with(Month.APRIL).withDayOfMonth(1))) {
+            return Quarter.FIRST;
+        } else if (now.isBefore(now.with(Month.JULY).withDayOfMonth(1))) {
+            return Quarter.SECOND;
+        } else if (now.isBefore(now.with(Month.NOVEMBER).withDayOfMonth(1))) {
+            return Quarter.THIRD;
+        } else {
+            return Quarter.FOURTH;
+        }
+    }
+}
+
+class FirstDayOfQuarter implements TemporalAdjuster {
+    @Override
+    public Temporal adjustInto(Temporal temporal) {
+        final int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
+        switch (currentQuarter) {
+            case 1:
+                return LocalDate.from(temporal).with(TemporalAdjusters.firstDayOfYear());
+            case 2:
+                return LocalDate.from(temporal).withMonth(Month.APRIL.getValue())
+                        .with(TemporalAdjusters.firstDayOfMonth());
+            case 3:
+                return LocalDate.from(temporal).withMonth(Month.JULY.getValue())
+                        .with(TemporalAdjusters.firstDayOfMonth());
+            case 4:
+                return LocalDate.from(temporal).withMonth(Month.OCTOBER.getValue())
+                        .with(TemporalAdjusters.firstDayOfMonth());
+            default:
+                return null; // Will never happen
+        }
     }
 }
