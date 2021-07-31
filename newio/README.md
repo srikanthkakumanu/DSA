@@ -10,7 +10,8 @@
 4. [Basic I/O: Character Streams](#character-streams) </br>
 5. [Basic I/O: Un-buffered Streams](#unbuffered-streams) </br>
 6. [Basic I/O: Buffered Streams](#buffered-streams) </br>
-7. [Scanner + Format + Console](#scanner-and-console) </br>
+7. [Basic I/O: Data Streams](#data-streams) </br>
+8. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
 
 ## **Overview**
 
@@ -116,6 +117,19 @@ Java supports the user to interact with CLI environment in **two ways**: **Stand
 
 Standard streams example: `InputStreamReader isr = new InputStreamReader(System.in);` </br>
 Console example: `Console c = System.console(); String login = c.readLine("Enter Your Login: "); c.readPassword("Enter Your Old Password: ");`
+
+## **Data Streams**
+
+---
+
+**Data streams** support **binary I/O of primitive data types and string values**. Supported primitive data types are *boolean, char, byte, short, int, long, float and double*. 
+
+DataStreams uses one very bad programming technique: it uses floating point numbers to represent monetary values. In general, floating point is bad for precise values. It's particularly bad for decimal fractions, because common values (such as 0.1) do not have a binary representation.
+
+**Note**: Data streams can only be created as a **wrapper** for an **existing byte stream objects**.
+e.g. `dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));`
+
+**Byte Stream**: DataInputStream, DataOutputStream </br>
 
 
 </div>

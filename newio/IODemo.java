@@ -7,6 +7,9 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Console;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,7 +29,8 @@ public class IODemo {
         // bufferByteStream();
         // bufferCharStream();
         // byteArrayByteStream();
-        scanAndFormat();
+        dataByteStreams();
+        // scanAndFormat();
     }
 
     /**
@@ -204,6 +208,49 @@ public class IODemo {
     }
 
     /**
+     * Data streams support binary I/O of primitive data types and string values. 
+     * Supported primitive data types are boolean, char, byte, short, int, long, float and double.
+     */
+    private static void dataByteStreams() throws FileNotFoundException, IOException {
+        String file = "newio/invoice.dat";
+        double[] prices = { 19.99, 9.99, 15.99, 3.99, 4.99 };
+        int[] units = {12, 8, 13, 29, 50};
+        String[] descs = { "Java T-shirt", "Java Mug", "Duke Juggling Dolls", "Java Pin", "Java Key Chain" };
+
+        // Write some data into a file.
+        DataOutputStream dos = null;
+        try {
+            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+            for(int i = 0; i < prices.length; i++) {
+                dos.writeDouble(prices[i]); dos.writeInt(units[i]); dos.writeUTF(descs[i]);
+            }
+        } finally {
+            if(dos != null) dos.close();
+        }
+
+        // Reading from file
+        DataInputStream din = null;
+        double total = 0.0;
+        try {
+            din = new DataInputStream(new FileInputStream("newio/invoice.dat"));
+            
+            double price; 
+            int unit; 
+            String desc;
+            try {
+                while(true) {
+                    price = din.readDouble();
+                    unit = din.readInt();
+                    desc = din.readUTF();
+                    System.out.format("You ordered %d units of %s at $%.2f%n", unit, desc, price);
+                    total = unit * price;
+                }
+            } catch(EOFException e) { System.out.println("Exception caught at dataByteStreams() : " + e.getMessage()); }
+            System.out.format("For a Total of: $%.2f%n", total);
+        } finally { if(din != null) din.close(); }
+    }
+ 
+    /**
      * The Scanner API breaks input into individual tokens associated with bits of data. By default,
      * Scanner uses a whitespace to separate tokens. To use different separator, invoke useDelimiter()
      * and specify regular expression. 
@@ -221,6 +268,16 @@ public class IODemo {
             //scan.useDelimiter(",\\s*"); // ,\\s* is regex for comma
             while(scan.hasNext())
                 System.out.println(scan.next());
+
+            // Scanner: Reading from CLI
+            Scanner sin = new Scanner(System.in);
+            String first, last;
+            System.out.print("Enter Your First Name: ");
+            first = sin.nextLine();
+            System.out.print("Enter Your Last Name: ");
+            last = sin.nextLine();
+            System.out.format("Your Full Name is: %s %s \n", first, last);
+            sin.close();
 
             // CLI: Standard streams     
             // InputStreamReader isr = new InputStreamReader(System.in);
