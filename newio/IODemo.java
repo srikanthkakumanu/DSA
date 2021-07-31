@@ -6,13 +6,16 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class IODemo {
@@ -22,7 +25,8 @@ public class IODemo {
         // fileCharStreamUnbuffered();
         // bufferByteStream();
         // bufferCharStream();
-        byteArrayByteStream();
+        // byteArrayByteStream();
+        scanAndFormat();
     }
 
     /**
@@ -196,6 +200,58 @@ public class IODemo {
         } finally {
             if(bain != null) bain.close();
             if(baout != null) baout.close();
+        }
+    }
+
+    /**
+     * The Scanner API breaks input into individual tokens associated with bits of data. By default,
+     * Scanner uses a whitespace to separate tokens. To use different separator, invoke useDelimiter()
+     * and specify regular expression. 
+     * 
+     * The Formatting API assembles data into nicely formatted, human-readable form: System.out.format() method
+     * 
+     * Java supports the user to interact with CLI environment in two ways: Standard streams and Console.
+     * Console is more advanced than standard streams and it has most of the features provided standard streams.
+     */
+    private static void scanAndFormat() throws IOException {
+        Scanner scan = null;
+        try {
+            scan = new Scanner(new BufferedReader(new FileReader("newio/xanadu.txt")));
+            //scan.useDelimiter(","); 
+            //scan.useDelimiter(",\\s*"); // ,\\s* is regex for comma
+            while(scan.hasNext())
+                System.out.println(scan.next());
+
+            // CLI: Standard streams     
+            // InputStreamReader isr = new InputStreamReader(System.in);
+            // CLI: Console
+            Console c = System.console();
+            
+            if(c == null) {
+                System.err.println("No Console supported.");
+                System.exit(1);
+            }
+
+            // Logic for password change.
+            String login = c.readLine("Enter Your Login: ");
+            char[] oldPassword = c.readPassword("Enter Your Old Password: ");
+            // Here you can add if condition logic to verify login and password.
+            // if(verify(login, oldPassword))
+            boolean isMatch;
+            do {
+                char[] nPass1 = c.readPassword("Enter Your New Password: ");
+                char[] nPass2 = c.readPassword("Re-Enter Your New Password again: ");
+                isMatch = Arrays.equals(nPass1, nPass2);
+                if(isMatch)
+                    c.format("Password for %s changed.%n", login);
+                else
+                    c.format("Passwords don't match. Try Again.%n");
+                Arrays.fill(nPass1,' '); Arrays.fill(nPass2,' '); // security pre-caution: flushing stored passwords
+                Arrays.fill(oldPassword, ' ');
+            } while(!isMatch);
+            
+        } finally {
+            if(scan != null) scan.close();
         }
     }
 }

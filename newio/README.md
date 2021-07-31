@@ -10,6 +10,7 @@
 4. [Basic I/O: Character Streams](#character-streams) </br>
 5. [Basic I/O: Un-buffered Streams](#unbuffered-streams) </br>
 6. [Basic I/O: Buffered Streams](#buffered-streams) </br>
+7. [Scanner + Format + Console]() </br>
 
 ## **Overview**
 
@@ -102,6 +103,19 @@ Buffered streams adds functionality to existing streams i.e. buffering by creati
 
 **Byte Stream**: BufferedInputStream, BufferedOutputStream, ByteArrayInputStream, ByteArrayOutputStream </br>
 **Character Stream**: BufferedReader, BufferedWriter </br>
+
+## **Scanner and Console**
+
+---
+
+The **Scanner** API breaks input into individual tokens associated with bits of data. By default, *Scanner* uses a **whitespace** to separate tokens. To use different separator, invoke `useDelimiter()` and specify the regular expression as argument.
+
+The **Formatting API** assembles data into nicely formatted, human-readable form: System.out.format() method to be used for formatting.
+
+Java supports the user to interact with CLI environment in **two ways**: **Standard streams and Console**. **Console** is more advanced than standard streams and it has most of the features provided standard streams.
+
+Standard streams example: `InputStreamReader isr = new InputStreamReader(System.in);`
+Console example: `Console c = System.console(); String login = c.readLine("Enter Your Login: "); c.readPassword("Enter Your Old Password: ");`
 
 
 </div>
