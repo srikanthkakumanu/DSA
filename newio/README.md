@@ -144,7 +144,7 @@ Basically, the ObjectOutputStream converts Java objects into corresponding strea
 
 If two objects on the same stream both contain references to a single object, and they both refer to a single object when they're read back as well. Because, A stream can only contain one copy of an object, though it can contain any number of references to it. Thus if you explicitly write an object to a stream twice, you're really writing only the reference twice. However, if a single object is written to **two different streams**, it is effectively duplicated — a single program reading both streams back will see two distinct objects.
 
-
+**Note**: De-serialization of untrusted data is inherently dangerous and should be avoided. Untrusted data should be carefully validated meaning that it is advisable to follow Serialization and De-serialization guidelines such as **do not serialize sensitive data** etc.
 
 **Byte Stream**: ObjectInputStream, ObjectOutputStream </br>
 

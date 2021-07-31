@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -280,12 +281,17 @@ public class IODemo {
      * 
      * However, if a single object is written to two different streams, it is effectively duplicated — a single 
      * program reading both streams back will see two distinct objects.
+     * 
+     * Note: De-serialization of untrusted data is inherently dangerous and should be avoided. Untrusted data 
+     * should be carefully validated meaning that it is advisable to follow Serialization and De-serialization 
+     * guidelines such as "do not serialize sensitive data" etc.
      * @throws IOException
      * @throws ClassNotFoundException
      */
     private static void objectByteStreams() throws IOException, ClassNotFoundException {
         ObjectInputStream obin = null;
         ObjectOutputStream obout = null;
+        // simple example
         int number = 4948;
         String text = "This is text!";
         try {
@@ -294,6 +300,19 @@ public class IODemo {
 
             obin = new ObjectInputStream(new FileInputStream("newio/obj_invoice.dat"));
             System.out.format("Number is %d and Text is %s \n", obin.readInt(), obin.readObject());
+        } finally {
+            if(obin != null) obin.close();
+            if(obout != null) obout.close();
+        }
+        // another example
+        try {
+            Dog dog = new Dog("Tyson", "Labrador");
+            obout = new ObjectOutputStream(new FileOutputStream("newio/obj_dogs.txt"));
+            obout.writeObject(dog);
+    
+            obin = new ObjectInputStream(new FileInputStream("newio/obj_dogs.txt"));
+            dog = (Dog) obin.readObject();
+            System.out.format("Dog: Name is %s and Breed is %s \n", dog.getName(), dog.getBreed());
         } finally {
             if(obin != null) obin.close();
             if(obout != null) obout.close();
@@ -364,4 +383,28 @@ public class IODemo {
     }
 }
 
+class Dog implements Serializable {
+    String name, breed;
 
+    public Dog(String name, String breed) {
+        this.name = name;
+        this.breed = breed;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }    
+    
+}
