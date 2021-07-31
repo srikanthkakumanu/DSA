@@ -43,8 +43,14 @@ There are some **specialized** stream classes to handle different types of input
 - **I/O from the Command Line**: describes the Standard Streams and the Console object.
 - **Data Streams**: handle binary I/O of primitive data type and String values.
 - **Object Streams**: handle binary I/O of objects.
+- **Piped Streams**: Pipes are used to channel the output from one thread into the input of another thread.
 
-**Note**: Both byte and characters streams are further categorized into **Buffered** and **unbuffered** streams.
+**Note**:
+
+- Both byte and characters streams are all **sequential access streams**. In contrast, RandomAccessFile lets you randomly access the contents of a file.
+- Both byte and character streams further categorized into **Buffered** and **Unbuffered** streams.
+- Byte streams read/write **8-bit bytes** and are limited to ISO-Latin-1 8-bit bytes.
+- Character streams read/write **16-bit characters** (character in Unicode character set).
 
 ## **Byte Streams**
 
@@ -147,5 +153,16 @@ If two objects on the same stream both contain references to a single object, an
 **Note**: De-serialization of untrusted data is inherently dangerous and should be avoided. Untrusted data should be carefully validated meaning that it is advisable to follow Serialization and De-serialization guidelines such as **do not serialize sensitive data** etc.
 
 **Byte Stream**: ObjectInputStream, ObjectOutputStream </br>
+
+## **Piped Streams**
+
+---
+
+Pipes are used to channel the output from one thread into the input of another thread. **Pipes** in IO provides **a link between two threads running in JVM at the same time**. So, Pipes are used both as **source** or **destination**. A pipe is said to be **broken** if a thread that was providing data bytes to the connected piped output stream is no longer alive.
+
+The **advantage with pipe streams** is that **the output from one method could be piped into the next** otherwise (without pipe streams) the program would have to store the results somewhere (such as in a file or in memory) between each step. In essence, a method's output could be used as the input for another so that **you could string a series of method calls together to perform a higher-order function**.
+
+**Byte Stream**: PipedInputStream, PipedOutputStream </br>
+**Character Stream**: PipedReader, PipedWriter </br>
 
 </div>
