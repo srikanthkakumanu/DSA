@@ -10,7 +10,7 @@
 4. [Basic I/O: Character Streams](#character-streams) </br>
 5. [Basic I/O: Un-buffered Streams](#unbuffered-streams) </br>
 6. [Basic I/O: Buffered Streams](#buffered-streams) </br>
-7. [Scanner + Format + Console]() </br>
+7. [Scanner + Format + Console](#scanner-and-console) </br>
 
 ## **Overview**
 
@@ -114,7 +114,7 @@ The **Formatting API** assembles data into nicely formatted, human-readable form
 
 Java supports the user to interact with CLI environment in **two ways**: **Standard streams and Console**. **Console** is more advanced than standard streams and it has most of the features provided standard streams.
 
-Standard streams example: `InputStreamReader isr = new InputStreamReader(System.in);`
+Standard streams example: `InputStreamReader isr = new InputStreamReader(System.in);` </br>
 Console example: `Console c = System.console(); String login = c.readLine("Enter Your Login: "); c.readPassword("Enter Your Old Password: ");`
 
 
