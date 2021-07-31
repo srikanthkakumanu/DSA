@@ -17,19 +17,22 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class IODemo {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         // fileByteStreamsUnbuffered();
         // fileCharStreamUnbuffered();
         // bufferByteStream();
         // bufferCharStream();
         // byteArrayByteStream();
-        dataByteStreams();
+        // dataByteStreams();
+        objectByteStreams();
         // scanAndFormat();
     }
 
@@ -210,6 +213,8 @@ public class IODemo {
     /**
      * Data streams support binary I/O of primitive data types and string values. 
      * Supported primitive data types are boolean, char, byte, short, int, long, float and double.
+     * @throws FileNotFoundException
+     * @throws IOException
      */
     private static void dataByteStreams() throws FileNotFoundException, IOException {
         String file = "newio/invoice.dat";
@@ -251,6 +256,51 @@ public class IODemo {
     }
  
     /**
+     * Object streams support I/O of objects (Serialization & De-serialization) just like data streams 
+     * support I/O of primitive data types. All the primitive data I/O methods covered in data streams 
+     * are also implemented in object streams. So an object stream can contain a mixture of primitive 
+     * and object values. 
+     * 
+     * The biggest advantage of object streams is that while they are writing/reading an object, all 
+     * corresponding references(inherent references or other objects that are stored within a object) 
+     * of that object are also preserved.
+     * 
+     * e.g. If a -> (b, c) and b -> (d, e) then object stream preserves whole a, b, c, d, e while 
+     * reading/writing object a.
+     * 
+     * Basically, the ObjectOutputStream converts Java objects into corresponding streams. This is known 
+     * as Serialization. Those converted streams can be stored in files or transferred through networks. 
+     * Now, if we need to read those objects, we will use the ObjectInputStream that will convert the 
+     * streams back to corresponding objects. This is known as De-serialization.
+     * 
+     * If two objects on the same stream both contain references to a single object, and they both refer 
+     * to a single object when they're read back as well. Because, A stream can only contain one copy of 
+     * an object, though it can contain any number of references to it. Thus if you explicitly write an 
+     * object to a stream twice, you're really writing only the reference twice. 
+     * 
+     * However, if a single object is written to two different streams, it is effectively duplicated — a single 
+     * program reading both streams back will see two distinct objects.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private static void objectByteStreams() throws IOException, ClassNotFoundException {
+        ObjectInputStream obin = null;
+        ObjectOutputStream obout = null;
+        int number = 4948;
+        String text = "This is text!";
+        try {
+            obout = new ObjectOutputStream(new FileOutputStream("newio/obj_invoice.dat"));
+            obout.writeInt(number); obout.writeObject(text);
+
+            obin = new ObjectInputStream(new FileInputStream("newio/obj_invoice.dat"));
+            System.out.format("Number is %d and Text is %s \n", obin.readInt(), obin.readObject());
+        } finally {
+            if(obin != null) obin.close();
+            if(obout != null) obout.close();
+        }
+    }   
+
+    /**
      * The Scanner API breaks input into individual tokens associated with bits of data. By default,
      * Scanner uses a whitespace to separate tokens. To use different separator, invoke useDelimiter()
      * and specify regular expression. 
@@ -259,6 +309,7 @@ public class IODemo {
      * 
      * Java supports the user to interact with CLI environment in two ways: Standard streams and Console.
      * Console is more advanced than standard streams and it has most of the features provided standard streams.
+     * @throws IOException
      */
     private static void scanAndFormat() throws IOException {
         Scanner scan = null;
