@@ -12,7 +12,10 @@
 6. [Basic I/O: Buffered Streams](#buffered-streams) </br>
 7. [Basic I/O: Data Streams](#data-streams) </br>
 8. [Basic I/O: Object Streams](#object-streams) </br>
-9. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
+9. [Basic I/O: Piped Streams](#piped-streams) </br>
+10. [Basic I/O: Sequence Streams](#sequence-streams) </br>
+11. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
+12. [Random Access Files](#random-access-files) </br>
 
 ## **Overview**
 
@@ -164,5 +167,18 @@ The **advantage with pipe streams** is that **the output from one method could b
 
 **Byte Stream**: PipedInputStream, PipedOutputStream </br>
 **Character Stream**: PipedReader, PipedWriter </br>
+
+## **Sequence Streams**
+
+---
+
+Sequence input stream combine one or more input streams into one input stream i.e. combine a single input stream from multiple input sources.
+
+**Byte Stream**: SequenceInputStream </br>
+## **Random Access Files**
+
+---
+
+
 
 </div>

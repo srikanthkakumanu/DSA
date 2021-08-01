@@ -23,6 +23,7 @@ import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.SequenceInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ public class IODemo {
         // dataByteStreams();
         // objectByteStreams();
         // pipeCharStreams();
-
+        sequenceStreams();
         // scanAndFormat();
     }
 
@@ -342,6 +343,21 @@ public class IODemo {
     private static void pipeCharStreams() throws IOException {
         // Reverse and sort the rhyming words
         RhymingWords.rymes();
+    }
+
+    /**
+     * Sequence input stream combine one or more input streams into one input stream 
+     * i.e. combine a single input stream from multiple input sources.
+     * @throws IOException
+     */
+    private static void sequenceStreams() throws IOException {
+        SequenceInputStream sis = null;
+        BufferedOutputStream bout = null;
+        try {
+            sis = new SequenceInputStream(new FileInputStream("newio/xanadu.txt"), new FileInputStream("newio/words.txt"));
+            bout = new BufferedOutputStream(new FileOutputStream("newio/combined.txt"));
+            bout.write(sis.readAllBytes());
+        } finally { if(sis != null) sis.close(); if(bout != null) bout.close(); }
     }
 
     /**
