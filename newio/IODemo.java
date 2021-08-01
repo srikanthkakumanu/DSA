@@ -19,8 +19,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -33,7 +39,9 @@ public class IODemo {
         // bufferCharStream();
         // byteArrayByteStream();
         // dataByteStreams();
-        objectByteStreams();
+        // objectByteStreams();
+        // pipeCharStreams();
+
         // scanAndFormat();
     }
 
@@ -320,6 +328,23 @@ public class IODemo {
     }   
 
     /**
+     * Pipes are used to channel the output from one thread into the input of another thread. Pipes in IO provides 
+     * a link between two threads running in JVM at the same time. So, Pipes are used both as source or destination. 
+     * A pipe is said to be broken if a thread that was providing data bytes to the connected piped output stream is 
+     * no longer alive. 
+     * 
+     * The advantage with pipe streams is that the output from one method could be piped into the next otherwise 
+     * (without pipe streams) the program would have to store the results somewhere (such as in a file or in memory) 
+     * between each step. In essence, a method's output could be used as the input for another so that you could string 
+     * a series of method calls together to perform a higher-order function.
+     * @throws IOException
+     */
+    private static void pipeCharStreams() throws IOException {
+        // Reverse and sort the rhyming words
+        RhymingWords.rymes();
+    }
+
+    /**
      * The Scanner API breaks input into individual tokens associated with bits of data. By default,
      * Scanner uses a whitespace to separate tokens. To use different separator, invoke useDelimiter()
      * and specify regular expression. 
@@ -395,16 +420,93 @@ class Dog implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getBreed() {
         return breed;
     }
+}
 
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }    
-    
+class RhymingWords {
+    public static void rymes() throws IOException {
+        // reverse - sort - reverse the rhymed words
+        Reader rhymedWords = reverse(sort(reverse(new FileReader("newio/words.txt"))));
+        BufferedReader br = new BufferedReader(rhymedWords);
+        String input;
+        while((input = br.readLine()) != null)
+            System.out.println(input);
+        br.close();
+    }
+
+    /**
+     * Reverses the input source data
+     * @param source Reader instance i.e. file reader
+     * @return pr    piped reader
+     * @throws IOException
+     */
+    public static Reader reverse(Reader source) throws IOException {
+        BufferedReader br = new BufferedReader(source);
+        PipedWriter pw = new PipedWriter();
+        PipedReader pr = new PipedReader(pw);
+        PrintWriter out = new PrintWriter(pw);
+        ReverseThread rt = new ReverseThread(br, out);
+        rt.start();
+        return pr;
+    }
+
+    /**
+     * Sorts the input source data
+     * @param source Reader instance i.e. piped reader or file reader
+     * @return pr    piped reader
+     * @throws IOException
+     */
+    public static Reader sort(Reader source) throws IOException {
+        BufferedReader br = new BufferedReader(source);
+        PipedWriter pw = new PipedWriter();
+        PipedReader pr = new PipedReader(pw);
+        PrintWriter out = new PrintWriter(pw);
+        SortThread st = new SortThread(br, out);
+        st.start();
+        return pr;
+    }
+}
+
+class ReverseThread extends Thread {
+    private BufferedReader br = null;
+    private PrintWriter pw = null;
+
+    public ReverseThread(BufferedReader br, PrintWriter pw) { this.br = br; this.pw = pw; }
+
+    public void run() {
+        if(br != null && pw != null) {
+            try {
+                String input;
+                while((input = br.readLine()) != null) {
+                    pw.println(new StringBuilder(input).reverse().toString());
+                    pw.flush();
+                }
+            } catch(IOException e) { System.err.println("Exception caught at ReverseThread: " + e.getMessage()); }
+        }
+    }
+}
+
+class SortThread extends Thread {
+    BufferedReader br = null;
+    PrintWriter pw = null;
+
+    public SortThread(BufferedReader br, PrintWriter pw) { this.br = br; this.pw = pw; }
+
+    public void run() {
+        if(br != null && pw != null) {
+            try {
+                String input;
+                ArrayList<String> parts = new ArrayList<>();
+                while((input = br.readLine()) != null) 
+                    parts.add(input);
+                if(!parts.isEmpty()) {
+                    Collections.sort(parts);
+                    pw.println(parts);
+                }
+                pw.close();
+            } catch(IOException e) { System.err.println("Exception caught at SortThread: " + e.getMessage()); }
+        }
+    }
 }
