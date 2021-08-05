@@ -4,7 +4,7 @@
 
 ## **Table Of Contents**
 
-1. [Overview](#overview) </br>
+1. [Basic I/O: Overview](#overview) </br>
 2. [Basic I/O: Streams](#streams) </br>
 3. [Basic I/O: Byte Streams](#byte-streams) </br>
 4. [Basic I/O: Character Streams](#character-streams) </br>
@@ -15,7 +15,9 @@
 9. [Basic I/O: Piped Streams](#piped-streams) </br>
 10. [Basic I/O: Sequence Streams](#sequence-streams) </br>
 11. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
-12. [Random Access Files](#random-access-files) </br>
+12. [NIO: Overview](#new-io-nio-overview) </br>
+13. 
+3. [Random Access Files](#random-access-files) </br>
 
 ## **Overview**
 
@@ -175,10 +177,61 @@ The **advantage with pipe streams** is that **the output from one method could b
 Sequence input stream combine one or more input streams into one input stream i.e. combine a single input stream from multiple input sources.
 
 **Byte Stream**: SequenceInputStream </br>
-## **Random Access Files**
+
+## **New IO (NIO) Overview**
 
 ---
 
+The Java NIO (new input/output) defines **buffers** (**containers for data**) and other structures, mechanisms to support buffers. This Java NIO is an *alternative to standard IO and networking API's*. Java NIO offers a different I/O programming model than the traditional I/O APIs. Buffers are the foundation for NIO operations.
 
+- In the Java standard I/O API, we work with **byte streams and character streams**. In NIO, we work with **channels and buffers**. In NIO, Data is always read from a channel into a buffer, or written from a buffer to a channel.
+- The Java NIO enable us to do non-blocking I/O. For instance, a thread can ask a channel to read data into a buffer. While the channel reads data into the buffer, the thread can do something else. Once data is read into the buffer, the thread can then continue processing it. The same is true for writing data to channels.
+- Java NIO contains the concept of **selectors**. **A selector is an object that can monitor multiple channels for events** (e.g. connection opened, data arrived etc.). Thus, a single thread **can monitor multiple channels for data**.
+
+The Java NIO (New I/O) API support the following:
+
+- **Buffers** (`java.nio`): They are containers for fixed amount of data of a specific primitive data type.
+- **Charsets** (`java.nio.charset`): They are **named mappings** between **16-bit unicode characters and sequences of bytes**. Support for charsets include **encoders and decoders** (translate between bytes and unicode characters).
+- **Channels** (`java.nio.channels`): They represent **an open connection to an entity** (such as hardware device, a file, a network socket, a program) that is capable of performing one or more distinct I/O operations (e.g. reading or writing).
+- **Multi-plexed and non-blocking I/O** (`SelectableChannel`): Multiplexing is **the ability to process multiple I/O operations in one channel**. Multiplexing is supported by **Selectable channels**. **A selectable channel can be put into blocking or non-blocking mode**. In **blocking mode**, every I/O operation on a channel will block until it completes. In **non-blocking mode**, an I/O operation will never block but it may transfer fewer bytes than requested or possibly no bytes at all.
+
+## **Channels**
+
+---
+
+They represent **an open connection to an entity** (such as hardware device, a file, a network socket, a program) that is capable of performing one or more distinct I/O operations (e.g. reading or writing). Data is always read from a **channel into a buffer, or written from a buffer to a channel**.
+
+Typically, all I/O in NIO starts with a Channel. **A Channel is a bit like a stream**. Channels are either open or closed, and they are both asynchronously closeable and interruptible.
+
+There are several Channel types. 
+## **Buffers**
+
+---
+
+They are **containers for fixed amount of data** of a specific primitive data type. Data is always read from a **channel into a buffer, or written from a buffer to a channel**. Essentially **NIO is all about moving data into and out of buffers**. It sits between an application and a channel that writes the buffered data to the service or reads the data from the service and deposits it into the buffer.
+
+Buffer has **four properties**:
+
+These four properties are related as follows: **0 <= mark <= position <= limit <= capacity**
+
+- **Capacity**: The total number of data items that can be stored in the buffer. It is specified during buffer creation time and cannot be changed later.
+- **Limit**: It identifies number of live data items in the buffer. It is the zero-based index of first element that should not read or written.
+- **Position**: The zero-based index of next data item that can be read or the location where the data item can be written.
+- **Mark**: A zero-based index to which the buffer’s position will be reset when the buffer’s reset() method is called. The mark is initially undefined.
+
+The below diagram shows logical layout of a byte-oriented buffer with capacity 7.
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/buffer_diagram.png" alt="Java NIO Buffer Logical Representation" width="500" height="300"></img> </br>
+
+
+
+
+
+
+
+
+## **Random Access Files**
+
+---
 
 </div>
