@@ -1,13 +1,26 @@
 package newio;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.GatheringByteChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.ScatteringByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 public class NIODemo {
     public static void main(String[] args) {
         buffers();
+        // channels();
+        ChannelScatterAndGatherIO();
     }
 
+    /**
+     * Demonstrates NIO Buffers
+     */
     private static void buffers() {
         Buffer buffer = ByteBuffer.allocate(7); // Allocates a buffer (non-direct) inside the 'managed heap' of the java process
         // Buffer buffer = ByteBuffer.allocateDirect(7); // Allocates a buffer (direct) outside of the 'managed heap' of the java process
@@ -40,6 +53,90 @@ public class NIODemo {
         
     }
 
+    /**
+     * Simple Channel for read & write of I/O
+     */
+    private static void channels() {
+        ReadableByteChannel source = Channels.newChannel(System.in);
+        WritableByteChannel dest = Channels.newChannel(System.out);
+
+        try {
+            /* Approach-1:
+            Approach-1 goal is to minimize OS I/O calls (via the write() method calls), although more data may end up 
+            being copied as a result of the compact() method calls.
+            */
+            ByteBuffer buffer = ByteBuffer.allocateDirect(2048);
+            while(source.read(buffer) != -1) {
+                buffer.flip();
+                dest.write(buffer);
+                buffer.compact();
+            }
+            buffer.flip();
+            while(buffer.hasRemaining())
+                dest.write(buffer);
+            
+            /* Approach-2:
+            Approach-2 goal is to eliminate data copying, although more OS I/O calls might occur.
+            */
+            // ByteBuffer buffer = ByteBuffer.allocateDirect(2048);
+            while(source.read(buffer) != -1) {
+                buffer.flip();
+                while (buffer.hasRemaining())
+                    dest.write(buffer);
+                buffer.clear();
+            }
+        } 
+        catch (IOException e) { System.err.println("Exception caught at channels: " + e.getMessage()); }
+        finally {
+            try {
+                source.close(); dest.close();
+            } catch (IOException e) { System.err.println("Exception caught at channels: " + e.getMessage()); }
+        }
+    }
+
+    /**
+     * Demonstrates Scatter & Gather I/O (Vectored I/O) and reading & writing to/from multiple buffers
+     */
+    private static void ChannelScatterAndGatherIO() {
+        ScatteringByteChannel source = null;
+        GatheringByteChannel dest = null;
+        FileInputStream fis = null;
+        FileOutputStream fout = null;
+        
+        try {
+            fis = new FileInputStream("newio/xanadu.txt");
+            source = (ScatteringByteChannel) Channels.newChannel(fis);
+            ByteBuffer buffer1 = ByteBuffer.allocateDirect(1048);
+            ByteBuffer buffer2 = ByteBuffer.allocateDirect(1058);
+            ByteBuffer[] buffers = {buffer1, buffer2};
+            source.read(buffers);
+            
+            buffer1.flip();
+            while(buffer1.hasRemaining())
+                System.out.println(buffer1.get());
+            System.out.println();
+
+            buffer2.flip();
+            while(buffer2.hasRemaining())
+                System.out.println(buffer2.get());
+            
+            buffer1.rewind(); buffer2.rewind();
+
+            fout = new FileOutputStream("newio/xanadu_out.txt");
+            dest = (GatheringByteChannel) Channels.newChannel(fout);
+            buffers[0] = buffer2; buffers[1] = buffer1;
+            dest.write(buffers);
+        } 
+        catch (IOException e) { System.err.println("Exception caught at channels: " + e.getMessage()); }
+        finally {
+            try {
+                source.close(); dest.close();
+            } catch (IOException e) { System.err.println("Exception caught at channels: " + e.getMessage()); }
+        }
+
+    }
+
+    
     /**
      * Simple utility method to print buffer information
      * @param buffer

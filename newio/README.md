@@ -16,8 +16,11 @@
 10. [Basic I/O: Sequence Streams](#sequence-streams) </br>
 11. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
 12. [NIO: Overview](#new-io-nio-overview) </br>
-13. 
-3. [Random Access Files](#random-access-files) </br>
+13. [NIO: Buffers](#buffers) </br>
+14. [NIO: Direct vs. Indirect Buffers](#direct-and-non-direct-buffers) </br>
+15. [NIO: View Buffers](#view-buffers) </br>
+16. [NIO: Channels](#channels) </br>
+17. [Random Access Files](#random-access-files) </br>
 
 ## **Overview**
 
@@ -235,11 +238,15 @@ The below diagram shows logical layout of a byte-oriented buffer with capacity 7
 
 <img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/buffer_diagram.png" alt="Java NIO Buffer Logical Representation" width="500" height="300"></img> </br>
 
-### **Direct and Non-direct buffers**
+### **||| Direct and Non-direct buffers**
+
+---
 
 An non-direct buffer is that memory allocated inside the **managed heap** of the java process and it is created by using `allocate()` method call. A direct buffer is that memory allocated outside of the **managed heap** of the java process and it is created by using `allocateDirect()` method call.
 
-### **View buffers**
+### **||| View buffers**
+
+---
 
 As buffers can manage data elements stored in external arrays (via `wrap()` method), they can also **manage data stored in other buffers**. When we create
 a buffer that manages another buffer’s data, the created buffer is known as a **view buffer**. **Changes made in either buffer are reflected in the other**.
@@ -253,22 +260,59 @@ View buffers are created by calling `duplicate()` or `asxBuffer()` or `asLongBuf
 
 ---
 
-Channels partner with buffers to achieve high-performance I/O. 
+Channels partner with buffers to achieve high-performance I/O.
 
 - Channels represent **an open connection to an entity** (such as hardware device, a file, a network socket, a program) that is capable of performing one or more distinct I/O operations (e.g. reading or writing).
 - Data is always read from a **channel into a buffer, or written from a buffer to a channel**.
-- Typically, all I/O in NIO starts with a Channel. **A Channel is a bit like a stream**. 
+- Typically, all I/O in NIO starts with a Channel. **A Channel is a bit like a stream**.
 - Channels are either open or closed, and they are both asynchronously closeable and interruptible.
 - Channels are gateways through which I/O services are accessed. Channels use byte buffers as the endpoints for sending and receiving data.
 - All channels are instances of classes that ultimately implement the
 `java.nio.channels.Channel` interface.
 
-Scater and Gather I/O
-There are several Channel types. 
+The following are types of channels:
+
+- Scatter and Gather Channels (**Scatter & Gather I/O or Vectored I/O**)
+- File Channels
+
+
+### **||| Scatter and Gather Channels**
+
+---
+
+Channels provide the ability to perform a **single I/O operation across multiple buffers**. This capability is known as **Scatter and Gather I/O** and it can also be called as **Vectored I/O**.
+
+In the context of a write operation, the contents of several buffers are **gathered (drained)** in sequence and then sent through the channel to a destination. These buffers are not required to have identical capacities.
+
+In the context of a read operation, the contents of a channel are **scattered (filled)** to multiple buffers in sequence. Each buffer is filled to its limit until the channel is empty or until the total buffer space is used.
+
+### **||| File Channels**
+
+---
 
 
 ## **Random Access Files**
 
 ---
+
+Files can be created and/or opened for **random access** with a mixture of write and read operations at various locations can occur until the file is closed.
+
+`RandomAccessFile` supports the following **modes**:
+
+
+|Mode  |Description  |
+|---------|---------|
+|**r**     | Opens an existing file in Read only mode.        |
+|**rw**     | (Create/open) a new file or open an existing file for reading & writing.         |
+|**rwd**     | (Create/open) a new file or open an existing file for reading & writing. Further, each update to the **file's content** must be **written synchronously** to the **underlying storage device**.        |
+|**rws**     | (Create/open) a new file or open an existing file for reading & writing. Further, each update to the **file's content or metadata** must be **written synchronously** to the **underlying storage device**. A file’s metadata is data about the file and not the actual file contents. e.g. file’s length, the time the file was last modified etc.         |
+
+**Note**:
+
+- The **rwd** and **rws** modes ensure that any writes to a file located on a local storage device are written to the device, which guarantees that critical data isn’t lost when the OS crashes. However no guarantee is made when the file doesn’t reside on a local device.
+
+- Operations on a random access file opened in **rwd** or **rws** mode are slower than these same operations on a random access file opened in **rw** mode.
+
+A random access file is associated with a *file pointer*, a *cursor* that identifies the location of the next byte to write or read. When an existing file is opened, the file pointer is set to its first byte at *offset* 0. The file pointer is also set to 0 when the file is created.
 
 </div>
