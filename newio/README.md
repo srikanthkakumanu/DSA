@@ -270,7 +270,7 @@ Channels partner with buffers to achieve high-performance I/O.
 - All channels are instances of classes that ultimately implement the
 `java.nio.channels.Channel` interface.
 
-The following are types of channels:
+The following are different types of channels:
 
 - Scatter and Gather Channels (**Scatter & Gather I/O or Vectored I/O**)
 - File Channels
@@ -290,6 +290,9 @@ In the context of a read operation, the contents of a channel are **scattered (f
 
 ---
 
+- A Java NIO FileChannel is a channel that is connected to a file or used for reading, writing, mapping, and manipulating a file.
+- File channels are **thread-safe** *unlike buffers*.
+- A FileChannel cannot be set into non-blocking mode. It always runs in blocking mode.
 
 ## **Random Access Files**
 

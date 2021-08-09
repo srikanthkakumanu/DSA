@@ -1,21 +1,25 @@
 package newio;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ScatteringByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 public class NIODemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         buffers();
         // channels();
-        ChannelScatterAndGatherIO();
+        // ChannelScatterAndGatherIO();
+        fileChannels();
     }
 
     /**
@@ -136,7 +140,30 @@ public class NIODemo {
 
     }
 
-    
+    /**
+     * Demonstrates usage of FileChannel
+     */
+    private static void fileChannels() throws FileNotFoundException, IOException {
+        RandomAccessFile raf = new RandomAccessFile("newio/xanadu.txt", "rw");
+        FileChannel fc = raf.getChannel();
+        long position;
+        System.out.println("Position = " + (position = fc.position()));
+        System.out.println("size: " + fc.size());
+        String msg = "This is a test message.";
+        ByteBuffer buffer = ByteBuffer.allocateDirect(msg.length() * 2);
+        buffer.asCharBuffer().put(msg);
+        fc.write(buffer);
+        fc.force(true);
+        System.out.println("position: " + fc.position());
+        System.out.println("size: " + fc.size());
+        buffer.clear();
+        fc.position(position);
+        fc.read(buffer);
+        buffer.flip();
+        while (buffer.hasRemaining())
+            System.out.print(buffer.getChar());
+    }
+
     /**
      * Simple utility method to print buffer information
      * @param buffer
