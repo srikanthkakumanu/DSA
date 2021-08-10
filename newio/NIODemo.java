@@ -142,14 +142,16 @@ public class NIODemo {
 
     /**
      * Demonstrates usage of FileChannel
+     * @throws FileNotFoundException
+     * @throws IOException
      */
     private static void fileChannels() throws FileNotFoundException, IOException {
-        RandomAccessFile raf = new RandomAccessFile("newio/xanadu.txt", "rw");
+        RandomAccessFile raf = new RandomAccessFile("newio/filechannel.txt", "rw");
         FileChannel fc = raf.getChannel();
         long position;
         System.out.println("Position = " + (position = fc.position()));
         System.out.println("size: " + fc.size());
-        String msg = "This is a test message.";
+        String msg = "This is a test message from file channel.";
         ByteBuffer buffer = ByteBuffer.allocateDirect(msg.length() * 2);
         buffer.asCharBuffer().put(msg);
         fc.write(buffer);
@@ -162,6 +164,25 @@ public class NIODemo {
         buffer.flip();
         while (buffer.hasRemaining())
             System.out.print(buffer.getChar());
+    }
+
+    /**
+     * Demonstrates use of transferTo() and transferFrom() which transfer data between channels directly.
+     * @throws IOException
+     */
+    private static void transferDataBtwChannels() throws IOException {
+        RandomAccessFile fromFile = new RandomAccessFile("From.txt", "rw");
+        FileChannel fromChannel = fromFile.getChannel();
+
+        RandomAccessFile toFile = new RandomAccessFile("To.txt", "rw");
+        FileChannel toChannel = fromFile.getChannel();
+
+        long position = 0, count = fromChannel.size();
+        // transferFrom() method transfers data from a source channel into the FileChannel
+        toChannel.transferFrom(fromChannel, position, count);
+
+        // transferTo() method transfer from a FileChannel into some other channel
+        fromChannel.transferTo(position, count, toChannel);
     }
 
     /**

@@ -16,11 +16,13 @@
 10. [Basic I/O: Sequence Streams](#sequence-streams) </br>
 11. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
 12. [NIO: Overview](#new-io-nio-overview) </br>
-13. [NIO: Buffers](#buffers) </br>
+13. [NIO: Buffers - Overview](#buffers) </br>
 14. [NIO: Direct vs. Indirect Buffers](#direct-and-non-direct-buffers) </br>
 15. [NIO: View Buffers](#view-buffers) </br>
-16. [NIO: Channels](#channels) </br>
-17. [Random Access Files](#random-access-files) </br>
+16. [NIO: Channels - Overview](#channels) </br>
+17. [NIO: Channels - File Channels](#file-channels) </br>
+18. [NIO: Channels - Socket Channels](#socket-channels) </br>
+19. [Random Access Files](#random-access-files) </br>
 
 ## **Overview**
 
@@ -293,6 +295,32 @@ In the context of a read operation, the contents of a channel are **scattered (f
 - A Java NIO FileChannel is a channel that is connected to a file or used for reading, writing, mapping, and manipulating a file.
 - File channels are **thread-safe** *unlike buffers*.
 - A FileChannel cannot be set into non-blocking mode. It always runs in blocking mode.
+- If one of the channels is FileChannel, we can **transfer data directly** from one channel to another.
+
+A file channel maintains a **current position** into the file, which FileChannel lets you obtain and change. It also lets you request that cached data be forced to the disk, read/write file content, obtain the size of the file underlying the channel, truncate a file, attempt to lock the entire file or just a region of the file, perform memory-mapped file I/O, and transfer data directly to another channel in a manner that has the potential to be optimized by the operating system.
+
+### **||| Socket Channels**
+
+---
+
+- **SocketChannel** and **ServerSocketChannel**  are socket channels that is connected to a **TCP network socket** and **DatagramChannel** is a channel that is connected to a **UDP network socket**.
+- `ServerSocketChannel` models a **connection-oriented stream protocol (such as TCP/IP)**. A server socket channel **behaves as a server** in the TCP/IP stream protocol. You use server socket channels to listen for incoming connections with clients (`SocketChannel`).
+- `SocketChannel` models a **connection-oriented stream protocol (such as TCP/IP). It acts as a client.**
+- `DatagramChannel` models a **connectionless packet-oriented protocol (such as UDP/IP)**.
+- Unlike standard (`java.net`) sockets, socket channels are **selectable and can function in non-blocking mode**.
+- Socket channels, server socket channels and datagram channels are **thread-safe**.
+
+The following are different types of Socket Channels:
+
+|Type  |Description  |
+|---------|---------|
+|**SocketChannel**     | A selectable channel for stream-oriented **connecting** sockets. We can open a `SocketChannel` and connect to a server somewhere on the Internet. </br> e.g. </br> ``` SocketChannel channel = SocketChannel.open(); channel.connect(new InetSocketAddress("http://test.com", 80);```         |
+|**ServerSocketChannel**     | A channel to a stream-oriented **listening** socket. A SocketChannel can be created when an incoming TCP connection arrives at a `ServerSocketChannel`. </br> e.g. </br> ``` ServerSocketChannel channel = ServerSocketChannel.open(); channel.socket().bind(new InetSocketAddress(9999)); while(true) { SocketChannel sockChannel = channel.accept(); }```          |
+|**DatagramChannel**     | A channel to a datagram oriented sockets. DatagramChannel is a channel that can send and receive UDP packets. Since UDP is a connection-less network protocol, we cannot just by default read and write to a `DatagramChannel` like we do from other channels. Instead we send and receive packets of data. A datagram channel can behave as both a client (the sender) and a server (the listener). To act as a listener, the datagram channel must be bound to a port and an optional address.          |
+
+Note:
+
+Datagram protocols aren’t reliable as they don’t guarantee delivery. As a result, a nonzero return value from send() doesn’t mean that the datagram reached its destination. Also, the underlying network might fragment the datagram into multiple smaller packets. When a datagram is fragmented, it’s more probable for one or more of these packets to not arrive at the destination. Because the receiver cannot reassemble all of the packets, the entire datagram is discarded. For this reason, data payloads should be restricted to several hundred bytes maximum.
 
 ## **Random Access Files**
 
