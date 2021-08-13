@@ -21,12 +21,13 @@
 15. [NIO: Direct vs. Indirect Buffers](#direct-and-non-direct-buffers) </br>
 16. [NIO: View Buffers](#view-buffers) </br>
 17. [NIO: Channels - Overview](#channels) </br>
-18. [NIO: Channels - File Channels](#file-channels) </br>
-19. [NIO: Channels - Socket Channels](#socket-channels) </br>
-20. [NIO: Pipes - Overview](#pipes) </br>
-21. [Selectors]() </br>
-22. [Charsets]() </br>
-23. [Random Access Files](#random-access-files) </br>
+18. [NIO: Channels - Scatter & Gather I/O Channels](#scatter-and-gather-channels) </br>
+19. [NIO: Channels - File Channels](#file-channels) </br>
+20. [NIO: Channels - Socket Channels](#socket-channels) </br>
+21. [NIO: Pipes - Overview](#pipes) </br>
+22. [Selectors]() </br>
+23. [Charsets]() </br>
+24. [Random Access Files](#random-access-files) </br>
 
 ## **Overview**
 
