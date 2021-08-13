@@ -15,18 +15,24 @@
 9. [Basic I/O: Piped Streams](#piped-streams) </br>
 10. [Basic I/O: Sequence Streams](#sequence-streams) </br>
 11. [Basic I/O: Scanner + Format + Console](#scanner-and-console) </br>
-12. [NIO: Overview](#new-io-nio-overview) </br>
-13. [NIO: Buffers - Overview](#buffers) </br>
-14. [NIO: Direct vs. Indirect Buffers](#direct-and-non-direct-buffers) </br>
-15. [NIO: View Buffers](#view-buffers) </br>
-16. [NIO: Channels - Overview](#channels) </br>
-17. [NIO: Channels - File Channels](#file-channels) </br>
-18. [NIO: Channels - Socket Channels](#socket-channels) </br>
-19. [Random Access Files](#random-access-files) </br>
+12. [IO vs. NIO](#io-vs-nio) </br>
+13. [NIO: Overview](#new-io-nio-overview) </br>
+14. [NIO: Buffers - Overview](#buffers) </br>
+15. [NIO: Direct vs. Indirect Buffers](#direct-and-non-direct-buffers) </br>
+16. [NIO: View Buffers](#view-buffers) </br>
+17. [NIO: Channels - Overview](#channels) </br>
+18. [NIO: Channels - File Channels](#file-channels) </br>
+19. [NIO: Channels - Socket Channels](#socket-channels) </br>
+20. [NIO: Pipes - Overview](#pipes) </br>
+21. [Selectors]() </br>
+22. [Charsets]() </br>
+23. [Random Access Files](#random-access-files) </br>
 
 ## **Overview**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 Java's I/O API categorized into two named Basic I/O and File I/O(NIO).
 
@@ -36,6 +42,8 @@ Java's I/O API categorized into two named Basic I/O and File I/O(NIO).
 ## **Streams**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 A stream is a sequence of data and they are **uni-directional** (one-way) in nature. An **I/O stream** represents an **input source** or **output destination**. A program uses an **input stream** to read data from a source (one item at a time), Another program uses an **output stream** to write data to a destination (one item at a time). Uni-direction means it can transfer bytes in one direction only either reading data from the source into a program or writing data from a program to the destination. Therefore Java classifies streams into two types named input streams and output streams.
 
@@ -66,6 +74,8 @@ There are some **specialized** stream classes to handle different types of input
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 Programs use **byte streams** to perform I/O (from input source or to output source) of **8-bit bytes**. All byte stream classes are descended from *InputStream* and *OutputStream* (both are abstract classes). There are many kinds of byte stream classes to operate on different types of data such as file, buffer, byte array, object, primitive data types, pipes, combined streams (sequence streams i.e. combine multiple streams into one and then read from that comibined stream).
 
 - **FileInputStream** and **FileOutputStream**: Contains methods to handle (read/write) stream of bytes of file in a file system.
@@ -83,6 +93,8 @@ Programs use **byte streams** to perform I/O (from input source or to output sou
 ## **Character Streams**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 Characters in Java internally uses Unicode character set. Character stream I/O automatically translates Unicode to and from the local character set. In Western locales, the local character set is usually an 8-bit superset of ASCII. A program that uses character streams in place of byte streams automatically adopts to the local character set and is ready for internationalization — all without extra effort by the programmer. All character stream classes are descended from Reader and Writer (both are abstract classes).
 
@@ -102,6 +114,8 @@ Characters in Java internally uses Unicode character set. Character stream I/O a
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 **Un-buffered** stream means that each read and write request is handled directly by the **underlying OS**. This can make a program much **less efficient**, since **each such request often triggers disk access, network activity, or some other operation that is relatively expensive**. Below are the un-buffered stream classes.
 
 **Byte Stream**: FileInputStream, FileOutputStream </br>
@@ -110,6 +124,8 @@ Characters in Java internally uses Unicode character set. Character stream I/O a
 ## **Buffered streams**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 **Un-buffered** stream means that each read and write request is handled directly by the **underlying OS**. This can make a program much **less efficient**, since **each such request often triggers disk access, network activity, or some other operation that is relatively expensive**.
 
@@ -126,6 +142,8 @@ Buffered streams adds functionality to existing streams i.e. buffering by creati
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 The **Scanner** API breaks input into individual tokens associated with bits of data. By default, *Scanner* uses a **whitespace** to separate tokens. To use different separator, invoke `useDelimiter()` and specify the regular expression as argument.
 
 The **Formatting API** assembles data into nicely formatted, human-readable form: System.out.format() method to be used for formatting.
@@ -139,6 +157,8 @@ Console example: `Console c = System.console(); String login = c.readLine("Enter
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 **Data streams** support **binary I/O of primitive data types and string values**. Supported primitive data types are *boolean, char, byte, short, int, long, float and double*. 
 
 DataStreams uses one very bad programming technique: it uses floating point numbers to represent monetary values. In general, floating point is bad for precise values. It's particularly bad for decimal fractions, because common values (such as 0.1) do not have a binary representation.
@@ -151,6 +171,8 @@ e.g. `dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(f
 ## **Object Streams**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 **Object streams** support I/O of objects (Serialization and De-serialization) just like data streams support I/O of primitive data types. All the primitive data I/O methods covered in data streams are also implemented in object streams. So an object stream **can contain a mixture of primitive and object values**. The **biggest advantage** of object streams is that **while they are writing/reading an object, all corresponding references(inherent references or other objects that are stored within a object) of that object are also preserved**.
 
@@ -168,6 +190,8 @@ If two objects on the same stream both contain references to a single object, an
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 Pipes are used to channel the output from one thread into the input of another thread. **Pipes** in IO provides **a link between two threads running in JVM at the same time**. So, Pipes are used both as **source** or **destination**. A pipe is said to be **broken** if a thread that was providing data bytes to the connected piped output stream is no longer alive.
 
 The **advantage with pipe streams** is that **the output from one method could be piped into the next** otherwise (without pipe streams) the program would have to store the results somewhere (such as in a file or in memory) between each step. In essence, a method's output could be used as the input for another so that **you could string a series of method calls together to perform a higher-order function**.
@@ -179,13 +203,31 @@ The **advantage with pipe streams** is that **the output from one method could b
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 Sequence input stream combine one or more input streams into one input stream i.e. combine a single input stream from multiple input sources.
 
 **Byte Stream**: SequenceInputStream </br>
 
+## **IO vs NIO**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+|IO  |NIO  |
+|---------|---------|
+|**Stream Oriented** </br> means that we read one or more bytes at a time, from a stream. They are not **cached** anywhere. Furthermore, we cannot move forth and back in the data in a stream. If we need to move forth and back in the data read from a stream, we will need to cache it in a buffer first.   | **Buffer Oriented** </br> Java NIO's buffer oriented approach is slightly different. Data is read into a buffer from which it is later processed. We can move back and forth in the buffer as you need. It gives a bit more flexibility during processing. However, we need to check if the buffer contains all the data that we need in order to fully process it. We need to make sure that when reading more data into the buffer, we do not overwrite data in the buffer that we have not yet processed.         |
+|**Blocking I/O** </br> Java IO's various streams are **blocking**. That means, that when a thread invokes a read() or write(), that thread is blocked until there is some data to read, or the data is fully written. The thread can do nothing else in the meantime.     | **Non-blocking I/O** </br> Java NIO's non-blocking mode enables a thread to request reading data from a channel, and only get what is currently available, or nothing at all, if no data is currently available. Rather than remain blocked until data becomes available for reading, the thread can go on with something else. </br> The same is true for non-blocking writing. A thread can request that some data be written to a channel, but not wait for it to be fully written. The thread can then go on and do something else in the mean time. </br> Threads usually performs I/O on other channels during idle time (when not blocked in I/O calls). Thus a single thread can now manage multiple channels of I/O.       |
+|     | **Selectors** </br> Java NIO's selectors allow a **single thread to monitor multiple channels of input**. We can register multiple channels with a selector, then use a single thread to **"select"** the channels that have input available for processing, or select the channels that are ready for writing. This selector mechanism makes it easy for a single thread to manage multiple channels.         |
+
+**Note**: If we have fewer connections with very high bandwidth, sending a lot of data at a time, perhaps a classic I/O server implementation might be the best fit.
+
 ## **New IO (NIO) Overview**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 I/O is classified as **block-oriented or stream-oriented**. Reading from or writing to a file is an example of block-oriented I/O. In constast, reading from keyboard or writing to a network connection is an example of stream-oriented I/O. **Stream I/O is often slower than block I/O**.
 
@@ -205,6 +247,8 @@ The Java NIO (New I/O) API support the following:
 ## **Buffers**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 Essentially **NIO is all about moving data into and out of buffers**.
 
@@ -244,11 +288,15 @@ The below diagram shows logical layout of a byte-oriented buffer with capacity 7
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 An non-direct buffer is that memory allocated inside the **managed heap** of the java process and it is created by using `allocate()` method call. A direct buffer is that memory allocated outside of the **managed heap** of the java process and it is created by using `allocateDirect()` method call.
 
 ### **||| View buffers**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 As buffers can manage data elements stored in external arrays (via `wrap()` method), they can also **manage data stored in other buffers**. When we create
 a buffer that manages another buffer’s data, the created buffer is known as a **view buffer**. **Changes made in either buffer are reflected in the other**.
@@ -261,6 +309,8 @@ View buffers are created by calling `duplicate()` or `asxBuffer()` or `asLongBuf
 ## **Channels**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 Channels partner with buffers to achieve high-performance I/O.
 
@@ -276,11 +326,13 @@ The following are different types of channels:
 
 - Scatter and Gather Channels (**Scatter & Gather I/O or Vectored I/O**)
 - File Channels
-
+- Socket Channels
 
 ### **||| Scatter and Gather Channels**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 Channels provide the ability to perform a **single I/O operation across multiple buffers**. This capability is known as **Scatter and Gather I/O** and it can also be called as **Vectored I/O**.
 
@@ -292,6 +344,8 @@ In the context of a read operation, the contents of a channel are **scattered (f
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 - A Java NIO FileChannel is a channel that is connected to a file or used for reading, writing, mapping, and manipulating a file.
 - File channels are **thread-safe** *unlike buffers*.
 - A FileChannel cannot be set into non-blocking mode. It always runs in blocking mode.
@@ -302,6 +356,8 @@ A file channel maintains a **current position** into the file, which FileChannel
 ### **||| Socket Channels**
 
 ---
+
+[Table of contents](#table-of-contents) </br>
 
 - **SocketChannel** and **ServerSocketChannel**  are socket channels that is connected to a **TCP network socket** and **DatagramChannel** is a channel that is connected to a **UDP network socket**.
 - `ServerSocketChannel` models a **connection-oriented stream protocol (such as TCP/IP)**. A server socket channel **behaves as a server** in the TCP/IP stream protocol. You use server socket channels to listen for incoming connections with clients (`SocketChannel`).
@@ -322,14 +378,29 @@ Note:
 
 Datagram protocols aren’t reliable as they don’t guarantee delivery. As a result, a nonzero return value from send() doesn’t mean that the datagram reached its destination. Also, the underlying network might fragment the datagram into multiple smaller packets. When a datagram is fragmented, it’s more probable for one or more of these packets to not arrive at the destination. Because the receiver cannot reassemble all of the packets, the entire datagram is discarded. For this reason, data payloads should be restricted to several hundred bytes maximum.
 
+## **Pipes**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+A Java NIO Pipe is a **one-way data connection between two threads**. A Pipe has a source channel and a sink channel. You write data to the sink channel. This data can then be read from the source channel.
+
+- **Pipe** describes a **pair of channels** that implement a **uni-directional pipe** which is a conduit for passing data in **one direction** between two entities (such as two file channels or two socket channels).
+- **Pipe** is analogous to `java.io.PipedInputStream` and `java.io.PipedOutputStream`.
+- **Pipe** declares nested `SourceChannel` and `SinkChannel` classes that serve as readable and writable byte channels.
+- Pipes can be used to **pass data within the same JVM**. We **cannot use them to pass data between the JVM and an external program**.
+- Pipes are ideal in producer/consumer scenarios because of encapsulation.
+
 ## **Random Access Files**
 
 ---
 
+[Table of contents](#table-of-contents) </br>
+
 Files can be created and/or opened for **random access** with a mixture of write and read operations at various locations can occur until the file is closed.
 
 `RandomAccessFile` supports the following **modes**:
-
 
 |Mode  |Description  |
 |---------|---------|
