@@ -284,7 +284,7 @@ The below diagram shows logical layout of a byte-oriented buffer with capacity 7
 
 <img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/buffer_diagram.png" alt="Java NIO Buffer Logical Representation" width="500" height="300"></img> </br>
 
-### **||| Direct and Non-direct buffers**
+### **Direct and Non-direct buffers**
 
 ---
 
@@ -292,7 +292,7 @@ The below diagram shows logical layout of a byte-oriented buffer with capacity 7
 
 An non-direct buffer is that memory allocated inside the **managed heap** of the java process and it is created by using `allocate()` method call. A direct buffer is that memory allocated outside of the **managed heap** of the java process and it is created by using `allocateDirect()` method call.
 
-### **||| View buffers**
+### **View buffers**
 
 ---
 
@@ -328,7 +328,7 @@ The following are different types of channels:
 - File Channels
 - Socket Channels
 
-### **||| Scatter and Gather Channels**
+### **Scatter and Gather Channels**
 
 ---
 
@@ -340,7 +340,7 @@ In the context of a write operation, the contents of several buffers are **gathe
 
 In the context of a read operation, the contents of a channel are **scattered (filled)** to multiple buffers in sequence. Each buffer is filled to its limit until the channel is empty or until the total buffer space is used.
 
-### **||| File Channels**
+### **File Channels**
 
 ---
 
@@ -353,7 +353,7 @@ In the context of a read operation, the contents of a channel are **scattered (f
 
 A file channel maintains a **current position** into the file, which FileChannel lets you obtain and change. It also lets you request that cached data be forced to the disk, read/write file content, obtain the size of the file underlying the channel, truncate a file, attempt to lock the entire file or just a region of the file, perform memory-mapped file I/O, and transfer data directly to another channel in a manner that has the potential to be optimized by the operating system.
 
-### **||| Socket Channels**
+### **Socket Channels**
 
 ---
 
