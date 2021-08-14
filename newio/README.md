@@ -416,7 +416,7 @@ define these mappings from characters to numeric values.
 
 Beginning with JDK 1.4, Java virtual machines (JVMs) were required to support a standard collection of charsets and could support additional charsets.
 
-<img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/standard_charsets.png" alt="Java supported standard charsets" width="500" height="300"></img> </br>
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/standard_charsets.png" alt="Java supported standard charsets" width="300" height="300"></img> </br>
 
 
 ## **Random Access Files**
