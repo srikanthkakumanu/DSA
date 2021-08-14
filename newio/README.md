@@ -26,8 +26,12 @@
 20. [NIO: Channels - Socket Channels](#socket-channels) </br>
 21. [NIO: Pipes - Overview](#pipes) </br>
 22. [Selectors]() </br>
-23. [Charsets]() </br>
+23. [Charsets](#charsets) </br>
 24. [Random Access Files](#random-access-files) </br>
+25. [NIO2: Overview](#nio2-overview) </br>
+26. [NIO2: File I/O](#file-io) </br>
+27. [NIO2: Asynchronous I/O](#asynchronous-io) </br>
+28. [NIO2: Completion of Socket Channel Functionality](#completion-of-socket-channel-functionality) </br>
 
 ## **Overview**
 
@@ -393,6 +397,28 @@ A Java NIO Pipe is a **one-way data connection between two threads**. A Pipe has
 - Pipes can be used to **pass data within the same JVM**. We **cannot use them to pass data between the JVM and an external program**.
 - Pipes are ideal in producer/consumer scenarios because of encapsulation.
 
+## **Charsets**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+**Unicode**: **Unicode  is a 16-bit character set standard**. It is more of an encoding standard because some characters are represented by multiple numeric values where each value is known as a **code point**. It's goal is to map all of the world's significant character sets into an all-encompassing map.
+
+Java uses **Unicode** to represent characters. Although Unicode makes it much easier to work with characters from different languages, it does not automate everything and we often need to work with *charsets*. Although Unicode is popular, other character sets are also used. Because files store data as byte sequences. It is necessary to translate between byte sequences and the characters that are encoded into these sequences. `java.nio.charset.Charset` address this translation task.
+
+- **Character**: A meaningful symbol e.g. $, E.
+- **Character set**: A set of characters.
+- **Coded character set**: A character set where **each character is assigned a unique numeric value**. Standard bodies such as US-ASCII or ISO-8859-1
+define these mappings from characters to numeric values.
+- **Character encoding scheme**: **An encoding of a coded character set's numeric values to sequences of bytes** that represent these values. Some encodings are **one-to-one** (e.g. In ASCII, character A is mapped to integer 65 and encoded as integer 65) and some are **one-to-one or one-to-many** (e.g. UTF-8 encodes Unicode characters. Each character whose numeric value is less than 128 is encoded as single byte to be compatible with ASCII. Other Unicode characters are encoded as two-to-six byte sequences).
+- **Charset**: A coded character set combined with character encoding scheme.
+
+Beginning with JDK 1.4, Java virtual machines (JVMs) were required to support a standard collection of charsets and could support additional charsets.
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/standard_charsets.png" alt="Java supported standard charsets" width="500" height="300"></img> </br>
+
+
 ## **Random Access Files**
 
 ---
@@ -417,5 +443,83 @@ Files can be created and/or opened for **random access** with a mixture of write
 - Operations on a random access file opened in **rwd** or **rws** mode are slower than these same operations on a random access file opened in **rw** mode.
 
 A random access file is associated with a *file pointer*, a *cursor* that identifies the location of the next byte to write or read. When an existing file is opened, the file pointer is set to its first byte at *offset* 0. The file pointer is also set to 0 when the file is created.
+
+## **NIO2 Overview**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+NIO2 introduced the following features in Java 7.
+
+- File I/O – Improved File System Interface
+- Asynchronous I/O
+- Completion of Socket channel functionality
+
+## **File I/O**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+NIO2 introduced an improved file system interface to overcome various problems of legacy `File` class. Legacy `File` class has problems such as `renameTo()` does not work consistently across operating systems. Some of the `File` class methods does not scale; requesting a large directory listing from server could result in a hang.
+
+The new File I/O fixes these problems and it supports bulk access to file attributes, provides a change notification facility, offers the ability to escape to file system-specific APIs, and has a service provider interface for plug-gable file system implementations.
+
+The `File` based file system interface is **problematic**. **Several problems or drawbacks** are listed here:
+
+- Many methods return `Boolean` values rather than throw exceptions. As a result, you don’t know why an operation fails. For example, when the delete() method returns false, you don’t know why the file could not be deleted (such as the file not existing or the user not having the appropriate permission to perform the deletion).
+- `File` doesn’t support file system-specific **symbolic links and hard links**.
+- `File` provides access to a limited set of file attributes. e.g. It does not support Access Control Lists (ACLs).
+- `File` doesn’t support efficient file-attribute access. Every query results in a call to the underlying operating system.
+- `File` doesn’t scale to large directories. Requesting a large directory listing over a server can result in a hung application. Large directories can also cause memory resource problems, resulting in a denial of service.
+- `File` is limited to the default file system (the file system that is accessible to the Java Virtual Machine—JVM). It doesn’t support alternatives, such as a memory-based file system.
+- `File` doesn’t offer a file-copy or a file-move capability. The `renameTo()` method, which is often used in a file-move context, doesn’t work consistently across operating systems.
+
+NIO.2 provides an improved file system interface that **offers solutions to the above mentioned drawbacks or problems**.
+
+- Methods throwing exceptions.
+- Support for symbolic links.
+- Broad and efficient support for file attributes.
+- Directory streams.
+- Support for alternative file systems via custom file
+system providers.
+- Support for file copying and file moving.
+- Support for walking the file tree/visiting files and
+watching directories.
+
+</br>
+
+**File Systems and File System Providers**
+
+An operating system can host one or more file systems.
+
+e.g. </br>
+Unix/Linux (combines all mounted disks into one virtual file system) In contrast, Windows associates a separate file system with each active disk drive. (e.g. FAT16 for drive A: and NTFS for drive C:).
+
+The `java.nio.file.FileSystem` class interfaces between Java code and a file system. Furthermore, `FileSystem` is a factory for obtaining many types of file system-related objects (such as file stores and paths) and services (such as watch services). `FileSystem` cannot be instantiated because this class is *abstract*. Instead, the `java.nio.file.FileSystems` utility class is used to obtain FileSystems via several factory methods. e.g. the `FileSystem getDefault()` class method returns a `FileSystem` object for the default file system.
+
+
+## **Asynchronous I/O**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+Non-blocking mode improves performance by preventing a thread that performs a read or write operation on a channel from blocking until input is available or the output has been fully written.
+
+However, it doesn’t let an application determine if it can perform an operation without actually performing the operation. For example, when a non-blocking read operation succeeds, the application learns that the read operation is possible but also has read some data that must be managed. This duality prevents you from separating code that checks for stream readiness from the data-processing code without making your code significantly complicated.
+
+Asynchronous I/O overcomes this problem by letting the thread initiate the operation and immediately proceed to other work. The thread specifies some kind of **callback function** that is invoked when the operation finishes.
+
+## **Completion of Socket channel Functionality**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+JDK 1.4 added the `DatagramChannel`, `ServerSocketChannel`, and `SocketChannel` classes to the `java.nio.channels` package.
+
+However, lack of time prevented these classes from supporting binding and option configuration. Also, channel-based multicast datagrams were not supported. JDK 7 added binding support and option configuration to the aforementioned classes. Also, it introduced a new `java.nio.channels.MulticastChannel` interface.
 
 </div>
