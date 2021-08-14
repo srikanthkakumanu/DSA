@@ -8,7 +8,7 @@ import java.nio.channels.SocketChannel;
 /**
  * Demonstrates NIO's TCP socket channel and UDP datagram client
  */
-public class NIOChannelClient {
+public class NIOSocketChannelClient {
     public static void main(String[] args) throws Exception {
         // tcp();
         udp();

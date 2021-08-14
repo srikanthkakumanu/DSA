@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Demonstrates NIO Socket Channel's (ServerSocketChannel and DatagramChannel) server
  */
-public class NIOChannelServer {
+public class NIOSocketChannelServer {
     private static final int PORT = 9999;
     public static void main(String[] args) throws IOException {
         // tcp();

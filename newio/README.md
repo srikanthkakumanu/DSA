@@ -30,8 +30,10 @@
 24. [Random Access Files](#random-access-files) </br>
 25. [NIO2: Overview](#nio2-overview) </br>
 26. [NIO2: File I/O](#file-io) </br>
-27. [NIO2: Asynchronous I/O](#asynchronous-io) </br>
-28. [NIO2: Completion of Socket Channel Functionality](#completion-of-socket-channel-functionality) </br>
+27. [NIO2: File I/O - File System + File System Providers + File Store](#file-systems-and-file-system-providers) </br>
+28. [NIO2: File I/O - Path + Files](#path) </br>
+29. [NIO2: Asynchronous I/O](#asynchronous-io) </br>
+30. [NIO2: Multicasting + Completion of Socket Channel Functionality](#completion-of-socket-channel-functionality) </br>
 
 ## **Overview**
 
@@ -492,15 +494,40 @@ watching directories.
 
 </br>
 
-**File Systems and File System Providers**
+## **File Systems and File System Providers**
 
-An operating system can host one or more file systems.
+---
+
+[Table of contents](#table-of-contents) </br>
+
+An operating system can host one or more file systems. A file system stores files (regular files, directories, symbolic links and hard links). Files are stored in hierarchies and located by specifying *paths*.
 
 e.g. </br>
 Unix/Linux (combines all mounted disks into one virtual file system) In contrast, Windows associates a separate file system with each active disk drive. (e.g. FAT16 for drive A: and NTFS for drive C:).
 
 The `java.nio.file.FileSystem` class interfaces between Java code and a file system. Furthermore, `FileSystem` is a factory for obtaining many types of file system-related objects (such as file stores and paths) and services (such as watch services). `FileSystem` cannot be instantiated because this class is *abstract*. Instead, the `java.nio.file.FileSystems` utility class is used to obtain FileSystems via several factory methods. e.g. the `FileSystem getDefault()` class method returns a `FileSystem` object for the default file system.
 
+`FileSystems` -> `FileSystemProvider` -> `FileSystem`
+
+**Hard Link vs. Symbolic Link**
+
+A **hard link** is essentially a **synced carbon copy of a file** that refers directly to the inode of a file. Symbolic links on the other hand refer directly to the file which refers to the inode, **a shortcut**.
+
+**FileStore**
+
+A file store consists of a name, a type, space amounts (in bytes), and other information. `FileSystem` relies on the `java.nio.file.FileStore` class to provide information about file stores, which are storage pools, devices, partitions, volumes, concrete file systems, or other implementation-specific means of file storage.
+
+`FileStore fs = Files.getFileStore(Path path);`
+
+## **Path**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+The `java.nio.file.Path` interface represents a hierarchical path to a file that may or may not exist. A `Path` can represent a root, a root and sequence of name elements, or one or more name elements. It signifies an empty path when it consists entirely of one name element that is empty. Accessing a file using an empty path is equivalent to accessing the file system’s default directory.
+
+`java.nio.file.Paths` **does not support path-matching and directory watching tasks**. However `Files` exclusively supports walking the file tree and visiting its files.
 
 ## **Asynchronous I/O**
 
@@ -508,20 +535,45 @@ The `java.nio.file.FileSystem` class interfaces between Java code and a file sys
 
 [Table of contents](#table-of-contents) </br>
 
+**NIO** already provides **multiplexed I/O (combination of non-blocking I/O and readiness selecton)** to fecilitate the creation of highly scalable servers. **NIO2** provides **asynchronous I/O** that lets client code initiate an I/O operation and subsequently notifies the client when the operation is completed.
+
 Non-blocking mode improves performance by preventing a thread that performs a read or write operation on a channel from blocking until input is available or the output has been fully written.
 
 However, it doesn’t let an application determine if it can perform an operation without actually performing the operation. For example, when a non-blocking read operation succeeds, the application learns that the read operation is possible but also has read some data that must be managed. This duality prevents you from separating code that checks for stream readiness from the data-processing code without making your code significantly complicated.
 
 Asynchronous I/O overcomes this problem by letting the thread initiate the operation and immediately proceed to other work. The thread specifies some kind of **callback function** that is invoked when the operation finishes.
 
+**Asynchronous channels** are safe for use by multiple concurrent threads. Some channel implementations may support concurrent reading and writing, but may not allow more than one read and one write to be outstanding at any given time. **Asynchronous channels are two types namely asynchronous file channels and asynchronous socket channels.**
+
+- The **`java.nio.channels.AsynchronousChannel`** interface describes an asynchronous channel, which is a channel that supports asynchronous I/O operations (reads, writes, and so on).
+- **`CompletionHandler`** declares the methods to consume the result of an operation when it completes successfully, and to learn why the operation failed and take appropriate action.
+- **Asynchronous file channel:** The abstract **`java.nio.channels.AsynchronousFileChannel`** class describes an asynchronous channel for reading, writing, and manipulating a file.
+- **Asynchronous socket channels:** The abstract **`java.nio.channels.AsynchronousServerSocketChannel`** class describes an asynchronous channel for **stream-oriented listening sockets**. Its counterpart channel for **stream-oriented connecting sockets** is described by the abstract **`java.nio.channels.AsynchronousSocketChannel`** class.
+- **Asynchronous channel group:** The abstract **`java.nio.channels.AsynchronousChannelGroup`** class describes a grouping of asynchronous channels for the purpose of **resource sharing**. A group has an associated thread pool to which tasks are submitted, to handle I/O events and to dispatch to completion handlers that consume the results of asynchronous operations performed on the group’s channels.
+
+**Note:**
+
+`AsynchronousServerSocketChannels` and `AsynchronousSocketChannels` **belong to groups**. When we create them via the noargument open() method, the channel is bound to the **default group**, which is the system-wide channel group that’s automatically constructed and maintained by the Java virtual machine (JVM). The default group has an associated thread pool that creates new threads as needed. **AsynchronousFileChannels don’t belong to groups**. However, they are associated with a thread pool to which tasks are submitted, to handle I/O events and to dispatch to completion handlers that consume the results of I/O operations on the channel.
 ## **Completion of Socket channel Functionality**
 
 ---
 
 [Table of contents](#table-of-contents) </br>
 
-JDK 1.4 added the `DatagramChannel`, `ServerSocketChannel`, and `SocketChannel` classes to the `java.nio.channels` package.
+- JDK 1.4 added the `DatagramChannel`, `ServerSocketChannel`, and `SocketChannel` classes to the `java.nio.channels` package.
+- However, lack of time prevented these classes from supporting binding and option configuration. Also, channel-based multicast datagrams were not supported. JDK 7 added binding support and option configuration to the aforementioned classes. Also, it introduced a new `java.nio.channels.MulticastChannel` interface.
+- With NIO2, `DatagramChannel`, `ServerSocketChannel` and `SocketChannel` classes have been **extended to support binding, option configuration and channel based multicasting**
+- **`NetworkChannel` represents a channel to a network socket**. This interface is implemented by `DatagramChannel`, `ServerSocketChannel`, `SocketChannel`, `AsynchronousServerSocketChannel` and `AsynchronousSocketChannel`.
 
-However, lack of time prevented these classes from supporting binding and option configuration. Also, channel-based multicast datagrams were not supported. JDK 7 added binding support and option configuration to the aforementioned classes. Also, it introduced a new `java.nio.channels.MulticastChannel` interface.
+**Channel based multicasting**:
+
+JDK 7 introduced support for channel-based IP multicasting. **It is the transmission of IP datagrams to members of a group (zero or more hosts identified by a single destination address)**.
+
+**Multicasting** is the Internet version of broadcasting in which a television or radio signal is broadcast from a source, and is available to everyone in the signal area with a suitable and active receiving device.
+
+A **group** is identified by a class D IP address, which is a multicast group IPv4 address that ranges from 224.0.0.1 through 239.255.255.255. A new receiver (client) joins a multicast group by connecting to the group via the group’s IP address. The receiver then listens for incoming datagrams.
+
+JDK 7 introduced the `java.nio.channels.MulticastChannel` interface to
+**support multicasting**. `MulticastChannel` extends `NetworkChannel` and is implemented by the `DatagramChannel` class.
 
 </div>
