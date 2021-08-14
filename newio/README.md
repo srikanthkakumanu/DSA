@@ -412,11 +412,13 @@ Java uses **Unicode** to represent characters. Although Unicode makes it much ea
 - **Coded character set**: A character set where **each character is assigned a unique numeric value**. Standard bodies such as US-ASCII or ISO-8859-1
 define these mappings from characters to numeric values.
 - **Character encoding scheme**: **An encoding of a coded character set's numeric values to sequences of bytes** that represent these values. Some encodings are **one-to-one** (e.g. In ASCII, character A is mapped to integer 65 and encoded as integer 65) and some are **one-to-one or one-to-many** (e.g. UTF-8 encodes Unicode characters. Each character whose numeric value is less than 128 is encoded as single byte to be compatible with ASCII. Other Unicode characters are encoded as two-to-six byte sequences).
-- **Charset**: A coded character set combined with character encoding scheme.
+- **Charset**: A coded character set combined with character encoding scheme. Charset names are case-insensitive and are maintained by Internet Assigned Names Authority (IANA).
 
 Beginning with JDK 1.4, Java virtual machines (JVMs) were required to support a standard collection of charsets and could support additional charsets.
 
-<img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/standard_charsets.png" alt="Java supported standard charsets" width="300" height="300"></img> </br>
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/newio/standard_charsets.png" alt="Java supported standard charsets" width="500" height="300"></img> </br>
+
+UTF-16BE and UTF-16LE encode each character as a **two-byte sequence** in big-endian or little-endian order, respectively. A decoder for a UTF-16BE- or UTF-16LE-encoded byte sequence needs to know how the byte sequence was encoded or have a way to detect the byte order from the encoded data. In contrast, UTF-16 relies on a byte order mark that appears at the beginning of the sequence. If this mark is absent, decoding proceeds according to UTF-16BE (Java’s native byte order). If this mark equals \uFEFF, the sequence is decoded according to UTF-16BE. If this mark equals \uFFFE, the sequence is decoded according to UTF-16LE.
 
 
 ## **Random Access Files**

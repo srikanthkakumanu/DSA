@@ -7,19 +7,23 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ScatteringByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class NIODemo {
     public static void main(String[] args) throws IOException {
         buffers();
         // channels();
         // ChannelScatterAndGatherIO();
-        fileChannels();
+        // fileChannels();
+        charsets();
     }
 
     /**
@@ -183,6 +187,41 @@ public class NIODemo {
 
         // transferTo() method transfer from a FileChannel into some other channel
         fromChannel.transferTo(position, count, toChannel);
+    }
+
+    /**
+     * Demonstrates use of charsets
+     */
+    private static void charsets() {
+        Charset cset = StandardCharsets.US_ASCII;
+        // Charset cset = Charset.forName("US-ASCII"); // alternative approach
+        String text = "Sample text for convesion";
+
+        System.out.println(cset.name());
+        System.out.println(cset.displayName());
+        System.out.println(cset.canEncode());
+
+        //convert byte buffer in given charset to char buffer in unicode
+        ByteBuffer bbuff = ByteBuffer.wrap(text.getBytes());
+        CharBuffer cbuff = cset.decode(bbuff);        
+        
+        //convert char buffer in unicode to byte buffer in given charset
+        ByteBuffer newByteBuffer = cset.encode(cbuff);
+        while(newByteBuffer.hasRemaining())
+            System.out.print("\t" + (char) newByteBuffer.get());
+
+        byte[] encodedText =
+        {
+            0x66, 0x61, (byte) 0xc3, (byte) 0xa7, 0x61, 0x64, 0x65, 0x20, 0x74,
+            0x6f, 0x75, 0x63, 0x68, (byte) 0xc3, (byte) 0xa9
+        }; // façade touché
+
+        String msg = new String(encodedText, StandardCharsets.UTF_8);
+        System.out.println(msg);
+        byte[] bytes = msg.getBytes();
+        for (byte _byte: bytes)
+            System.out.print(Integer.toHexString(_byte & 255) + " ");
+        System.out.println();
     }
 
     /**
