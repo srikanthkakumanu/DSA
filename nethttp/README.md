@@ -371,9 +371,25 @@ HTTP connections really are nothing more than TCP connections (TCP connections a
 
 TCP gives HTTP a ***reliable bit pipe***. Bytes stuffed in one side of a TCP connection come out the other side correctly, and in the right order (TCP carries HTTP data in order, and without corruption).
 
-TCP streams are segmented and shipped by IP packets - TCP sends its data in little chunks called IP *packets* (or IP datagrams). In this way, HTTP is the top layer in a **"protocol stack"** of **"HTTP over TCP over IP”**.
+TCP streams are segmented and shipped by IP packets - TCP sends its data in little chunks called IP *packets* (or IP *datagrams*). In this way, HTTP is the top layer in a **"protocol stack"** of **"HTTP over TCP over IP”**.
 
-<img src="https://github.com/srikanthkakumanu/DSA/blob/main/nethttp/http_stack.png" alt="HTTP stack" width="400" height="300"></img> </br>
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/nethttp/http_stack.png" alt="HTTP stack" width="500" height="300"></img> </br>
 
+IP packets carry TCP segments, which carry chunks of the TCP data stream i.e. When HTTP wants to transmit a message:
+
+- It streams the contents of the message data, in order, through an open TCP connection.
+- TCP takes the stream of data, chops up the data stream into chunks called segments, and transports the segments across the Internet inside envelopes called IP packets.
+
+Each TCP segment is carried by an IP packet from one IP address to another IP address.
+
+Each of these IP packets contains:
+
+- An IP packet header (usually 20 bytes).
+- A TCP segment header (usually 20 bytes).
+- A chunk of TCP data (0 or more bytes).
+
+The IP header contains the source and destination IP addresses, the size, and other flags. The TCP segment header contains TCP port numbers, TCP control flags, and numeric values used for data ordering and integrity checking.
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/nethttp/http_data_transfer.png" alt="HTTP data transfer" width="500" height="300"></img> </br>
 
 </div>
