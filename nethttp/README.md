@@ -27,6 +27,7 @@
 8. [TCP vs. UDP](#tcp-vs-udp) </br>
 9. [Hypertext Transfer Protocol (HTTP)](#http) </br>
 10. [Altogether: HTTP + TCP + IP](#http-stack) </br>
+11. [Google QUIC protocol](#quic-protocol) </br>
 
 ## **Computer Network**
 
@@ -400,5 +401,16 @@ A TCP connection is distinguished by four values: ``<source-IP-address, source-p
 
 Together, these four values uniquely define a connection. Two different TCP connections are not allowed to have the same values for all four address components (but different connections can have the same values for some of the components).
 
+## **QUIC Protocol**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+Google developed the **QUIC protocol** (**Quick UDP Internet Connections**) is an entirely new protocol for the web developed on **top of UDP instead of TCP**.
+
+The QUIC protocol can start a connection and negotiate all the TLS (HTTPs) parameters in 1 or 2 packets (depends on if it’s a new server you are connecting to or a known host).
+
+It is a new encrypted transport layer network protocol. QUIC was designed to make HTTP traffic more secure, efficient, and faster. Theoretically, QUIC has taken all the best qualities of TCP connections and TLS encryption and implemented it on UDP.
 
 </div>
