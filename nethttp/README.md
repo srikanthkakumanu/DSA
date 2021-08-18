@@ -263,7 +263,7 @@ Although both IPv4 and IPv6 provide IP addresses, **they can’t communicate wit
 
 The *IP protocol* allows for sending single packets (datagrams) between two hosts. Packets are delivered best effort and may: reach the destination in a **different order** than the one in which they were sent, reach the destination multiple times, or never reach the destination at all.
 
-**TCP is a connection-oriented reliable protocol**. **TCP (Transport Layer) is built on top of IP (Network Layer)** to provide reliable transmission of packets. The TCP provides **reliable, ordered, error-checked delivery of a stream of data** between programs. With TCP, an application running on one device can send data to an application on another device and be sure that the data arrives there in the same way that it was sent. This may seem trivial, but it's really a stark contrast to how the raw IP layer works.
+**TCP is a connection-oriented reliable protocol** and *stateful* in nature. **TCP (Transport Layer) is built on top of IP (Network Layer)** to provide reliable transmission of packets. The TCP provides **reliable, ordered, error-checked delivery of a stream of data** between programs. With TCP, an application running on one device can send data to an application on another device and be sure that the data arrives there in the same way that it was sent. This may seem trivial, but it's really a stark contrast to how the raw IP layer works.
 
 With TCP, applications establish connections between each other. A TCP connection is **unicast (only one host or destination)** and **duplex** (***bi-directional***) and allows data to flow in both directions. TCP guarantees that the data will arrive at the other end in pristine condition.
 
@@ -305,7 +305,7 @@ TCP Connection setup happens through a three-way handshake as described below:
 
 Applications can use UDP to send data to other hosts over Internet Protocol. Messages sent with UDP are called **datagrams**.
 
-The UDP protocol is **connectionless**. In simple words, it lacks the mechanisms of starting, maintaining, or ending the conversation. Moreover, there aren’t any techniques of flow control or retransmission. Thus, there is **no guarantee** that the receiver will obtain all datagrams or that they will come in a valid order. Hence, UDP is sometimes called an *unreliable delivery protocol*.
+The UDP protocol is **connectionless** and *stateless* in nature. In simple words, it lacks the mechanisms of starting, maintaining, or ending the conversation. Moreover, there aren’t any techniques of flow control or retransmission. Thus, there is **no guarantee** that the receiver will obtain all datagrams or that they will come in a valid order. Hence, UDP is sometimes called an *unreliable delivery protocol*.
 
 UDP’s lack of connections and reliability mechanisms has a specific reason. There is no need to store additional bytes of security data in the datagrams.
 
@@ -335,6 +335,6 @@ Theoretically, the maximum length of a single datagram is 65527 bytes. However, 
 |**Speed**: Lightweight datagram structure and lack of security mechanisms result in fast transmission.     | **Speed**: It is slower than UDP because of handling multiple additional actions such as error-checking, flow-control and re-transmission.        |
 |**Header size**: The header size is 8-bytes.     |**Header size**:  The header size is 20-bytes.        |
 |**Usage**: It is used in applications where packet loss is acceptable e.g. audio and video streaming etc.     | **Usage**: Used in applications that require reliable transfer e.g. e-mail.        |
-
+|**State**: It is stateful in nature.     | **State**: It is stateless in nature.        |
 
 </div>
