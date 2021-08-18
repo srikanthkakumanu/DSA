@@ -25,6 +25,8 @@
 6. [Transmission Control Protocol](#transmission-control-protocol) </br>
 7. [User Datagram Protocol](#user-datagram-protocol) </br>
 8. [TCP vs. UDP](#tcp-vs-udp) </br>
+9. [Hypertext Transfer Protocol (HTTP)](#http) </br>
+10. [Altogether: HTTP + TCP + IP](#http-stack) </br>
 
 ## **Computer Network**
 
@@ -391,5 +393,12 @@ Each of these IP packets contains:
 The IP header contains the source and destination IP addresses, the size, and other flags. The TCP segment header contains TCP port numbers, TCP control flags, and numeric values used for data ordering and integrity checking.
 
 <img src="https://github.com/srikanthkakumanu/DSA/blob/main/nethttp/http_data_transfer.png" alt="HTTP data transfer" width="500" height="300"></img> </br>
+
+A computer might have several TCP connections open at any one time. TCP keeps all these connections straight through *port numbers*.
+
+A TCP connection is distinguished by four values: ``<source-IP-address, source-port, destination-IP-address, destination-port>``
+
+Together, these four values uniquely define a connection. Two different TCP connections are not allowed to have the same values for all four address components (but different connections can have the same values for some of the components).
+
 
 </div>
