@@ -337,4 +337,43 @@ Theoretically, the maximum length of a single datagram is 65527 bytes. However, 
 |**Usage**: It is used in applications where packet loss is acceptable e.g. audio and video streaming etc.     | **Usage**: Used in applications that require reliable transfer e.g. e-mail.        |
 |**State**: It is stateful in nature.     | **State**: It is stateless in nature.        |
 
+## **HTTP**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+**HTTP**
+
+The Hypertext Transfer Protocol (HTTP) is an application layer protocol and **it is connection-less, state-less protocol**. It is the foundation of the World Wide Web (WWW) and is used to load web pages using hypertext links.
+
+**HTTP Request Header**: HTTP version type + URL + HTTP method + Request Headers + Optional HTTP body
+
+**HTTP Response Header**: HTTP status code + Response Headers + Optional HTTP body
+
+**HTTPS (HTTP secure)**
+
+Transport Layer Security (TLS) is a cryptographic protocol that runs on top of TCP. It allows for two things: both ends can verify the identity of the other end, and the data sent between both ends is encrypted. Using HTTP on top of TLS gives us HTTP Secure, or simply, HTTPS.
+
+Simply using HTTPS instead of HTTP will gives us a huge improvement in security.
+
+**TLS 1.2**: We should set the `TLSMinimumSupportedProtocol` to `kTLSProtocol12` to require TLS version 1.2 if your server supports that. This will make **man-in-the-middle** attacks more difficult.
+
+## **HTTP stack**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+HTTP stack is combining HTTP/S + TCP + IP.
+
+HTTP connections really are nothing more than TCP connections (TCP connections are the reliable connections of the Internet).
+
+TCP gives HTTP a ***reliable bit pipe***. Bytes stuffed in one side of a TCP connection come out the other side correctly, and in the right order (TCP carries HTTP data in order, and without corruption).
+
+TCP streams are segmented and shipped by IP packets - TCP sends its data in little chunks called IP *packets* (or IP datagrams). In this way, HTTP is the top layer in a **"protocol stack"** of **"HTTP over TCP over IP”**.
+
+<img src="https://github.com/srikanthkakumanu/DSA/blob/main/nethttp/http_stack.png" alt="HTTP stack" width="400" height="300"></img> </br>
+
+
 </div>
