@@ -28,6 +28,7 @@
 9. [Hypertext Transfer Protocol (HTTP)](#http) </br>
 10. [Altogether: HTTP + TCP + IP](#http-stack) </br>
 11. [Google QUIC protocol](#quic-protocol) </br>
+12. 
 
 ## **Computer Network**
 
@@ -79,7 +80,7 @@ MAC (Media Access Control Address) is known as a physical address is a unique id
 
 ### **Socket**
 
-A socket can be thought of as **an endpoint in a two-way communication channel**. Socket routines create the communication channel, and the channel is used to send data between application programs either locally or over networks. Each socket within the network has a **unique name** associated with it called a **socket descriptor** (a full word integer that designates a socket and allows application programs to refer to it when needed).
+A socket can be thought of as ***an endpoint in a two-way communication channel*** or ***A socket is one end-point of a two-way communication link between two programs running on the network.*** Socket routines create the communication channel, and the channel is used to send data between application programs either locally or over networks. Each socket within the network has a **unique name** associated with it called a **socket descriptor** (a full word integer that designates a socket and allows application programs to refer to it when needed).
 
 ### **Port**
 
@@ -413,4 +414,22 @@ The QUIC protocol can start a connection and negotiate all the TLS (HTTPs) param
 
 It is a new encrypted transport layer network protocol. QUIC was designed to make HTTP traffic more secure, efficient, and faster. Theoretically, QUIC has taken all the best qualities of TCP connections and TLS encryption and implemented it on UDP.
 
+## **Java Networking Overview**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+The `java.net` package loosely devided into:
+
+- **Low-level API**: Deals with addresses, sockets, network interfaces. Addresses are network identifiers like IP addresses and Sockets are basic bi-directional data communication mechanism.
+- **High-level API**: Deals with URIs, URLs and connections (to the resource pointed to by URLs).
+
+### **URL and URI**
+
+**Uniform Resource Locator (URL)** is a reference (an address) to a resource on the Internet. Hence every URL is a **Uniform Resource Identifier (URI)** but NOT every URI is a URL. Because there is another subcategory of URIs, **uniform resource names (URNs)**, which name resources but do not specify how to locate them. The mailto, news, and isbn URIs shown are examples of URNs. URLs are *write-once* objects. Once we've created a URL object, we cannot change any of its attributes (protocol, host name, filename, or port number).
+
+### **Network Interface**
+
+A network interface is the point of inter-connection between a device and any of its network connections.
 </div>
