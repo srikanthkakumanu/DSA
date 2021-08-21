@@ -28,7 +28,8 @@
 9. [Hypertext Transfer Protocol (HTTP)](#http) </br>
 10. [Altogether: HTTP + TCP + IP](#http-stack) </br>
 11. [Google QUIC protocol](#quic-protocol) </br>
-12. 
+12. [Java Networking Overview](#java-networking-Overview) </br>
+13. [New HTTP client API](#new-http-api) </br>
 
 ## **Computer Network**
 
@@ -363,6 +364,20 @@ Simply using HTTPS instead of HTTP will gives us a huge improvement in security.
 
 **TLS 1.2**: We should set the `TLSMinimumSupportedProtocol` to `kTLSProtocol12` to require TLS version 1.2 if your server supports that. This will make **man-in-the-middle** attacks more difficult.
 
+## **HTTP2 Advantages**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+HTTP/2 is a new efficient protocol which is widely adopted by most of the browsers and servers and here is a summary of the major improvements the protocol enables:
+
+**Binary format**: Makes it more compact.
+**Multiplexing**: Means multiple requests are allowed at the same time, on the same connection.
+**Server Push**: Means additional future-needed resources can be sent to a client.
+**Single Connection to the Server**: Reduces the number of roundtrips needed to set up multiple TCP connections.
+**Header Compression**: Uses HPACK compression to reduce overhead.
+
 ## **HTTP stack**
 
 ---
@@ -439,16 +454,28 @@ A network interface is the point of inter-connection between a device and any of
 
 [Table of contents](#table-of-contents) </br>
 
-Prior to Java 11, It provided `HttpURLConnection` API (sub class of `URLConnection`) which is low-level and is NOT known for being feature-rich and user-friendly.
+Prior to Java 11, It provided `HttpURLConnection` API (sub class of `URLConnection`) which is low-level and is **NOT known for being feature-rich and user-friendly**.
 
-**Java 11** introduced **new HTTP client API** is a re-invention of `HTTPURLConnection`. HTTP client API provides high-level client interfaces to HTTP (1.1 and 2) and low-level client interfaces to WebSocket and it is easy to use. It supports both HTTP/1.1 and HTTP/2. By default, the client will send requests using HTTP/2. Requests sent to servers that do not yet support HTTP/2 will automatically be downgraded to HTTP/1.1 for backward compatibility.
+- **Java 11** introduced **new HTTP client API** is a re-invention of `HTTPURLConnection`. Unlike `HttpURLConnection`, new HTTP client API provides **synchronous and asynchronous request mechanisms**.
+- HTTP client API supports both HTTP/1.1 and HTTP/2 (provides high-level client interfaces to HTTP (1.1 and 2) and low-level client interfaces to WebSocket) and it is easy to use.
+- By default, the client will send requests using HTTP/2 (It is default preferred protocol). Requests sent to servers that do not yet support HTTP/2 will automatically be downgraded to HTTP/1.1 for backward compatibility.
+- HttpClient integrates with the **Reactive Streams APIs** that means that **we don’t need external libraries to do HTTP/2 calls or WebSocket communication in Java code**.
 
-HttpClient integrates with the **Reactive Streams APIs** that means that **we don’t need external libraries to do HTTP/2 calls or WebSocket communication in Java code**.
+**Reactive Streams**: Support for reactive-streams are introduced in Java 9 (`java.util.concurrent.Flow` API). Both synchronous and asynchronous programming models handle request and response bodies as reactive-streams. The Reactive Streams API offers interfaces that manage asynchronous streams of data, including the notion of **back pressure** in which data consumers can slow down producers to get an optimal flow of data.
 
-**Reactive Streams**: Support for reactive-streams are introduced in Java 9 (Refer to `java.util.concurrent.Flow***` classes). Both synchronous and asynchronous programming models handle request and response bodies as reactive-streams. The Reactive Streams API offers interfaces that manage asynchronous streams of data, including the notion of **back pressure** in which data consumers can slow down producers to get an optimal flow of data.
+Important classes are interfaces in HTTP client API:
 
+- **`HTTPClient`**: behaves as a container for configuration information common to multiple requests. It is main entry point for the API and is used to send requests and receive responses.
+- **`HttpRequest`**: represents request to be sent via `HttpClient`. Encapsulates an HTTP request, including the target URI, the method (GET, POST, etc.), headers, and other information. A request is constructed using a builder, is immutable once created, and can be sent multiple times.
+- **`HttpRequest.BodyPublisher`**: If a request has a body (like in a POST request), this is the entity responsible for publishing the body content from a given source, such as from a string, a file, etc. `BodyPublisher` is a sub-interface of `Flow.Publisher` (**Reactive Streams API**).
+- **`HttpResponse`**: represents the result `HttpRequest` call. Encapsulates an HTTP response, including headers and a message body, if any. This is what the client receives after sending an `HttpRequest`.
+- **`HttpResponse.BodyHandler`**: A functional interface that accepts some information about the response (status code and headers) and returns a `BodySubscriber`, which itself handles consuming the response body.
+- **`HttpResponse.BodySubscriber`**: Subscribes for the response body and consumes its bytes into some other form (such as a string, a file, or some other storage type). `BodySubscriber` is a sub-interface of `Flow.Subscriber` (**Reactive Streams API**).
+- **`WebSocket`**: A web socket client.
+- Factory classes: `BodyPublsihers`, `BodyHandlers` and `BodySubscribers`.
 
-
-
+Useful Links: </br>
+https://developer.ibm.com/tutorials/java-theory-and-practice-3/
+https://www.baeldung.com/java-9-http-client
 
 </div>
