@@ -431,5 +431,24 @@ The `java.net` package loosely devided into:
 
 ### **Network Interface**
 
-A network interface is the point of inter-connection between a device and any of its network connections.
+A network interface is the point of inter-connection between a device and any of its network connections. e.g. MAC address
+
+## **New HTTP API**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+Prior to Java 11, It provided `HttpURLConnection` API (sub class of `URLConnection`) which is low-level and is NOT known for being feature-rich and user-friendly.
+
+**Java 11** introduced **new HTTP client API** is a re-invention of `HTTPURLConnection`. HTTP client API provides high-level client interfaces to HTTP (1.1 and 2) and low-level client interfaces to WebSocket and it is easy to use. It supports both HTTP/1.1 and HTTP/2. By default, the client will send requests using HTTP/2. Requests sent to servers that do not yet support HTTP/2 will automatically be downgraded to HTTP/1.1 for backward compatibility.
+
+HttpClient integrates with the **Reactive Streams APIs** that means that **we don’t need external libraries to do HTTP/2 calls or WebSocket communication in Java code**.
+
+**Reactive Streams**: Support for reactive-streams are introduced in Java 9 (Refer to `java.util.concurrent.Flow***` classes). Both synchronous and asynchronous programming models handle request and response bodies as reactive-streams. The Reactive Streams API offers interfaces that manage asynchronous streams of data, including the notion of **back pressure** in which data consumers can slow down producers to get an optimal flow of data.
+
+
+
+
+
 </div>
