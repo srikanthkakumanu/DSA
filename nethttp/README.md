@@ -475,7 +475,7 @@ Important classes are interfaces in HTTP client API:
 - Factory classes: `BodyPublsihers`, `BodyHandlers` and `BodySubscribers`.
 
 Useful Links: </br>
-https://developer.ibm.com/tutorials/java-theory-and-practice-3/
+https://developer.ibm.com/tutorials/java-theory-and-practice-3/ </br>
 https://www.baeldung.com/java-9-http-client
 
 </div>
