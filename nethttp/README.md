@@ -29,7 +29,7 @@
 10. [Altogether: HTTP + TCP + IP](#http-stack) </br>
 11. [Google QUIC protocol](#quic-protocol) </br>
 12. [Java Networking Overview](#java-networking-Overview) </br>
-13. [New HTTP client API](#new-http-api) </br>
+13. [New HTTP client API](#new-http-client-api) </br>
 
 ## **Computer Network**
 
@@ -448,7 +448,7 @@ The `java.net` package loosely devided into:
 
 A network interface is the point of inter-connection between a device and any of its network connections. e.g. MAC address
 
-## **New HTTP API**
+## **New HTTP Client API**
 
 ---
 
