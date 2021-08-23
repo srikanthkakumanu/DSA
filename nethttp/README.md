@@ -465,7 +465,7 @@ Prior to Java 11, It provided `HttpURLConnection` API (sub class of `URLConnecti
 
 Important classes are interfaces in HTTP client API:
 
-- **`HTTPClient`**: behaves as a container for configuration information common to multiple requests. It is main entry point for the API and is used to send requests and receive responses.
+- **`HTTPClient`**: behaves as a container for configuration information common to multiple requests. It is main entry point for the API and is used to send requests and receive responses. `HttpClient.send()` is used for synchronous calls (Synchronous calls block until response comes back) and `HttpClient.sendAsync()` is used for asynchronous calls (Asynchronous calls doesn't wait for the response and non-blocking).
 - **`HttpRequest`**: represents request to be sent via `HttpClient`. Encapsulates an HTTP request, including the target URI, the method (GET, POST, etc.), headers, and other information. A request is constructed using a builder, is immutable once created, and can be sent multiple times.
 - **`HttpRequest.BodyPublisher`**: If a request has a body (like in a POST request), this is the entity responsible for publishing the body content from a given source, such as from a string, a file, etc. `BodyPublisher` is a sub-interface of `Flow.Publisher` (**Reactive Streams API**).
 - **`HttpResponse`**: represents the result `HttpRequest` call. Encapsulates an HTTP response, including headers and a message body, if any. This is what the client receives after sending an `HttpRequest`.
@@ -476,6 +476,7 @@ Important classes are interfaces in HTTP client API:
 
 Useful Links: </br>
 https://developer.ibm.com/tutorials/java-theory-and-practice-3/ </br>
-https://www.baeldung.com/java-9-http-client
+https://www.baeldung.com/java-9-http-client </br>
+https://golb.hplar.ch/2019/01/java-11-http-client.html
 
 </div>

@@ -1,6 +1,7 @@
 package nethttp;
 
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpClient.Redirect;
@@ -59,11 +60,12 @@ public class SimpleHttpDemo {
         // simpleGetSyncWithMultiRequest();
 
         // asynchronous calls
-        asynchronousGetRequest();
+        // asynchronousGetRequest();
         // simplePostAsyncWithTextBody();
         // simpleGetAsyncWithExecutorPool();
 
         // completeExceptionally();
+        moreHttpResponseInfo();
     }
 
     /**
@@ -495,4 +497,58 @@ public class SimpleHttpDemo {
 
         System.out.println("message upon cancel: " + exceptionHandler.join());
     }
+
+    /**
+     * Simple POST request to make Asynchronous call with text body content. 
+     * This method is know more about HTTP response information what we receive from server.
+     * HTTP request includes the following:
+     * - version
+     * - headers
+     * - timeout
+     * - proxy setting
+     * - redirection policy
+     * - cookie policy
+     * - HTTP authentication
+     * Note: sendAsync(): Asynchronous call, doesn't wait for the response and non-blocking.
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    private static void moreHttpResponseInfo() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+        
+        PATH = "http://jsonplaceholder.typicode.com/posts/2";
+        request = HttpRequest.newBuilder()
+                            .uri(new URI(PATH))      // path i.e. URL
+                            .version(Version.HTTP_2) // http version
+                            .headers("Content-Type", "text/plain;charset=UTF-8") // all headers at once
+                            .timeout(Duration.of(10, ChronoUnit.SECONDS)) // set request timeout
+                            .GET() // no content i.e. no body
+                            .build();
+
+        CompletableFuture<HttpResponse<String>> future = HttpClient.newBuilder()
+                            .proxy(ProxySelector.getDefault()) // setting proxy
+                            .followRedirects(Redirect.ALWAYS)  // can redirect the request to the new URI automatically if we set the appropriate redirect policy.
+                            .authenticator(authenticator)      // HTTP authentication
+                            .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_NONE)) // cookie policy
+                            .build()
+                            .sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        future.thenApply(response -> {
+                        System.out.println("\nHTTP GET Asynchronous call with no body");
+                        System.out.println("--------------------------------------------");                    
+                        System.out.println("Response Code: " + response.statusCode());
+                        System.out.println("Response URI: " + response.uri().toString());
+                        System.out.println("Response Version: " + response.version());
+                        System.out.println("--------Response Headers-----------");
+                        HttpHeaders headers = response.headers();
+                        headers.map().forEach((key, value) -> System.out.format("\nHeader Key: %s and Value: %s", key, value));
+                        System.out.println("Response Body: " + response.toString()); 
+                        return response;
+                        })
+                .thenApply(HttpResponse::body)
+                .exceptionally(e -> "Error: " + e.getMessage())
+                .thenAccept(System.out::println).join();
+    }
+
 }
