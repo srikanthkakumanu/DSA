@@ -20,7 +20,6 @@ import java.util.concurrent.ExecutorService;
 import java.net.Authenticator;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.ProxySelector;
 import java.net.URI;
@@ -326,15 +325,22 @@ public class SimpleHttpDemo {
         HttpRequest request = HttpRequest.newBuilder(httpURI)
             .version(HttpClient.Version.HTTP_2)
             .build();
-        CompletableFuture<Void> futureResponse = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-            .thenAccept(resp -> {
-                System.out.println("\nHTTP GET Asynchronous call");
-                System.out.println("-----------------------------------------");
-                System.out.println("Got pushed response " + resp.uri());
-                System.out.println("Response statuscode: " + resp.statusCode());
-                System.out.println("Response body: " + resp.body());
-            });
-        System.out.println("futureResponse" + futureResponse);
+        CompletableFuture<HttpResponse<String>> future = client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        future.thenApply(response -> {
+            System.out.println("\nHTTP GET Asynchronous call with no body");
+            System.out.println("--------------------------------------------");                    
+            System.out.println("Response Code: " + response.statusCode());
+            System.out.println("Response URI: " + response.uri().toString());
+            System.out.println("Response Version: " + response.version());
+            System.out.println("--------Response Headers-----------");
+            HttpHeaders headers = response.headers();
+            headers.map().forEach((key, value) -> System.out.format("\nHeader Key: %s and Value: %s", key, value));
+            System.out.println("Response Body: " + response.toString()); 
+            return response;
+            })
+            .thenApply(HttpResponse::body)
+            .exceptionally(e -> "Error: " + e.getMessage())
+            .thenAccept(System.out::println).join();
     }
 
     /**
@@ -364,7 +370,7 @@ public class SimpleHttpDemo {
                             .POST(HttpRequest.BodyPublishers.ofString("Sample request body")) // with text content i.e. body
                             .build();
 
-        CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder()
+        CompletableFuture<HttpResponse<String>> future = HttpClient.newBuilder()
                             .proxy(ProxySelector.getDefault()) // setting proxy
                             .followRedirects(Redirect.ALWAYS)  // can redirect the request to the new URI automatically if we set the appropriate redirect policy.
                             .authenticator(authenticator)      // HTTP authentication
@@ -372,10 +378,21 @@ public class SimpleHttpDemo {
                             .build()
                             .sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
-        System.out.println("\nHTTP POST Asynchronous call with text body");
-        System.out.println("--------------------------------------------");                    
-        System.out.println("Response Code: " + response.get().statusCode());
-        response.whenComplete((res, t) -> System.out.println("Response Body: " + res.toString()));
+        future.thenApply(response -> {
+            System.out.println("\nHTTP POST Asynchronous call with text body");
+            System.out.println("--------------------------------------------");                    
+            System.out.println("Response Code: " + response.statusCode());
+            System.out.println("Response URI: " + response.uri().toString());
+            System.out.println("Response Version: " + response.version());
+            System.out.println("--------Response Headers-----------");
+            HttpHeaders headers = response.headers();
+            headers.map().forEach((key, value) -> System.out.format("\nHeader Key: %s and Value: %s", key, value));
+            System.out.println("Response Body: " + response.toString()); 
+            return response;
+            })
+            .thenApply(HttpResponse::body)
+            .exceptionally(e -> "Error: " + e.getMessage())
+            .thenAccept(System.out::println).join();
     }
 
     /**
@@ -466,7 +483,7 @@ public class SimpleHttpDemo {
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
-        System.out.println("\nHTTP GET synchronous call with multiple responses");
+        System.out.println("\nHTTP GET synchronous call with multiple request");
         System.out.println("---------------------------------------------------");                    
 
         if (futures.get(0).get().contains("foo1")) {
