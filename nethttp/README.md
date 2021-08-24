@@ -20,16 +20,17 @@
     3.5 [Session Layer](#session-layer) </br>
     3.6 [Presentation Layer](#presentation-layer) </br>
     3.7 [Application Layer](#application-layer) </br>  
-4. [Protocol Glossary](#protocol-glossary) </br>
-5. [Internet Protocol (IP)](#internet-protocol) </br>
-6. [Transmission Control Protocol](#transmission-control-protocol) </br>
-7. [User Datagram Protocol](#user-datagram-protocol) </br>
-8. [TCP vs. UDP](#tcp-vs-udp) </br>
-9. [Hypertext Transfer Protocol (HTTP)](#http) </br>
-10. [Altogether: HTTP + TCP + IP](#http-stack) </br>
-11. [Google QUIC protocol](#quic-protocol) </br>
-12. [Java Networking Overview](#java-networking-Overview) </br>
-13. [New HTTP client API](#new-http-client-api) </br>
+4. [Internet Protocol Suite](#internet-protocol-suite) </br>
+5. [Protocol Glossary](#protocol-glossary) </br>
+6. [Internet Protocol (IP)](#internet-protocol) </br>
+7. [Transmission Control Protocol](#transmission-control-protocol) </br>
+8. [User Datagram Protocol](#user-datagram-protocol) </br>
+9. [TCP vs. UDP](#tcp-vs-udp) </br>
+10. [Hypertext Transfer Protocol (HTTP)](#http) </br>
+11. [Altogether: HTTP + TCP + IP](#http-stack) </br>
+12. [Google QUIC protocol](#quic-protocol) </br>
+13. [Java Networking Overview](#java-networking-Overview) </br>
+14. [New HTTP client API](#new-http-client-api) </br>
 
 ## **Computer Network**
 
@@ -61,7 +62,7 @@ Computer networks are logically classified into:
 
 The **Open Systems Interconnection (OSI)** Model is a logical and conceptual model that defines network communication (using protocols) used by systems open to interconnection and communication with other systems.
 
-Note: *The TCP/IP model sometimes referred to as a protocol stack and it can be considered as a condensed version of OSI model.*
+Note: *The Internet Protocol Suite is a condensed version of OSI model.*
 
 ### **Protocol**
 
@@ -194,6 +195,21 @@ Note: *Sockets are sometimes consider as part of Session Layer*.
 - It supplies network services to end-user applications.
 - It acts as a window between a software application and an end-user. It helps to access the data from the network and display the information to the user.
 - **Protocols**: HTTP, FTP, DNS, SNMP etc.
+
+## **Internet Protocol Suite**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+**Internet Protocol Suite** or **TCP/IP model** is **condensed version of OSI model**. It is broadly classified into:
+
+|**Layers**  | **Protocols**  | **OSI Model Layers**  |
+|---------|---------|---------|
+|**Application Layer**     | HTTP, WebSockets, SSL, FTP, Telnet, NTP, DHCP, PING, IMAP, POP etc.         | Application, Presentation, Session         |
+|**Transport Layer**     | TCP, UDP         | Transport         |
+|**Network/Internet Layer**     | IPv4, IPv6, ARP, ICMP, IGMP         | Network         |
+|**Network/DataLink Interface**     | Ethernet         | Data Link, Physical         |
 
 ## **Protocol Glossary**
 
