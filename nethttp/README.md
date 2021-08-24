@@ -31,6 +31,7 @@
 12. [Google QUIC protocol](#quic-protocol) </br>
 13. [Java Networking Overview](#java-networking-Overview) </br>
 14. [New HTTP client API](#new-http-client-api) </br>
+15. [WebSockets](#websockets) </br>
 
 ## **Computer Network**
 
@@ -494,5 +495,40 @@ Useful Links: </br>
 https://developer.ibm.com/tutorials/java-theory-and-practice-3/ </br>
 https://www.baeldung.com/java-9-http-client </br>
 https://golb.hplar.ch/2019/01/java-11-http-client.html
+
+## **WebSockets**
+
+---
+
+[Table of contents](#table-of-contents) </br>
+
+WebSocket is a communications protocol that allows for a **constant flow of data over a single TCP connection**. In this way, web applications may enjoy real-time communications between a client and a server. WebSockets allow for a continuous line of communication between the client and server until that line is closed. As a result, it can remain open for back and forth, bi-directional communications. WebSocket Protocol first became standardized by the Internet Engineering Task Force (IETF) in 2011.
+
+- It supports **full-duplex bi-directional** communication.
+- It is a HTTP upgrade i.e. **Uses the same TCP connection over ws:// or wss://**
+- Easy to implement and standaridised
+- It sends **headers only once**.
+- WebSockets provide a faster, continuous stream of data.
+- WebSockets is not a replacement of HTTP and is an upgrade for HTTP.
+- It is not a replacement because HTTP provides automatic caching.
+- WebSockets often needs special configuration for load balancing
+- WebSockets can't communicate with REST.
+- WebSockets are best to use when we need full-duplex connection (useful for web-based games, chatting applications, anything which needs low-latency realtime connection)
+
+| **Connection via WebSocket**  | **Connection via HTTP**  |
+|---------|---------|
+|Bi-directional communication     |Unidirectional communication         |
+|Connection is kept-alive until terminated by the client or server.     |Connection is terminated after request/response.         |
+|Real-time data is received on a single communication channel and can be continuously updated.     |HTTP data requests use Simple RESTful API. They send a one-time current state response for a query.         |
+|Best used for applications in need of quick connections & real-time data     |Best used for applications that don't require quick, 2-way connections.         |
+|Use case examples: crypto market cap database, multi-player games, collaborative platforms, messaging apps     |Use case examples: Browser search, email, social media updates, final game scores, browser notifications.         |
+
+### **Alternatives to websockets**
+
+They offer better backward compatibility.
+
+- **Polling**: Send AJAX request every X amount of seconds for new data (not true real-time).
+- **Long Polling**: Send request to server and keep connection open until new data.
+- **Server Sent Events(SSE)**: It is one of the categories of **HTTP streaming** (*HTTP streaming* is sub category of ***Event driven APIs***). SSE is another "*real-time*" alternative, uses EventSource API to send messages from server but NOT truly bi-directional in nature. It generally requires an event loop and offers no binary message capability. Web sockets expects both client and server to communicate but SSE expect mainly server being send the data back. However it works well with existing technologies such as REST API, oAuth etc.
 
 </div>

@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ExecutorService;
 
 /**
- * It is an example of a http WebSocket
+ * It is an example of a http WebSocket client
  * that can be followed to perform common tasks using
  * the Java HTTP Client WebSocket implementation.
  */
