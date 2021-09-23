@@ -1,0 +1,24 @@
+// Reference: https://www.youtube.com/watch?v=OFUEb7pLLXw
+plugins {
+  id 'java' // java is a plugin
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+// Can generate dependencies report using:
+// gradle -q dependencies --configuration --scan scm
+configurations {
+  scm
+}
+
+// In gradle, tasks are objects therefore they can also inherit from types.
+// e.g. caeser task inherits from JavaExec type.
+task poetry(type: JavaExec) {
+  main = 'org.poetry.Poetry'
+  // below line sets the classpath for all the classes
+  // then simply execute gradle caeser in cmd
+  classpath = sourceSets.main.runtimeClasspath
+}

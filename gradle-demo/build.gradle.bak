@@ -1,0 +1,51 @@
+/*
+Task:
+- A task is an object and a basic unit of activity in gradle.
+    - A task has an API. e.g. doLast
+    - A task has list of activities. e.g. code inside doLast block
+    - tasks form a Directed Acyclic Graph (DAG)  before executing build.
+    - Gradle generates this DAG during initialization (configuration) phase.
+- A gradle build is a program.
+
+Plugins:
+- A plugin is a declarative style of Gradle and Gradle encourages declarative
+  style. e.g. java is a plugin and application is a plugin
+
+Commands
+--------
+- gradle -q hello : suppress all gradle lifecyle messages
+- If task name is declared with camel case e.g. helloWorld. Then,
+  we can abbriavate task name in the command like this: gradle hW
+
+*/
+
+// declare a task
+task hello
+task world
+
+
+// Definition/configuration of a task. It is a Groovy Closure syntax
+hello {
+  doLast {
+    println "Hello"
+  }
+}
+
+world {
+  // below line: it is groovy code i.e. adding an object to a collection
+  dependsOn << hello // single dependency to add to a dependsOn collection
+  // This is imperitive style but gradle preference is to be declarative
+  doLast {
+    println "World"
+  }
+}
+
+task helloWorld {
+  // multiple dependencies i.e. adding a list to dependsOn collection.
+  dependsOn = [hello, world] // list of dependencies
+}
+
+// We can define a Groovy method also
+def whatsUp() {
+  println "Hey, glad you're learning about Gradle today"
+}
